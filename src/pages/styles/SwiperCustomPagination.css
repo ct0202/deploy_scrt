@@ -1,0 +1,11 @@
+.swiper-pagination-bullet {
+    width: 77px;       /* Ширина полоски */
+    height: 4px;       /* Высота полоски */
+    background: #ccc;  /* Цвет для inactive */
+    opacity: 1;
+    border-radius: 2px;
+}
+
+.swiper-pagination-bullet-active {
+    background: white;
+}
