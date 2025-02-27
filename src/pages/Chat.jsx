@@ -146,7 +146,7 @@ function Chat() {
 
                         <img
                           src="/mock/user_3/user_3_chat_mock.png"
-                          className="z-[1] w-[363px] h-[627px] rounded-[16px] object-cover"
+                          className="z-[1] w-[363px] h-[527px] rounded-[16px] object-cover"
                         />
 
                         <img
