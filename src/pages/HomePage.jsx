@@ -17,7 +17,7 @@ export const HomePage = () => {
   };
 
   return (
-    <div className="relative w-[100%] h-[100%] pt-[70px] overflow-x-hidden overflow-y-hidden">
+    <div className="relative w-[100%] h-[100%] overflow-x-hidden overflow-y-hidden">
       <img src={background} alt="" className="absolute w-[100vw] z-0" />
 
       <div className="z-20 flex flex-col justify-center items-center w-[100%] mt-[227px]">
