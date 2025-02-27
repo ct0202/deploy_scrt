@@ -5,7 +5,7 @@ const ScrollBlocker = () => {
     const location = useLocation();
 
     useEffect(() => {
-        const blockedRoutes = ["/"]; // Укажи URL страниц без скролла
+        const blockedRoutes = ["/"];
         if (blockedRoutes.includes(location.pathname)) {
             document.body.style.overflow = "hidden";
         } else {
