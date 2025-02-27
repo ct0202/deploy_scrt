@@ -7,7 +7,7 @@ function Streams() {
 
 
   return (
-    <div className="flex flex-col justify-center items-center pt-[70px] w-[100%] h-[100vh] overflow-hidden relative ">
+    <div className="flex flex-col justify-center items-center pt-[70px] w-[100%] h-[auto] relative">
       <div className="flex justify-between items-center w-[343px] h-[44px] mt-[21px]">
         <img src="/icons/Button-menu.svg" alt="" />
         <div className="flex gap-[8px]">
@@ -15,7 +15,7 @@ function Streams() {
           <img src="/icons/Button-notifications.svg" alt="" />
         </div>
       </div>
-      <div className="flex flex-wrap relative w-[343px]  gap-[11px] mt-[12px] mb-[120px]">
+      <div className="flex flex-wrap relative w-[343px] gap-[11px] mt-[12px] mb-[120px]">
         <img
           onClick={() => navigate("/watchStreams")}
           src="/images/Card.svg"

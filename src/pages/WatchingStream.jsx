@@ -41,7 +41,7 @@ function WatchingStream() {
                 <div className="rounded-[400px] bg-[#FFFFFF33] flex items-center w-[269px] h-[64px] mt-4">
                     <input placeholder="Оставьте комментарий" className="pl-4 text-[18px] bg-transparent h-[64px] w-[269px] rounded-[400px] text-[#FFFFFF] font-normal"/>
                 </div>
-                <div className="ml-2 rounded-[50%] bg-[#FFFFFF33] flex items-center justify-center w-[64px] h-[64px] mt-4" onClick={()=>{setPresentShop(true)}}>
+                <div className="ml-4 rounded-[50%] bg-[#FFFFFF33] flex items-center justify-center w-[64px] h-[64px] mt-4" onClick={()=>{setPresentShop(true)}}>
                     <img src="/icons/present.svg" alt="" className="w-[24px] h-[24px]"/>
                 </div>
             </div>
