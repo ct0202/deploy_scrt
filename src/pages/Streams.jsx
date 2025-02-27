@@ -15,7 +15,7 @@ function Streams() {
           <img src="/icons/Button-notifications.svg" alt="" />
         </div>
       </div>
-      <div className="flex flex-wrap relative w-[343px] gap-[11px] mt-[12px] mb-[120px]">
+      <div className="flex flex-wrap relative w-[343px] h-[auto] gap-[11px] mt-[12px] mb-[120px]">
         <img
           onClick={() => navigate("/watchStreams")}
           src="/images/Card.svg"

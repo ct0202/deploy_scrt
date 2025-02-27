@@ -78,7 +78,7 @@ function Chat() {
     }, []);
 
     return (
-        <div className="w-[100%] h-[100vh] pt-[100px] flex flex-col !items-center overflow-x-hidden overflow-hidden">
+        <div className="w-[100%] h-[auto] pt-[100px] flex flex-col !items-center overflow-x-hidden overflow-hidden">
             {showInstruction && (
                 <div
                     className={`z-40 w-[100vw] h-[100%] absolute flex justify-center items-center flex-col bg-black/80 backdrop-blur-[10px]`}
@@ -121,7 +121,7 @@ function Chat() {
                 <div className="w-[343px] flex flex-row ">
                     <img
                         src="/icons/Button-menu.svg"
-                        className="mt-3 ml-3 w-[44px] h-[44px]"
+                        className="mt-3 w-[44px] h-[44px]"
                     />
                     <div className="flex flex-row justify-end flex-grow">
                         <img

@@ -138,7 +138,7 @@ function Meet() {
         <div className="w-[343px] flex flex-row ">
           <img
             src="/icons/Button-menu.svg"
-            className="mt-3 ml-1 w-[44px] h-[44px]"
+            className="mt-3 w-[44px] h-[44px]"
           />
           <div className="flex flex-row justify-end flex-grow">
             <img
