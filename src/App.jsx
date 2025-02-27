@@ -16,7 +16,7 @@ import Match from "./pages/Match";
 function App() {
   useEffect(() => {
     const tg = window.Telegram.WebApp;
-    // tg.requestFullscreen();
+    tg.requestFullscreen();
     window.Telegram.WebApp.ready();
     window.Telegram.WebApp.expand();
   }, []);
