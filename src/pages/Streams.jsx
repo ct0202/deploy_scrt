@@ -7,7 +7,7 @@ function Streams() {
 
 
   return (
-    <div className="flex flex-col justify-center items-center pt-[70px] w-[100%] h-[auto] relative ">
+    <div className="flex flex-col justify-center items-center pt-[70px] w-[100%] h-[100vh] overflow-hidden relative ">
       <div className="flex justify-between items-center w-[343px] h-[44px] mt-[21px]">
         <img src="/icons/Button-menu.svg" alt="" />
         <div className="flex gap-[8px]">

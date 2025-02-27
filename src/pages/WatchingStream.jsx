@@ -15,8 +15,8 @@ function WatchingStream() {
     ]);
 
   return (
-    <div className="flex flex-col justify-center items-center mt-[70px] w-[100%] h-[848px] relative overflow-hidden overflow-x-hidden">
-      <img src="/images/image 20.png" className="absolute z-0 top-0" alt="" />
+    <div className="flex flex-col justify-center items-center mt-[70px] w-[100%] h-[100vh] relative overflow-hidden overflow-x-hidden">
+      <img src="/images/image 20.png" className="absolute z-0 top-0 w-[100vw] h-[100vh]" alt="" />
       <div className="absolute top-0 flex justify-between items-center w-[343px] h-[44px] mt-[21px] z-10">
         <img src="/icons/Info.svg" alt="" />
         <img
