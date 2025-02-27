@@ -58,7 +58,7 @@ function Filters() {
     ];
 
     return (
-        <div className="w-[100%] h-[auto] pt-[70px] flex justify-center">
+        <div className="w-[100%] h-[auto] pt-[100px] flex justify-center">
 
         <div className="h-[auto] flex flex-col justify-start items-start w-[343px]">
 

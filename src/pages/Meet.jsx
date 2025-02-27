@@ -134,7 +134,7 @@ function Meet() {
           </Button>
         </div>
       )}
-      <div className="z-0 w-full flex justify-center align-center flex-col">
+      <div className="z-0 w-full flex justify-center items-center flex-col">
         <div className="w-[343px] flex flex-row ">
           <img
             src="/icons/Button-menu.svg"

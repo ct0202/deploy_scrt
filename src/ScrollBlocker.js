@@ -5,7 +5,15 @@ const ScrollBlocker = () => {
     const location = useLocation();
 
     useEffect(() => {
-        const blockedRoutes = ["/", "/calculatePage", "/meet", "/chat", "/watchStreams", "/streams"];
+        const blockedRoutes = [
+            "/",
+            "/calculatePage",
+            "/meet",
+            "/chat",
+            "/watchStreams",
+            "/match",
+            "/StreamFilters"
+        ];
         if (blockedRoutes.includes(location.pathname)) {
             document.body.style.overflow = "hidden";
         } else {
