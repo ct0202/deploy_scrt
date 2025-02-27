@@ -22,7 +22,7 @@ function App() {
     window.Telegram.WebApp.ready();
     window.Telegram.WebApp.expand();
 
-    alert("2");
+    alert("3");
   }, []);
 
   return (

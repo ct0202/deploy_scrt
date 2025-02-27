@@ -5,7 +5,7 @@ const ScrollBlocker = () => {
     const location = useLocation();
 
     useEffect(() => {
-        const blockedRoutes = ["/"];
+        const blockedRoutes = ["/", "/calculatePage"];
         if (blockedRoutes.includes(location.pathname)) {
             document.body.style.overflow = "hidden";
         } else {
