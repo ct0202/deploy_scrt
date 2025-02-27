@@ -13,7 +13,7 @@ function Menu() {
         <img
           src="/icons/Button-back.svg"
           alt=""
-          className="w-[44px] absolute top-[120px] left-[16px]"
+          className="w-[44px] absolute top-[80px] left-[16px]"
         />
         <img src="/logo1.svg" className="w-[134px] my-[19px]" alt="" />
       </div>
