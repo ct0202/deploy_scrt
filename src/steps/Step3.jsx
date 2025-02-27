@@ -28,7 +28,7 @@ function Step3({ setStep }) {
         <br /> ДЛЯ ЗАПИСИ
       </p>
       <button
-        className={`border-none text-white text-[18px] opacity-50 mt-[200px] mb-6`}
+        className={`border-none text-white text-[18px] opacity-50 mt-[150px] mb-6`}
         onClick={() => setStep(4)}
       >
         Пропустить
