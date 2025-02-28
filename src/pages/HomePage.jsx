@@ -1,4 +1,4 @@
-  import React, { useState } from "react";
+import React, {useRef, useState} from "react";
 import { Button } from "../components/Button";
 import background from "../assets/background.svg";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,25 @@ export const HomePage = () => {
     setShowPolicy(false);
   };
 
+  const [swipeStart, setSwipeStart] = useState(0);
+  const policyRef = useRef(null);
+
+  const handleTouchStart = (e) => {
+    setSwipeStart(e.touches[0].clientY);
+  };
+
+  const handleTouchMove = (e) => {
+    const swipeEnd = e.touches[0].clientY;
+    const diff = swipeEnd - swipeStart;
+
+    // Если свайпнули вниз на 100px — закрываем
+    if (diff > 100) {
+      closePolicy();
+    }
+  };
+
+
+
   return (
     <div className="relative w-[100%] h-[100%] overflow-x-hidden overflow-y-hidden">
       <img src={background} alt="" className="absolute w-[100vw] z-0" />
@@ -30,10 +49,13 @@ export const HomePage = () => {
           Расскажи о себе – это поможет создать профиль и сразу начать общаться
         </p>
 
-        <Button onclick={() => navigate("/menu")} className="mt-[200px]">
+        <div className="absolute bottom-2">
+
+        <Button onclick={() => navigate("/menu")} >
           Начать
         </Button>
-        <div className="mt-[13px] flex justify-start items-center gap-[12px]">
+
+        <div className="flex justify-start items-center gap-[12px] mt-3">
           <img
             className="w-[24px] cursor-pointer"
             alt="Checkbox"
@@ -51,16 +73,23 @@ export const HomePage = () => {
             </p>
           </div>
         </div>
+
+        </div>
+
       </div>
+
 
       {showPolicy && (
         <div
-          className="fixed inset-0  bg-opacity-50 flex justify-center items-end z-20"
+          className="fixed inset-0 bg-opacity-50 flex justify-center items-end z-20"
           onClick={closePolicy}
         >
           <div
-            className="w-full rounded-t-2xl transform transition-transform duration-300 translate-y-0"
+            className="w-full rounded-t-2xl transform transition-transform duration-300 translate-y-0 overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
+            ref={policyRef}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
           >
             <Policy />
           </div>

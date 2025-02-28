@@ -9,6 +9,7 @@ function Menu() {
       <div
         className="w-[100%] h-[81px] flex justify-center items-center"
         style={{ borderBottom: "1px solid #233636" }}
+        onClick={()=>{navigate(-1)}}
       >
         <img
           src="/icons/Button-back.svg"
