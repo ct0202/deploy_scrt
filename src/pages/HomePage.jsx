@@ -10,6 +10,7 @@ export const HomePage = () => {
 
   const handlePolicyClick = () => {
     setShowPolicy(true);
+    console.log("1222222222223")
   };
 
   const closePolicy = () => {
@@ -49,7 +50,7 @@ export const HomePage = () => {
           Расскажи о себе – это поможет создать профиль и сразу начать общаться
         </p>
 
-        <div className="absolute bottom-2">
+        <div className="absolute bottom-4 pointer-events-none">
 
         <Button onclick={() => navigate("/menu")} >
           Начать
@@ -65,7 +66,7 @@ export const HomePage = () => {
             <p className="w-[309px] opacity-70 font-raleway font-medium text-sm text-white">
               Нажав кнопку “Начать”, я соглашаюсь с{" "}
               <span
-                className="underline cursor-pointer"
+                className="underline cursor-pointer pointer-events-auto"
                 onClick={handlePolicyClick}
               >
                 Политикой конфиденциальности
@@ -85,7 +86,7 @@ export const HomePage = () => {
           onClick={closePolicy}
         >
           <div
-            className="w-full rounded-t-2xl transform transition-transform duration-300 translate-y-0 overflow-y-auto"
+            className="w-full rounded-t-2xl transform transition-transform duration-300 translate-y-0"
             onClick={(e) => e.stopPropagation()}
             ref={policyRef}
             onTouchStart={handleTouchStart}
