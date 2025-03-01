@@ -218,6 +218,11 @@ function Chat() {
                             <div className="mt-5 rounded-[8px] text-white bg-[#0B6666] pl-[12px] pr-[12px] pt-[8px] pb-[8px]">23 ч
                                 59 мин
                             </div>
+                            <div className="mt-8">
+                                <Button className="w-[300px]">
+                                    Хочу 600 просмотров в день
+                                </Button>
+                            </div>
                         </div>
                     }
                 </div>

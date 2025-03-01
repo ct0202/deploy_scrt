@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/pagination";
 import "./styles/SwiperCustomPagination.css";
+import background from "../assets/background.svg";
 
 
 function Chat() {
@@ -13,6 +14,7 @@ function Chat() {
 
     return (
         <div className="w-[100%] h-[100%] pt-[70px] flex flex-col font-raleway !items-center overflow-x-hidden">
+            <img src={background} alt="" className="absolute w-[100vw] z-0" />
             <div>
                 <img className="
                         w-[160px] h-[200px]
