@@ -11,8 +11,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  height: 100%;
-  overflow: auto;
+  overflow-block: hidden;
 }
 /* Убираем скроллбар */
 ::-webkit-scrollbar {

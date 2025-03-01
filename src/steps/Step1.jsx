@@ -54,7 +54,7 @@ function Step1({ setStep }) {
     };
 
   return (
-      <div className="flex flex-col justify-start items-start w-[343px]">
+      <div className="flex flex-col justify-start items-start w-[343px] mb-[200px]">
           <h1 className="font-raleway font-semibold mt-6 text-white text-[20px]">
               Как вас зовут?
           </h1>
