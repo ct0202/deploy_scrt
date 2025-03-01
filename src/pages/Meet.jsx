@@ -127,8 +127,8 @@ function Meet() {
               ))}
             </div>
             <Button
-                className={"mt-[20px] mb-2"}
-                onClick={(e) => {e.stopPropagation(); setShowInstruction(false)}}
+                className={"mt-[20px] mb-2 "}
+                onClick={() => {setShowInstruction(false)}}
             >
               Понятно
             </Button>
