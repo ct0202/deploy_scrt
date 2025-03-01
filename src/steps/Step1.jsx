@@ -26,8 +26,8 @@ function Step1({ setStep }) {
   ];
 
   const targetGenders = [
-      { id: "male", label: "Мужчина", emoji: "👱🏻‍♂️" },
-      { id: "female", label: "Женщина", emoji: "👱🏻‍♀️" },
+      { id: "male", label: "Мужчин", emoji: "👱🏻‍♂️" },
+      { id: "female", label: "Женщин", emoji: "👱🏻‍♀️" },
       { id: "all", label: "Всех", emoji: "💕" },
   ];
 

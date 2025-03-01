@@ -43,7 +43,7 @@ function Step2({ setStep }) {
         </div>
       </div>
       <h1 className="font-raleway font-light mt-3 text-white text-[16px]">
-        Перетащите чтобы изменить порядок
+        Перетащите, чтобы изменить порядок
       </h1>
       <Button className={"mt-[130px] mb-6"} onclick={() => setStep(3)}>
         Далее
