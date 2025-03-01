@@ -140,7 +140,7 @@ function Meet() {
             </div>
           </div>
       )}
-      <div className="relative h-[auto]">
+      <div className="relative h-[100%]">
     <div className="w-[100%] pt-[140px] pb-[80px] flex flex-col !items-center">
 
       <div className="z-0 w-full flex justify-center items-center flex-col">
