@@ -74,6 +74,11 @@ function Meet() {
     },
   ];
 
+  const handleClickInstButton = () => {
+    console.log("clicked");
+    setShowInstruction(false);
+  }
+
   useEffect(() => {
     const isFirstVisit = localStorage.getItem("firstVisit");
 
@@ -98,7 +103,7 @@ function Meet() {
       <div>
       {showInstruction && (
           <div
-              className={`z-[40] w-[100vw] h-[100vh] pt-[250px] pb-[100px] fixed flex justify-center items-center flex-col bg-black/80 backdrop-blur-[10px] overflow-y-scroll`}
+              className={`z-[40] w-[100vw] h-[100vh] pt-[280px] pb-[100px] fixed flex justify-center items-center flex-col bg-black/80 backdrop-blur-[10px] overflow-y-scroll`}
           >
             <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
               Инструкция
@@ -126,16 +131,17 @@ function Meet() {
                   </div>
               ))}
             </div>
+            <div className="mt-[20px] mb-2 z-[9999]">
             <Button
-                className={"mt-[20px] mb-2 "}
-                onClick={() => {setShowInstruction(false)}}
+                onclick={() => setShowInstruction(false)}
             >
               Понятно
             </Button>
+            </div>
           </div>
       )}
       <div className="relative h-[auto]">
-    <div className="w-[100%] pt-[70px] pb-[80px] flex flex-col !items-center">
+    <div className="w-[100%] pt-[100px] pb-[80px] flex flex-col !items-center">
 
       <div className="z-0 w-full flex justify-center items-center flex-col">
         <div className="w-[343px] flex flex-row ">
