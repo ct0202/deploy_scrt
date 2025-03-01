@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {Button} from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +8,17 @@ function Step1({ setStep }) {
   const [selectedTargetGender, setSelectedTargetGender] = useState(null);
   const navigate = useNavigate();
 
+    const [formData, setFormData] = useState(() => {
+        // Загружаем данные из localStorage при монтировании
+        return JSON.parse(localStorage.getItem("step1Data")) || {
+            name: "",
+            gender: null,
+            targetGender: null,
+            birthDate: "",
+            country: "",
+            city: "",
+        };
+    });
 
   const genders = [
     { id: "male", label: "Мужчина", emoji: "👱🏻‍♂️" },
@@ -31,6 +42,17 @@ function Step1({ setStep }) {
         "Китай"
     ];
 
+    useEffect(() => {
+        localStorage.setItem("step1Data", JSON.stringify(formData));
+    }, [formData]);
+
+    const handleChange = (e) => {
+        setFormData((prev) => ({
+            ...prev,
+            [e.target.name]: e.target.value,
+        }));
+    };
+
   return (
       <div className="flex flex-col justify-start items-start w-[343px]">
           <h1 className="font-raleway font-semibold mt-6 text-white text-[20px]">
@@ -38,8 +60,11 @@ function Step1({ setStep }) {
           </h1>
           <input
               type="text"
+              name="name"
               placeholder="Ваше имя"
               className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
+              value={formData.name}
+              onChange={handleChange}
           />
           <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
               Ваш пол
@@ -48,10 +73,12 @@ function Step1({ setStep }) {
               {genders.map((gender) => (
                   <div
                       key={gender.id}
-                      onClick={() => setSelectedGender(gender.id)}
+                      onClick={() =>
+                          setFormData((prev) => ({...prev, gender: gender.id}))
+                      }
                       className={`w-[145px] h-[48px] rounded-[400px] flex justify-center items-center text-[18px] text-white gap-[8px] cursor-pointer transition-all 
             ${
-                          selectedGender === gender.id
+                          formData.gender === gender.id
                               ? "bg-[#043939] border-[1.5px] border-[#a1f69e]"
                               : "bg-[#022424] border border-transparent"
                       }`}
@@ -61,6 +88,7 @@ function Step1({ setStep }) {
                   </div>
               ))}
           </div>
+
           <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
               Кого вам показывать?
           </h1>
@@ -68,10 +96,12 @@ function Step1({ setStep }) {
               {targetGenders.map((gender) => (
                   <div
                       key={gender.id}
-                      onClick={() => setSelectedTargetGender(gender.id)}
+                      onClick={() =>
+                          setFormData((prev) => ({...prev, targetGender: gender.id}))
+                      }
                       className={`w-[145px] h-[48px] rounded-[400px] flex justify-center items-center text-[18px] text-white gap-[8px] cursor-pointer transition-all 
             ${
-                          selectedTargetGender === gender.id
+                          formData.targetGender === gender.id
                               ? "bg-[#043939] border-[1.5px] border-[#a1f69e]"
                               : "bg-[#022424] border border-transparent"
                       }`}
@@ -81,18 +111,25 @@ function Step1({ setStep }) {
                   </div>
               ))}
           </div>
+
+
           <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
               Ваша дата рождения?
           </h1>
           <input
               type="date"
+              name="birthDate"
               placeholder="Выбрать дату"
+              value={formData.birthDate}
+              onChange={handleChange}
               className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 text-white outline-none focus:border-[#a1f69e]"
           />
           <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
               Ваша страна
           </h1>
           <select
+              name="country"
+              onChange={handleChange}
               id="countrySelect"
               className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
           >
@@ -108,7 +145,10 @@ function Step1({ setStep }) {
           </h1>
           <input
               type="text"
+              name="city"
               placeholder="Введите название"
+              value={formData.city}
+              onChange={handleChange}
               className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
           />
           <Button

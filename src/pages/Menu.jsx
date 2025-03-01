@@ -45,24 +45,23 @@ function Menu() {
           Выход монеты планируется на криптобирже, о которой вы узнаете позже.
         </div>
         <div className="flex justify-start items-start flex-wrap font-raleway text-[16px] text-white mt-4">
-          <img src="/icons/myta-coin.svg" alt="" />
-          <span className="font-bold ml-2 whitespace-nowrap">
+          <p><img src="/icons/myta-coin.svg" alt="" className="inline"/><span
+              className="font-bold ml-2 whitespace-nowrap inline">
             Очки активности —{" "}
           </span>
-          пользователи получают очки активности участвуя в жизни приложения,
-          начиная с регистрации и приглашения друзей до обмена сообщениями.
+            пользователи получают очки активности участвуя в жизни приложения,
+          начиная с регистрации и приглашения друзей до обмена сообщениями.</p>
         </div>
         <div className="flex justify-start items-start flex-wrap font-raleway text-[16px] text-white mt-1">
-          <img src="/icons/myta-coin.svg" alt="" />
+          <p>
+          <img src="/icons/myta-coin.svg" alt="" className="inline"/>
           <span className="font-bold ml-2 whitespace-nowrap">
-            Очки активности
-          </span>
-          можно будет конвертировать в{" "}
-          <div className="flex">
-            <img src="/icons/myta-coin2.svg" alt="" />
+            Очки активности </span>
+           можно будет конвертировать в{" "}
+            <img src="/icons/myta-coin2.svg" alt="" className="inline"/>
             <span className="font-bold ml-2  text-[16px]">MYTA COIN</span>
             {"  "}после официального выхода.
-          </div>
+          </p>
         </div>
 
         <div className="flex justify-start items-center flex-wrap font-raleway text-[16px] text-white mt-4">

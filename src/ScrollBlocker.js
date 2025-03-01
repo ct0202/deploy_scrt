@@ -8,7 +8,6 @@ const ScrollBlocker = () => {
         const blockedRoutes = [
             "/",
             "/calculatePage",
-            "/meet",
             "/chat",
             "/watchStreams",
             "/match",

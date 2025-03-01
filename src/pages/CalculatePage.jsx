@@ -94,7 +94,7 @@ function CalculatePage() {
         <ProgressBar 
           current={step} 
           max={6} 
-          onArrowClick={step >= 2 ? () => setStep((prev) => prev - 1) : () => {}} 
+          onArrowClick={step >= 2 ? () => setStep((prev) => prev - 1) : () => {navigate(-1)}}
         />
       </div>
 

@@ -10,7 +10,6 @@ export const HomePage = () => {
 
   const handlePolicyClick = () => {
     setShowPolicy(true);
-    console.log("1222222222223")
   };
 
   const closePolicy = () => {
@@ -52,7 +51,7 @@ export const HomePage = () => {
 
         <div className="absolute bottom-4 pointer-events-none">
 
-        <Button onclick={() => navigate("/menu")} >
+        <Button onclick={() => navigate("/menu")} className="pointer-events-auto">
           Начать
         </Button>
 

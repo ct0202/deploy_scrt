@@ -95,45 +95,48 @@ function Meet() {
   }, []);
 
   return (
-    <div className="w-[100%] pt-[70px] pb-[80px] flex flex-col !items-center overflow-x-hidden">
+      <div>
       {showInstruction && (
-        <div
-          className={`z-40 w-[100vw] h-[auto] absolute flex justify-center items-center flex-col bg-black/80 backdrop-blur-[10px]`}
-        >
-          <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
-            Инструкция
-          </h1>
-          <h1 className="font-raleway font-light mt-2 text-white text-center text-[18px]">
-            Основные функции и жесты
-          </h1>
-          <div className="grid gric-cols-1 justify-center flex-wrap items-center gap-[16px] mt-[16px]">
-            {instructions.map((ins) => (
-              <div
-                key={ins.id}
-                className={`w-[343px] h-[120  px] gap-[12px] border-b border-[#6D6D6D] flex text-white cursor-pointer`}
-              >
-                <div className="h-[89px] flex justify-center items-center">
-                  <img src={ins.svg} className="w-[40px] h-[40px]" />
-                </div>
-                <div className={`flex flex-col gap-[4px]`}>
+          <div
+              className={`z-[40] w-[100vw] h-[100vh] pt-[250px] pb-[100px] fixed flex justify-center items-center flex-col bg-black/80 backdrop-blur-[10px] overflow-y-scroll`}
+          >
+            <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
+              Инструкция
+            </h1>
+            <h1 className="font-raleway font-light mt-2 text-white text-center text-[18px]">
+              Основные функции и жесты
+            </h1>
+            <div className="grid grid-cols-1 justify-center flex-wrap items-center gap-[16px] mt-[16px]">
+              {instructions.map((ins) => (
+                  <div
+                      key={ins.id}
+                      className={`w-[343px] h-[100px] gap-[12px] border-b border-[#6D6D6D] flex text-white`}
+                  >
+                    <div className="h-[89px] flex justify-center items-center">
+                      <img src={ins.svg} className="w-[40px] h-[40px]" />
+                    </div>
+                    <div className={`flex flex-col gap-[4px]`}>
                   <span className={`w-[270px] text-[18px] font-semibold`}>
                     {ins.title}
                   </span>
-                  <span className={`w-[268px] text-[14px] font-light`}>
+                      <span className={`w-[268px] text-[14px] font-light`}>
                     {ins.description}
                   </span>
-                </div>
-              </div>
-            ))}
+                    </div>
+                  </div>
+              ))}
+            </div>
+            <Button
+                className={"mt-[20px] mb-2"}
+                onClick={(e) => {e.stopPropagation(); setShowInstruction(false)}}
+            >
+              Понятно
+            </Button>
           </div>
-          <Button
-            className={"mt-[20px] mb-6"}
-            onclick={() => setShowInstruction(false)}
-          >
-            Понятно
-          </Button>
-        </div>
       )}
+      <div className="relative h-[auto]">
+    <div className="w-[100%] pt-[70px] pb-[80px] flex flex-col !items-center">
+
       <div className="z-0 w-full flex justify-center items-center flex-col">
         <div className="w-[343px] flex flex-row ">
           <img
@@ -150,6 +153,7 @@ function Meet() {
             <img
               src="/icons/Button-instruction.svg"
               className="mt-3 ml-3 w-[44px] h-[44px]"
+              onClick={()=> {setShowInstruction(true)}}
             />
 
             <img
@@ -399,7 +403,7 @@ function Meet() {
       </div>
       {showToast && (
         <div
-          className={`z-[150] w-[343px] fixed font-light mt-2  text-white flex justify-center items-center flex-wrap font-raleway gap-[5px] text-[16px] px-4 py-2 rounded-lg bg-[#043939] border-[1.5px] border-[#a1f69e] ${animateClass}`}
+          className={`z-[30] w-[343px] fixed font-light mt-2  text-white flex justify-center items-center flex-wrap font-raleway gap-[5px] text-[16px] px-4 py-2 rounded-lg bg-[#043939] border-[1.5px] border-[#a1f69e] ${animateClass}`}
         >
           Вам начислено: <span className="text-[18px] font-medium">+100</span>{" "}
           <img src="/icons/myta-coin.svg" alt="" />
@@ -420,7 +424,7 @@ function Meet() {
       )}
       {presentsShop && (
           <div
-              className="fixed inset-0  bg-opacity-50 flex justify-center items-end z-20 bg-black/80 backdrop-blur-[10px]"
+              className="fixed inset-0 bg-opacity-50 flex justify-center items-end z-20 bg-black/80 backdrop-blur-[10px]"
               onClick={() => {
                 setPresentsShop(false)
               }}
@@ -435,6 +439,8 @@ function Meet() {
       )}
 
     </div>
+      </div>
+      </div>
   );
 }
 
