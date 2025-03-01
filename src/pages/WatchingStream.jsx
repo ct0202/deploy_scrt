@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import PresentsShop from "../components/shared/PresentsShop";
 
@@ -6,13 +6,31 @@ function WatchingStream() {
     const navigate = useNavigate();
 
     const [hint, setHint] = React.useState(true);
-    const [presentsShop, setPresentShop] = React.useState(false);
+    const [presentsShop, setPresentsShop] = React.useState(false);
     const [comments, setComments] = React.useState([
         {id: 1, avatar_src: '/mock/stream_chat_user_avatar.png', nickname: 'love_life', text: 'Как часто вы пользуетесь картой Альфа Банка?'},
         {id: 1, avatar_src: '/mock/stream_chat_user_avatar.png', nickname: 'love_life', text: 'Привет, как дела?✌️✌️✌️'},
         {id: 1, avatar_src: '/mock/stream_chat_user_avatar.png', nickname: 'love_life', text: 'Давай знакомиться, привет!!!'},
         {id: 1, avatar_src: '/mock/stream_chat_user_avatar.png', nickname: 'love_life', text: '', present: '/icons/presents/1.svg'}
     ]);
+
+
+    const [swipeStart, setSwipeStart] = useState(0);
+    const presentsRef = useRef(null);
+
+    const handleTouchStart = (e) => {
+        setSwipeStart(e.touches[0].clientY);
+    };
+
+    const handleTouchMove = (e) => {
+        const swipeEnd = e.touches[0].clientY;
+        const diff = swipeEnd - swipeStart;
+
+        // Если свайпнули вниз на 100px — закрываем
+        if (diff > 100) {
+            setPresentsShop(false);
+        }
+    };
 
   return (
     <div className="flex flex-col justify-center items-center mt-[70px] w-[100%] h-[100vh] relative overflow-hidden overflow-x-hidden">
@@ -41,7 +59,7 @@ function WatchingStream() {
                 <div className="rounded-[400px] bg-[#FFFFFF33] flex items-center w-[269px] h-[64px] mt-4">
                     <input placeholder="Оставьте комментарий" className="pl-4 text-[18px] bg-transparent h-[64px] w-[269px] rounded-[400px] text-[#FFFFFF] font-normal"/>
                 </div>
-                <div className="ml-4 rounded-[50%] bg-[#FFFFFF33] flex items-center justify-center w-[64px] h-[64px] mt-4" onClick={()=>{setPresentShop(true)}}>
+                <div className="ml-4 rounded-[50%] bg-[#FFFFFF33] flex items-center justify-center w-[64px] h-[64px] mt-4" onClick={()=>{setPresentsShop(true)}}>
                     <img src="/icons/present.svg" alt="" className="w-[24px] h-[24px]"/>
                 </div>
             </div>
@@ -60,12 +78,15 @@ function WatchingStream() {
             <div
                 className="fixed inset-0 bg-opacity-50 flex justify-center items-end z-20 bg-black/80 backdrop-blur-[10px]"
                 onClick={() => {
-                    setPresentShop(false)
+                    setPresentsShop(false)
                 }}
             >
                 <div
                     className="w-full rounded-t-2xl transform transition-transform duration-300 translate-y-0"
                     onClick={(e) => e.stopPropagation()}
+                    ref={presentsRef}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
                 >
                     <PresentsShop />
                 </div>
