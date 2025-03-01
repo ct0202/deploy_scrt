@@ -17,11 +17,11 @@ import ScrollBlocker from "./ScrollBlocker";
 
 function App() {
   useEffect(() => {
-    // const tg = window.Telegram.WebApp;
-    // tg.requestFullscreen();
-    // window.Telegram.WebApp.ready();
-    // window.Telegram.WebApp.expand();
-    // alert("update 29");
+    const tg = window.Telegram.WebApp;
+    tg.requestFullscreen();
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+    alert("update 30");
   }, []);
 
   return (
