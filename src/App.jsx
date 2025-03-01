@@ -21,7 +21,7 @@ function App() {
     tg.requestFullscreen();
     window.Telegram.WebApp.ready();
     window.Telegram.WebApp.expand();
-    alert("update 26");
+    alert("update 28");
   }, []);
 
   return (

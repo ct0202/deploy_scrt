@@ -11,6 +11,9 @@ function Filters() {
     const [dayLimit, setDayLimit] = useState(true);
     const navigate = useNavigate();
 
+    const [rangeAge, setRangeAge] = useState({ min: 18, max: 80 });
+    const [rangeDist, setRangeDist] = useState({ min: 0, max: 100 });
+
     const addInterest = (optionId) => {
         setSelectedInterests((prev) => prev.includes(optionId) ? prev.filter((id) => id !== optionId) : [...prev, optionId]);
     }
@@ -101,7 +104,7 @@ function Filters() {
                     Возраст:
                 </h1>
                 <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
-                    18-80 лет
+                    {rangeAge.min}-{rangeAge.max} лет
                 </h1>
             </div>
 
@@ -109,7 +112,7 @@ function Filters() {
                 <DoubleRangeSlider
                     min={18}
                     max={80}
-                    onChange={({ min, max }) => console.log(`min = ${min}, max = ${max}`)}
+                    onChange={({ min, max }) => setRangeAge({ min, max })}
                 />
             </div>
 
@@ -118,7 +121,7 @@ function Filters() {
                     Расстояние:
                 </h1>
                 <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
-                    0-100+км
+                    {rangeDist.min}-{rangeDist.max}{rangeDist.max === 100 ? '+' : '' }км
                 </h1>
             </div>
 
@@ -126,7 +129,7 @@ function Filters() {
                 <DoubleRangeSlider
                     min={0}
                     max={100}
-                    onChange={({ min, max }) => console.log(`min = ${min}, max = ${max}`)}
+                    onChange={({ min, max }) => setRangeDist({ min, max })}
                 />
             </div>
 
