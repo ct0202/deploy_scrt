@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
@@ -26,6 +26,23 @@ function Chat() {
     const [presentsShop, setPresentsShop] = useState(false);
 
     const navigate = useNavigate();
+
+    const [swipeStart, setSwipeStart] = useState(0);
+    const presentsRef = useRef(null);
+
+    const handleTouchStart = (e) => {
+        setSwipeStart(e.touches[0].clientY);
+    };
+
+    const handleTouchMove = (e) => {
+        const swipeEnd = e.touches[0].clientY;
+        const diff = swipeEnd - swipeStart;
+
+        // Если свайпнули вниз на 100px — закрываем
+        if (diff > 100) {
+            setPresentsShop(false);
+        }
+    };
 
     const instructions = [
         {
@@ -172,6 +189,7 @@ function Chat() {
                                     <img
                                         src="/icons/photo_overlay_button_5.svg"
                                         className=" w-[64px] h-[64px]"
+                                        onClick={() => {setPresentsShop(true)}}
                                     />
                                 </div>
                                 <div
@@ -296,14 +314,17 @@ function Chat() {
             )}
             {presentsShop && (
                 <div
-                    className="fixed inset-0  bg-opacity-50 flex justify-center items-end z-20"
+                    className="fixed inset-0 bg-opacity-50 flex justify-center items-end z-20 bg-black/80 backdrop-blur-[10px]"
                     onClick={() => {
-                        setDayLimit(false)
+                        setPresentsShop(false)
                     }}
                 >
                     <div
                         className="w-full rounded-t-2xl transform transition-transform duration-300 translate-y-0"
                         onClick={(e) => e.stopPropagation()}
+                        ref={presentsRef}
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
                     >
                         <PresentsShop />
                     </div>
