@@ -134,29 +134,37 @@ function Filters() {
             </div>
 
 
-
+            <div className="flex flex-row justify-between items-center w-full">
             <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
                 Населенный пункт:
             </h1>
+            <img src="/icons/premium.svg" className="mt-[32px] w-[121px]"/>
+            </div>
+
             <input
                 type="text"
                 placeholder="Введите название"
-                className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
+                className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] opacity-40 text-white outline-none focus:border-[#a1f69e]"
             />
 
 
 
-            <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
-                Статус:
-            </h1>
-            <div className="grid gric-cols-1 justify-start flex-wrap items-center gap-[16px] mt-[16px]">
+            <div className="flex flex-row justify-between items-center w-full">
+                <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
+                    Статус:
+                </h1>
+                <img src="/icons/premium.svg" className="mt-[32px] w-[121px]"/>
+            </div>
+
+            <div className="grid gric-cols-1 justify-start flex-wrap items-center gap-[16px] mt-[16px] opacity-40">
                 {options.map((option) => (
                     <div
                         key={option.id}
                         onClick={() => setSelectedOption(option.id)}
-                        className={`w-[auto] p-3 h-[48px] rounded-[400px] flex items-center  text-white cursor-pointer transition-all 
+                        className={`w-[auto] p-3 h-[48px] rounded-[400px] flex items-center  text-[#FFFFFF] cursor-pointer transition-all 
                         ${
-                            selectedOption === option.id
+                            // selectedOption === option.id
+                            selectedOption === 1000
                                 ? "bg-[#043939] border-[1.5px] border-[#a1f69e]"
                                 : "bg-[#022424] border-[1px] border-[#233636]"
                         }`}
