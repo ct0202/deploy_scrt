@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
@@ -14,11 +14,8 @@ import PresentsShop from "../components/shared/PresentsShop";
 function Meet() {
   const [showToast, setShowToast] = useState(false);
   const [showInstruction, setShowInstruction] = useState(false);
-
   const [animateClass, setAnimateClass] = useState("animate-slideDown");
-
   const [menuAction, setMenuAction] = useState(1);
-
   const [dayLimit, setDayLimit] = useState(false);
   const [presentsShop, setPresentsShop] = useState(false);
 
@@ -74,11 +71,6 @@ function Meet() {
     },
   ];
 
-  const handleClickInstButton = () => {
-    console.log("clicked");
-    setShowInstruction(false);
-  }
-
   useEffect(() => {
     const isFirstVisit = localStorage.getItem("firstVisit");
 
@@ -99,11 +91,29 @@ function Meet() {
     }
   }, []);
 
+  const [swipeStart, setSwipeStart] = useState(0);
+  const presentsRef = useRef(null);
+
+  const handleTouchStart = (e) => {
+    setSwipeStart(e.touches[0].clientY);
+  };
+
+  const handleTouchMove = (e) => {
+    const swipeEnd = e.touches[0].clientY;
+    const diff = swipeEnd - swipeStart;
+
+    // Если свайпнули вниз на 100px — закрываем
+    if (diff > 100) {
+      setPresentsShop(false);
+    }
+  };
+
+
   return (
       <div>
       {showInstruction && (
           <div
-              className={`z-[40] w-[100vw] h-[100vh] pt-[280px] pb-[100px] fixed flex justify-center items-center flex-col bg-black/80 backdrop-blur-[10px] overflow-y-scroll`}
+              className={`z-[40] w-[100vw] h-[100vh] pt-[400px] pb-[100px] fixed flex justify-center items-center flex-col bg-black/80 backdrop-blur-[10px] overflow-y-scroll`}
           >
             <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
               Инструкция
@@ -115,7 +125,7 @@ function Meet() {
               {instructions.map((ins) => (
                   <div
                       key={ins.id}
-                      className={`w-[343px] h-[100px] gap-[12px] border-b border-[#6D6D6D] flex text-white`}
+                      className={`w-[343px] h-[120px] gap-[12px] border-b border-[#6D6D6D] flex text-white`}
                   >
                     <div className="h-[89px] flex justify-center items-center">
                       <img src={ins.svg} className="w-[40px] h-[40px]" />
@@ -438,6 +448,9 @@ function Meet() {
             <div
                 className="w-full rounded-t-2xl transform transition-transform duration-300 translate-y-0"
                 onClick={(e) => e.stopPropagation()}
+                ref={presentsRef}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
             >
               <PresentsShop />
             </div>

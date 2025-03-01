@@ -127,6 +127,7 @@ function Chat() {
                         <img
                             src="/icons/Button-instruction.svg"
                             className="mt-3 ml-3 w-[44px] h-[44px]"
+                            onClick={() => setShowInstruction(true)}
                         />
 
                         <img
@@ -186,7 +187,7 @@ function Chat() {
                         </div>
                     </div>
                         :
-                        <div className="w-[343px] h-[627px]
+                        <div className="w-[343px] h-[527px]
                             bg-[#043939] rounded-[16px]
                             flex items-center justify-center flex-col
                             ">

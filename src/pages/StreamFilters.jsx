@@ -27,13 +27,13 @@ function Filters() {
     return (
         <div className="w-[100%] h-[auto] pt-[100px] flex justify-center">
 
-            <div className="h-[auto] flex flex-col justify-start items-start w-[343px]">
+            <div className="h-[auto] flex flex-col justify-start items-start w-[343px] relative">
 
                 <div className="w-full flex justify-between items-center">
                     <div onClick={() => navigate("/Streams")}>
                         <img src="/icons/Button-back.svg" className="mt-3 w-[44px] h-[44px]"/>
                     </div>
-                    <div>
+                    <div onClick={() => {setSelectedInterests([]); setSelectedTargetGender(null)}}>
                         <p className="text-white mt-3">Сбросить</p>
                     </div>
                 </div>
@@ -84,12 +84,12 @@ function Filters() {
 
 
 
-                <Button
-                    className={"mt-[300px] mb-6"}
-                >
-                    Применить
-                </Button>
-
+                <div className={"fixed bottom-6"}>
+                    <Button
+                    >
+                        Применить
+                    </Button>
+                </div>
             </div>
         </div>
     );

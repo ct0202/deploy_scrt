@@ -34,30 +34,72 @@ function PresentsShop() {
                     Купленные подарки
                 </div>
             </div>
-            <div className="mt-6 flex justify-center items-center">
-            <div className="w-full grid gap-1.5 grid-cols-3">
+            {option === 1 ?
+                <div className="mt-6 flex justify-center items-center">
+                    <div className="w-full grid gap-1.5 grid-cols-3">
 
-                {
-                    presents.map((present) => (
-                        <div className={`relative w-[109px] h-[109px]`}>
-                            <div>
-                                <div className="absolute right-0 top-0 mr-1 mt-1 text-[11px] font-raleway flex flex-row items-center">+{present.bonus} <img src="/icons/myta-coin.svg" className="w-[11px] h-[11px]"/></div>
-                            </div>
-                            <div className={`flex justify-center items-center flex-col w-[109px] h-[109px] rounded-[13.42px] bg-[#FFFFFF1A]`}>
-                                <img src={`/icons/presents/${present.id}.svg`} className="w-[50px] h-[50px]" alt="present-icon"/>
-                                <p className={`font-raleway text-[11px] font-normal text-center ml-1 mr-1`}>{present.name}</p>
-                                <div className="absolute bottom-0 mb-0.2 text-[11px] flex flex-row items-center"><img src="/icons/coin.svg" className="w-[11px] h-[11px] mr-0.5"/>{present.price}
+                        {
+                            presents.map((present) => (
+                                <div className={`relative w-[109px] h-[109px]`}>
+                                    <div>
+                                        <div
+                                            className="absolute right-0 top-0 mr-1 mt-1 text-[11px] font-raleway flex flex-row items-center">+{present.bonus}
+                                            <img src="/icons/myta-coin.svg" className="w-[11px] h-[11px]"/></div>
+                                    </div>
+                                    <div
+                                        className={`flex justify-center items-center flex-col w-[109px] h-[109px] rounded-[13.42px] bg-[#FFFFFF1A]`}>
+                                        <img src={`/icons/presents/${present.id}.svg`} className="w-[50px] h-[50px]"
+                                             alt="present-icon"/>
+                                        <p className={`font-raleway text-[11px] font-normal text-center ml-1 mr-1`}>{present.name}</p>
+                                        <div
+                                            className="absolute bottom-0 mb-0.2 text-[11px] flex flex-row items-center">
+                                            <img src="/icons/coin.svg"
+                                                 className="w-[11px] h-[11px] mr-0.5"/>{present.price}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    ))
-                }
+                            ))
+                        }
 
-            </div>
-            </div>
+                    </div>
+                </div>
+
+                :
+
+                <div className="mt-6 flex justify-center items-center">
+                    <div className="w-full grid gap-1.5 grid-cols-3">
+
+                        {
+                            presents.map((present) => (
+                                <div className={`relative w-[109px] h-[109px]`}>
+                                    <div>
+                                        <div
+                                            className="absolute right-0 top-0 mr-1 mt-1 text-[11px] font-raleway flex flex-row items-center">+{present.bonus}
+                                            <img src="/icons/myta-coin.svg" className="w-[11px] h-[11px]"/></div>
+                                    </div>
+                                    <div
+                                        className={`flex justify-center items-center flex-col w-[109px] h-[109px] rounded-[13.42px] bg-[#FFFFFF1A]`}>
+                                        <img src={`/icons/presents/${present.id}.svg`} className="w-[50px] h-[50px]"
+                                             alt="present-icon"/>
+                                        <p className={`font-raleway text-[11px] font-normal text-center ml-1 mr-1`}>{present.name}</p>
+                                        <div
+                                            className="absolute bottom-0 mb-0.2 text-[11px] flex flex-row items-center">
+                                            <img src="/icons/coin.svg"
+                                                 className="w-[11px] h-[11px] mr-0.5"/>{present.price}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        }
+
+                    </div>
+                </div>
+            }
             <div className="bg-[#010D0D] w-[100%] h-[44px] font-raleway flex flex-row justify-between p-1.5">
                 <div className=" flex flex-row justify-center items-center ">
-                    <p className="text-[#FFFFFF] text-[18px] ml-1 flex flex-row">Счет:  <span className="text-[white] ml-1">100</span></p><img src="/icons/coin.svg" className="w-[20px] h-[20px] ml-1"/>
+                    <p className="text-[#FFFFFF] text-[18px] ml-1 flex flex-row">Счет: <span
+                        className="text-[white] ml-1">100</span></p><img src="/icons/coin.svg"
+                                                                         className="w-[20px] h-[20px] ml-1"/>
                 </div>
                 <div className="text-[#A1F69E] text-[18px]">
                     Пополнить счет >
