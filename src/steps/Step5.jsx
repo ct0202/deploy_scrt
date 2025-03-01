@@ -52,12 +52,12 @@ function Step4({ setStep }) {
             <h1 className="font-raleway font-light mt-2 text-white text-center text-[16px]">
                 Выберите не менее 5 интересов, чтобы поделиться ими с другими пользователями
             </h1>
-            <div className="flex flex-wrap gap-[16px] mt-[16px]">
+            <div className="flex flex-wrap gap-[8px] mt-[16px]">
                 {options.map((option) => (
                     <div
                         key={option.id}
                         onClick={() => addOption(option.id)}
-                        className={`w-auto p-3 h-[48px] rounded-[400px] flex justify-center items-center text-[18px] font-light text-white gap-[8px] cursor-pointer transition-all
+                        className={`w-auto p-3 h-[48px] rounded-[400px] flex justify-center items-center text-[18px] font-light text-white gap-[4   px] cursor-pointer transition-all
               ${
                             selectedOptions.includes(option.id)
                                 ? "bg-[#043939] border-[1.5px] border-[#a1f69e]"
@@ -69,7 +69,7 @@ function Step4({ setStep }) {
                 ))}
             </div>
             <Button className={"mt-[170px] mb-6"} onclick={saveDataAndNext}>
-                Далее
+                Начать знакомства
             </Button>
         </div>
     );

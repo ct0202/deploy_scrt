@@ -47,17 +47,17 @@ function Chat() {
     const instructions = [
         {
             id: 1,
+            svg: "/icons/instructions_timer_25sec.svg",
+            title: "25 секунд",
+            description:
+                "У вас есть 25 секунд, чтобы определить, нравится ли вам человек или нет",
+        },
+        {
+            id: 2,
             svg: "/icons/instr1.svg",
             title: "Лайк",
             description:
                 "Если вам понравился человек и вы хотели бы продолжить общение в переписке – поставтье лайк",
-        },
-        {
-            id: 2,
-            svg: "/icons/instr2.svg",
-            title: "Супер-Лайк",
-            description:
-                "Супер-лайк отобразится в уведомлениях человека, который вам понравился, и не останется незамеченным",
         },
         {
             id: 3,
@@ -95,45 +95,46 @@ function Chat() {
     }, []);
 
     return (
-        <div className="w-[100%] !h-[100vh] pt-[100px] flex flex-col !items-center overflow-x-hidden !overflow-hidden">
-            {showInstruction && (
-                <div
-                    className={`z-40 w-[100vw] h-[100%] absolute flex justify-center items-center flex-col bg-black/80 backdrop-blur-[10px]`}
-                >
-                    <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
-                        Инструкция
-                    </h1>
-                    <h1 className="font-raleway font-light mt-2 text-white text-center text-[18px]">
-                        Основные функции и жесты
-                    </h1>
-                    <div className="grid gric-cols-1 justify-center flex-wrap items-center gap-[16px] mt-[16px]">
-                        {instructions.map((ins) => (
-                            <div
-                                key={ins.id}
-                                className={`w-[343px] h-[120  px] gap-[12px] border-b border-[#6D6D6D] flex text-white cursor-pointer`}
-                            >
-                                <div className="h-[89px] flex justify-center items-center">
-                                    <img src={ins.svg} className="w-[40px] h-[40px]" />
-                                </div>
-                                <div className={`flex flex-col gap-[4px]`}>
+        <>
+        {showInstruction && (
+            <div
+                className={`z-40 w-[100vw] h-[100%] absolute flex justify-center items-center flex-col bg-black/80 backdrop-blur-[10px]`}
+            >
+                <h1 className="font-raleway font-bold mt-1 text-white text-[26px]">
+                    Инструкция
+                </h1>
+                <h1 className="font-raleway font-light mt-2 text-white text-center text-[18px]">
+                    Основные функции и жесты
+                </h1>
+                <div className="grid gric-cols-1 justify-center flex-wrap items-center gap-[16px] mt-[16px]">
+                    {instructions.map((ins) => (
+                        <div
+                            key={ins.id}
+                            className={`w-[343px] h-[120  px] gap-[12px] border-b border-[#6D6D6D] flex text-white cursor-pointer`}
+                        >
+                            <div className="h-[89px] flex justify-center items-center">
+                                <img src={ins.svg} className="w-[40px] h-[40px]" />
+                            </div>
+                            <div className={`flex flex-col gap-[4px]`}>
                                       <span className={`w-[270px] text-[18px] font-semibold`}>
                                         {ins.title}
                                       </span>
-                                    <span className={`w-[268px] text-[14px] font-light`}>
+                                <span className={`w-[268px] text-[14px] font-light`}>
                                         {ins.description}
                                     </span>
-                                </div>
                             </div>
-                        ))}
-                    </div>
-                    <Button
-                        className={"mt-[20px] mb-6"}
-                        onclick={() => setShowInstruction(false)}
-                    >
-                        Понятно
-                    </Button>
+                        </div>
+                    ))}
                 </div>
-            )}
+                <Button
+                    className={"mt-[20px] mb-6"}
+                    onclick={() => setShowInstruction(false)}
+                >
+                    Понятно
+                </Button>
+            </div>
+        )}
+        <div className="w-[100%] !h-[100vh] pt-[100px] flex flex-col !items-center overflow-x-hidden !overflow-hidden">
             <div className="z-0 w-full flex justify-center items-center flex-col">
                 <div className="w-[343px] flex flex-row ">
                     <img
@@ -332,6 +333,7 @@ function Chat() {
             )}
 
         </div>
+        </>
     );
 }
 

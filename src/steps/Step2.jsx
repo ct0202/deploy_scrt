@@ -45,9 +45,11 @@ function Step2({ setStep }) {
       <h1 className="font-raleway font-light mt-3 text-white text-[16px]">
         Перетащите, чтобы изменить порядок
       </h1>
-      <Button className={"mt-[130px] mb-6"} onclick={() => setStep(3)}>
+        <div className="fixed bottom-2">
+      <Button onclick={() => setStep(3)}>
         Далее
       </Button>
+        </div>
     </div>
   );
 }

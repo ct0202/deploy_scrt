@@ -113,7 +113,7 @@ function Meet() {
       <div>
       {showInstruction && (
           <div
-              className={`z-[40] w-[100vw] h-[100vh] pt-[400px] pb-[100px] fixed flex justify-center items-center flex-col bg-black/80 backdrop-blur-[10px] overflow-y-scroll`}
+              className={`z-[40] w-[100vw] h-[100vh] pt-[450px] pb-[100px] fixed flex justify-center items-center flex-col bg-black/80 backdrop-blur-[10px] overflow-y-scroll`}
           >
             <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
               Инструкция
@@ -151,7 +151,7 @@ function Meet() {
           </div>
       )}
       <div className="relative h-[100%]">
-    <div className="w-[100%] pt-[140px] pb-[80px] flex flex-col !items-center">
+    <div className="w-[100%] pt-[100px] pb-[80px] flex flex-col !items-center">
 
       <div className="z-0 w-full flex justify-center items-center flex-col">
         <div className="w-[343px] flex flex-row ">
@@ -349,7 +349,7 @@ function Meet() {
           </div>
         </div>
         <div className="fixed bottom-0 z-[6] w-[100%] flex items-center justify-center">
-          <div className="w-[338px] h-[70px] mb-4 bg-[#FFFFFF1A] flex flex-row justify-evenly items-center rounded-[400px]">
+          <div className="w-[338px] h-[70px] mb-4 bg-[#022424] flex flex-row justify-evenly items-center rounded-[400px]">
             <div
               className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center ${
                 menuAction === 1 ? "bg-[#FFFFFF1A]" : "bg-transparent"
