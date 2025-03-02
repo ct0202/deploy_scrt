@@ -25,20 +25,35 @@ function Step2({ setStep }) {
         </div>
         <div
           id="photo2"
-          className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] flex justify-center items-center cursor-pointer`}
+          className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] relative flex justify-center items-center cursor-pointer`}
         >
+            <span
+                className="absolute top-1 right-1 text-white font-raleway text-[15px] font-medium"
+            >
+                +25 <img src="/icons/myta-coin.svg" alt="" className="inline w-[16px]"/>
+            </span>
           <img src="/icons/camera.svg" />
         </div>
         <div
           id="photo3"
-          className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] flex justify-center items-center cursor-pointer`}
+          className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] relative flex justify-center items-center cursor-pointer`}
         >
+            <span
+                className="absolute top-1 right-1 text-white font-raleway text-[15px] font-medium"
+            >
+                +25 <img src="/icons/myta-coin.svg" alt="" className="inline w-[16px]"/>
+            </span>
           <img src="/icons/camera.svg" />
         </div>
         <div
           id="photo4"
-          className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] flex justify-center items-center cursor-pointer`}
+          className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] relative flex justify-center items-center cursor-pointer`}
         >
+            <span
+                className="absolute top-1 right-1 text-white font-raleway text-[15px] font-medium"
+            >
+                +25 <img src="/icons/myta-coin.svg" alt="" className="inline w-[16px]"/>
+            </span>
           <img src="/icons/camera.svg" />
         </div>
       </div>

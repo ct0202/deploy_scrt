@@ -92,22 +92,30 @@ function Meet() {
   }, []);
 
   const [swipeStart, setSwipeStart] = useState(0);
+  const [swipeDiff, setSwipeDiff] = useState(0);
   const presentsRef = useRef(null);
 
   const handleTouchStart = (e) => {
     setSwipeStart(e.touches[0].clientY);
+    setSwipeDiff(0); // Сбрасываем разницу
   };
 
   const handleTouchMove = (e) => {
     const swipeEnd = e.touches[0].clientY;
     const diff = swipeEnd - swipeStart;
 
-    // Если свайпнули вниз на 100px — закрываем
-    if (diff > 100) {
-      setPresentsShop(false);
+    if (diff > 0) {
+      setSwipeDiff(diff); // Обновляем сдвиг только вниз
     }
   };
 
+  const handleTouchEnd = () => {
+    if (swipeDiff > 100) {
+      setPresentsShop(false);
+    } else {
+      setSwipeDiff(0); // Возвращаем обратно, если свайп не был достаточно длинным
+    }
+  };
 
   return (
       <div>
@@ -451,6 +459,7 @@ function Meet() {
                 ref={presentsRef}
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
             >
               <PresentsShop />
             </div>
