@@ -107,6 +107,9 @@ function Meet() {
     if (diff > 0) {
       setSwipeDiff(diff); // Обновляем сдвиг только вниз
     }
+
+    e.stopPropagation();
+    e.preventDefault();
   };
 
   const handleTouchEnd = () => {
@@ -449,12 +452,18 @@ function Meet() {
       {presentsShop && (
           <div
               className="fixed inset-0 bg-opacity-50 flex justify-center items-end z-20 bg-black/80 backdrop-blur-[10px]"
+              style={{ pointerEvents: "none" }}
               onClick={() => {
                 setPresentsShop(false)
               }}
           >
             <div
                 className="w-full rounded-t-2xl transform transition-transform duration-300 translate-y-0"
+                style={{
+                  transform: `translateY(${swipeDiff}px)`,
+                  transition: swipeDiff ? "none" : "transform 0.3s ease-out",
+                  pointerEvents: "auto", // Включаем взаимодействие только с контентом
+                }}
                 onClick={(e) => e.stopPropagation()}
                 ref={presentsRef}
                 onTouchStart={handleTouchStart}
@@ -463,7 +472,7 @@ function Meet() {
             >
               {/* Хендл для удобного захвата */}
               <div
-                  className="w-16 h-2 bg-gray-400 rounded-full mx-auto my-2 cursor-pointer"
+                  className="w-16 h-2 bg-gray-400 rounded-full mx-auto my-3 cursor-pointer"
                   onTouchStart={handleTouchStart}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={handleTouchEnd}
