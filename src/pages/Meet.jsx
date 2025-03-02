@@ -461,6 +461,13 @@ function Meet() {
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
             >
+              {/* Хендл для удобного захвата */}
+              <div
+                  className="w-16 h-2 bg-gray-400 rounded-full mx-auto my-2 cursor-pointer"
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+              ></div>
               <PresentsShop />
             </div>
           </div>
