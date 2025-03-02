@@ -134,7 +134,7 @@ function Chat() {
                 </Button>
             </div>
         )}
-        <div className="w-[100%] !h-[100vh] pt-[100px] flex flex-col !items-center overflow-x-hidden !overflow-hidden">
+        <div className="w-[100%] h-[100%] pt-[100px] flex flex-col !items-center overflow-x-hidden">
             <div className="z-0 w-full flex justify-center items-center flex-col">
                 <div className="w-[343px] flex flex-row ">
                     <img

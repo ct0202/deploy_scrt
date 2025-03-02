@@ -5,7 +5,7 @@ function Step2({ setStep }) {
   console.log("step2");
 
   return (
-    <div className="flex flex-col items-center w-[343px] h-[100vh] overflow-x-hidden overflow-hidden">
+    <div className="flex flex-col items-center w-[343px] h-screen overflow-y-auto overflow-x-hidden">
       <h1 className="font-raleway font-semibold mt-6 text-white text-[20px]">
         Добавьте фото
       </h1>

@@ -21,7 +21,7 @@ function App() {
     tg.requestFullscreen();
     window.Telegram.WebApp.ready();
     window.Telegram.WebApp.expand();
-    alert("update 35");
+    alert("update 36");
   }, []);
 
   return (
@@ -41,7 +41,6 @@ function App() {
             <Route path="/watchStreams" element={<WatchingStream />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/match" element={<Match />} />
-
             <Route path="/filters" element={<Filters />} />
             <Route path="/StreamFilters" element={<StreamFilters />} />
           </Route>

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import "../../pages/styles/DoubleRangeSlider.css";
 
-const DoubleRangeSlider = ({ min, max, onChange }) => {
+const DoubleRangeSlider = ({ min, max, onChange, resetTrigger }) => {
     const [minVal, setMinVal] = useState(min);
     const [maxVal, setMaxVal] = useState(max);
     const minValRef = useRef(min);
@@ -40,6 +40,14 @@ const DoubleRangeSlider = ({ min, max, onChange }) => {
     useEffect(() => {
         onChange({ min: minVal, max: maxVal });
     }, [minVal, maxVal, onChange]);
+
+    // **Добавленный useEffect для сброса**
+    useEffect(() => {
+        setMinVal(min);
+        setMaxVal(max);
+        minValRef.current = min;
+        maxValRef.current = max;
+    }, [resetTrigger, min, max]); // Следим за изменением resetTrigger
 
     return (
         <div className="container">
@@ -82,7 +90,8 @@ const DoubleRangeSlider = ({ min, max, onChange }) => {
 DoubleRangeSlider.propTypes = {
     min: PropTypes.number.isRequired,
     max: PropTypes.number.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    resetTrigger: PropTypes.any, // Новый проп для сброса
 };
 
 export default DoubleRangeSlider;

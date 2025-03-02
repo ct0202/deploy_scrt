@@ -13,14 +13,25 @@ const ScrollBlocker = () => {
             "/match",
             "/StreamFilters"
         ];
-        if (blockedRoutes.includes(location.pathname)) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "";
-        }
+
+        const updateScroll = () => {
+            if (blockedRoutes.includes(location.pathname) && window.innerHeight > 750) {
+                document.body.style.overflow = "hidden";
+            } else {
+                document.body.style.overflow = "";
+            }
+        };
+
+        updateScroll(); // Проверяем при монтировании
+        window.addEventListener("resize", updateScroll);
+
+        return () => {
+            window.removeEventListener("resize", updateScroll);
+            document.body.style.overflow = ""; // Сбрасываем при размонтировании
+        };
     }, [location.pathname]);
 
-    return null; // Компонент ничего не рендерит, просто управляет стилями
+    return null;
 };
 
 export default ScrollBlocker;

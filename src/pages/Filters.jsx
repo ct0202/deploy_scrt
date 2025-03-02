@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useCallback, useState} from "react";
 import {Button} from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +8,8 @@ function Filters() {
     const [selectedTargetGender, setSelectedTargetGender] = useState(null);
     const [selectedOption, setSelectedOption] = useState(null);
     const [selectedInterests, setSelectedInterests] = useState([]);
+    const [resetCounter, setResetCounter] = useState(0);
+
     const [dayLimit, setDayLimit] = useState(true);
     const navigate = useNavigate();
 
@@ -16,6 +18,26 @@ function Filters() {
 
     const addInterest = (optionId) => {
         setSelectedInterests((prev) => prev.includes(optionId) ? prev.filter((id) => id !== optionId) : [...prev, optionId]);
+    }
+
+    const handleAgeChange = useCallback(({ min, max }) => {
+        setRangeAge((prev) => (prev.min !== min || prev.max !== max ? { min, max } : prev));
+    }, []);
+
+    const handleDistChange = useCallback(({ min, max }) => {
+        setRangeDist((prev) => (prev.min !== min || prev.max !== max ? { min, max } : prev));
+    }, []);
+
+
+    const handleClear = () => {
+        console.log("handleClear");
+        setSelectedInterests([]);
+        setSelectedTargetGender(null);
+        setSelectedOption(null);
+        handleDistChange({ min: 0, max: 100 }); // Используем новый обработчик
+        handleAgeChange({ min: 18, max: 80 });
+        setResetCounter((prev) => prev + 1); // Увеличиваем значение для триггера
+
     }
 
     const targetGenders = [
@@ -65,11 +87,11 @@ function Filters() {
 
         <div className="h-[auto] flex flex-col justify-start items-start w-[343px]">
 
-            <div className="w-full flex justify-between items-center">
-                <div onClick={() => navigate("/Meet")}>
+            <div className="w-full flex justify-between items-center z-10">
+                <div onClick={() => (window.location.href = "/meet")}>
                     <img src="/icons/Button-back.svg" className="mt-3 w-[44px] h-[44px]"/>
                 </div>
-                <div>
+                <div onClick={handleClear}>
                     <p className="text-white mt-3">Сбросить</p>
                 </div>
             </div>
@@ -112,7 +134,8 @@ function Filters() {
                 <DoubleRangeSlider
                     min={18}
                     max={80}
-                    onChange={({ min, max }) => setRangeAge({ min, max })}
+                    onChange={handleAgeChange}
+                    resetTrigger={resetCounter}
                 />
             </div>
 
@@ -129,7 +152,8 @@ function Filters() {
                 <DoubleRangeSlider
                     min={0}
                     max={100}
-                    onChange={({ min, max }) => setRangeDist({ min, max })}
+                    onChange={handleDistChange}
+                    resetTrigger={resetCounter}
                 />
             </div>
 
@@ -144,6 +168,7 @@ function Filters() {
             <input
                 type="text"
                 placeholder="Введите название"
+                disabled={true}
                 className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] opacity-40 text-white outline-none focus:border-[#a1f69e]"
             />
 
@@ -184,7 +209,7 @@ function Filters() {
             <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
                 Интересы:
             </h1>
-            <div className="flex flex-wrap  gap-[16px] mt-[16px]">
+            <div className="flex flex-wrap  gap-[16px] mt-[16px] pb-[200px]">
                 {interests.map((option) => (
                     <div
                         key={option.id}
@@ -201,12 +226,12 @@ function Filters() {
             </div>
 
 
-
-            <Button
-                className={"mt-[37px] mb-6"}
-            >
-                Далее
-            </Button>
+            <div className="fixed bottom-4">
+                <Button
+                >
+                    Применить
+                </Button>
+            </div>
 
         </div>
         </div>
