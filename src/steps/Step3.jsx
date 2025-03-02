@@ -7,7 +7,7 @@ function Step3({ setStep }) {
   console.log("step3");
 
   return (
-    <div className="flex flex-col items-center w-[343px] h-[100%] overflow-x-hidden ">
+    <div className="flex flex-col items-center w-[343px] h-[750px] overflow-y-auto overflow-x-hidden ">
       <h1 className="font-raleway font-semibold mt-6 text-white text-[20px]">
         Аудио визитка (30 сек)
       </h1>

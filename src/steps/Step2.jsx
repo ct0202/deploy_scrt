@@ -12,7 +12,7 @@ function Step2({ setStep }) {
       <h1 className="font-raleway font-light mt-2 text-white text-[16px]">
         Минимум одно, а лучше – все четыре
       </h1>
-      <div className={`w-[343] h-[343] mt-5 grid grid-cols-2 gap-[15px]`}>
+      <div className={`w-[343] h-[343] mb-[200px] mt-5 grid grid-cols-2 gap-[15px]`}>
         <div
           id="photo1"
           className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] relative flex items-center justify-center cursor-pointer`}
