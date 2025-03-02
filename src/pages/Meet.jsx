@@ -113,7 +113,7 @@ function Meet() {
   };
 
   const handleTouchEnd = () => {
-    if (swipeDiff > 100) {
+    if (swipeDiff > 20) {
       setPresentsShop(false);
     } else {
       setSwipeDiff(0); // Возвращаем обратно, если свайп не был достаточно длинным
