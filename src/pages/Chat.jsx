@@ -113,8 +113,13 @@ function Chat() {
                         // document.body.append(remotePlayerContainer);
 
                         const remotePlayerContainer = document.getElementById("remote-video");
-                        console.log(remotePlayerContainer);
-                        remoteVideoTrack.play(remotePlayerContainer);
+                        // console.log(remotePlayerContainer);
+                        // remoteVideoTrack.play(remotePlayerContainer);
+                        if (remotePlayerContainer) {
+                            remoteVideoTrack.play(remotePlayerContainer);
+                        } else {
+                            console.error("Remote video container not found");
+                        }
                     }
                     if (mediaType === "audio") {
                         const remoteAudioTrack = user.audioTrack;
@@ -239,7 +244,7 @@ function Chat() {
                             id="remote-video"
                             ref={remoteVideoRef}
                             className="z-[1] w-[343px] h-[527px] rounded-[16px] object-cover overflow-hidden"
-                        ></div>
+                        >123</div>
 
                         {/*<img*/}
                         {/*    src="/mock/user_4/user_4_chat_small.png"*/}
