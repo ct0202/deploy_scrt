@@ -10,8 +10,13 @@ import "./styles/SwiperCustomPagination.css";
 
 import DayLimit from "../components/shared/DayLimit";
 import PresentsShop from "../components/shared/PresentsShop";
-
 import ChatProgressBar from "../components/ui/ChatProgressBar";
+
+import AgoraRTC from 'agora-rtc-sdk-ng';
+
+const APP_ID = "12934dd56c904bada036f4e00867a7b3"; // Замените на ваш App ID
+const CHANNEL = "test-channel"; // Имя канала
+const TOKEN = null; // Можно использовать токен, если требуется
 
 function Chat() {
     const [showToast, setShowToast] = useState(false);
@@ -73,6 +78,68 @@ function Chat() {
                 "Не хотите дожидаться симпатии? Напишите первым",
         }
     ];
+
+    const [client] = useState(() => AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' }));
+
+    const remoteVideoRef = useRef(null);
+
+
+    useEffect(() => {
+        const initAgora = async () => {
+            try {
+                // Подключение к каналу (uid = null означает, что Agora выдаст случайный uid)
+                const uid = await client.join(APP_ID, CHANNEL, TOKEN, null);
+
+                // Создание локального видеотрека
+                const [localAudioTrack, localVideoTrack] = await AgoraRTC.createMicrophoneAndCameraTracks();
+
+                // Вывод локального видео
+                localVideoTrack.play("local-video");
+
+                // Публикация аудио- и видео-треков в канал
+                await client.publish([localAudioTrack, localVideoTrack]);
+
+                console.log(`User ${uid} joined the channel`);
+
+                // Обработчик для отображения входящих видео от других пользователей
+                client.on("user-published", async (user, mediaType) => {
+                    await client.subscribe(user, mediaType);
+                    if (mediaType === "video") {
+                        const remoteVideoTrack = user.videoTrack;
+                        // const remotePlayerContainer = document.createElement("div");
+                        // remotePlayerContainer.id = `player-${user.uid}`;
+                        // remotePlayerContainer.style.width = "640px";
+                        // remotePlayerContainer.style.height = "480px";
+                        // document.body.append(remotePlayerContainer);
+
+                        const remotePlayerContainer = document.getElementById("remote-video");
+                        console.log(remotePlayerContainer);
+                        remoteVideoTrack.play(remotePlayerContainer);
+                    }
+                    if (mediaType === "audio") {
+                        const remoteAudioTrack = user.audioTrack;
+                        remoteAudioTrack.play(); // Включает звук
+                    }
+                });
+
+                // Удаление видео, если пользователь выходит
+                client.on("user-unpublished", (user) => {
+                    const remotePlayerContainer = document.getElementById('remote-video');
+                    if (remotePlayerContainer) {
+                        remotePlayerContainer.remove();
+                    }
+                });
+            } catch (error) {
+                console.error("Agora Error: ", error);
+            }
+        };
+
+        initAgora();
+
+        return () => {
+            client.leave();
+        };
+    }, [client]);
 
     useEffect(() => {
         const isFirstVisitChat = localStorage.getItem("firstVisitChat");
@@ -159,19 +226,43 @@ function Chat() {
                     {!viewLimit ?
                     <div className="relative w-[343px] rounded-[16px]">
 
-                        <div className="absolute top-0 mt-4 w-[100%] flex items-center justify-center">
+                        <div className="absolute top-0 mt-4 z-[3] w-[100%] flex items-center justify-center">
                             <ChatProgressBar completed={25}/>
                         </div>
 
-                        <img
-                          src="/mock/user_3/user_3_chat_mock.png"
-                          className="z-[1] w-[363px] h-[527px] rounded-[16px] object-cover"
-                        />
+                        {/*<img*/}
+                        {/*  src="/mock/user_3/user_3_chat_mock.png"*/}
+                        {/*  className="z-[1] w-[363px] h-[527px] rounded-[16px] object-cover"*/}
+                        {/*/>*/}
 
-                        <img
-                            src="/mock/user_4/user_4_chat_small.png"
-                            className="absolute top-0 right-0 mt-6 mr-2 z-[2] w-[80px] h-[140px] rounded-[12px] object-cover"
-                        />
+                        <div
+                            id="remote-video"
+                            ref={remoteVideoRef}
+                            className="z-[1] w-[343px] h-[527px] rounded-[16px] object-cover overflow-hidden"
+                        ></div>
+
+                        {/*<img*/}
+                        {/*    src="/mock/user_4/user_4_chat_small.png"*/}
+                        {/*    className="absolute top-0 right-0 mt-6 mr-2 z-[2] w-[80px] h-[140px] rounded-[12px] object-cover"*/}
+                        {/*/>*/}
+                        <div id="local-video"
+                             style={{
+                                 position: "absolute",
+                                 top: 0,
+                                 right: 0,
+                                 marginTop: "2rem",
+                                 marginRight: "0.5rem",
+                                 zIndex: 2,
+                                 width: "80px",
+                                 height: "140px",
+                                 borderRadius: "12px",
+                                 objectFit: "cover",
+                                 overflow: "hidden",
+                             }}
+
+                        >
+
+                        </div>
 
                         <div className="z-[8] translate-y-[-90px] absolute w-[100%] flex items-center justify-center">
                             <div className="w-[338px] h-[70px] mb-4 flex flex-row justify-evenly items-center">
