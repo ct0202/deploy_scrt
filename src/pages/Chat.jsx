@@ -101,6 +101,23 @@ function Chat() {
 
                 console.log(`User ${uid} joined the channel`);
 
+
+                client.remoteUsers.forEach(async (user) => {
+                    if (user.hasVideo) { // Проверяем, есть ли видео
+                        await client.subscribe(user, "video");
+                        user.videoTrack.play("remote-video");
+                    }
+                    if (user.hasAudio) { // Проверяем, есть ли аудио
+                        await client.subscribe(user, "audio");
+                        user.audioTrack.play();
+                    }
+                });
+
+                // client.on("user-joined", async (user) => {
+                //     console.log(`User ${user.uid} joined`);
+                //     await subscribeToUser(user);
+                // });
+
                 // Обработчик для отображения входящих видео от других пользователей
                 client.on("user-published", async (user, mediaType) => {
                     await client.subscribe(user, mediaType);
@@ -145,6 +162,17 @@ function Chat() {
             client.leave();
         };
     }, [client]);
+
+    const subscribeToUser = async (user) => {
+        if (user.hasVideo) {
+            await client.subscribe(user, "video");
+            user.videoTrack.play("remote-video");
+        }
+        if (user.hasAudio) {
+            await client.subscribe(user, "audio");
+            user.audioTrack.play();
+        }
+    };
 
     useEffect(() => {
         const isFirstVisitChat = localStorage.getItem("firstVisitChat");
