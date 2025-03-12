@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef, useMemo} from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
@@ -79,7 +79,9 @@ function Chat() {
         }
     ];
 
-    const [client] = useState(() => AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' }));
+    // const [client] = useState(() => AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' }));
+
+    const client = useMemo(() => AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' }), []);
 
     const remoteVideoRef = useRef(null);
 
