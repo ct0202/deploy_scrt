@@ -16,12 +16,12 @@ import Match from "./pages/Match";
 import ScrollBlocker from "./ScrollBlocker";
 
 function App() {
-  // useEffect(() => {
-  //   const tg = window.Telegram.WebApp;
-  //   tg.requestFullscreen();
-  //   window.Telegram.WebApp.ready();
-  //   window.Telegram.WebApp.expand();
-  // }, []);
+  useEffect(() => {
+    const tg = window.Telegram.WebApp;
+    tg.requestFullscreen();
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+  }, []);
 
   return (
     <FiltersProvider>
