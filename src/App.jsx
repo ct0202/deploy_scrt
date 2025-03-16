@@ -15,6 +15,7 @@ import Match from "./pages/Match";
 import TextChats from "./pages/TextChats";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
+import ProfileMenu from "./pages/profileMenu";
 
 import ScrollBlocker from "./ScrollBlocker";
 
@@ -49,6 +50,7 @@ function App() {
             <Route path="/textChats" element={<TextChats />} />
             <Route path="/1/profile" element={<Profile />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/profileMenu" element={<ProfileMenu />} />
           </Route>
         </Routes>
       </div>

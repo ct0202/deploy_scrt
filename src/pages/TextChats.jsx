@@ -29,7 +29,9 @@ const TextChats = () => {
             
             <div className='flex justify-between w-[343px]'>
                 <img src = "/icons/button-menu.svg" className='w-[44px] h-[44px]'/>
-                <img src = "/icons/Button-notifications.svg" className='w-[44px] h-[44px]'/>
+                <img src = "/icons/Button-notifications.svg" className='w-[44px] h-[44px]'
+                     onClick={() => {navigate('/notifications')}}
+                />
             </div>
 
             <div className='relative w-[343px] h-[64px]'>

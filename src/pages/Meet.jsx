@@ -140,6 +140,7 @@ function Meet() {
             <img
               src="/icons/Button-notifications.svg"
               className="mt-3 ml-3 w-[44px] h-[44px]"
+              onClick={() => {navigate('/notifications')}}
             />
           </div>
         </div>

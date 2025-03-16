@@ -13,6 +13,7 @@ import PresentsShop from "../components/shared/PresentsShop";
 import ChatProgressBar from "../components/ui/ChatProgressBar";
 
 import AgoraRTC from 'agora-rtc-sdk-ng';
+import {Navigation} from "../components/shared/Navigation";
 
 const APP_ID = "12934dd56c904bada036f4e00867a7b3"; // Замените на ваш App ID
 const CHANNEL = "test-channel"; // Имя канала
@@ -253,6 +254,7 @@ function Chat() {
                         <img
                             src="/icons/Button-notifications.svg"
                             className="mt-3 ml-3 w-[44px] h-[44px]"
+                            onClick={() => {navigate('/notifications')}}
                         />
                     </div>
                 </div>
@@ -353,72 +355,7 @@ function Chat() {
                     }
                 </div>
                 <div className="mt-5 w-[100%] flex items-center justify-center">
-                    <div className="w-[338px] h-[70px] mb-4 bg-[#FFFFFF1A] flex flex-row justify-evenly items-center rounded-[400px]">
-                        <div
-                            className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center ${
-                                menuAction === 1 ? "bg-[#FFFFFF1A]" : "bg-transparent"
-                            }`}
-                            onClick={() => {
-                                setMenuAction(1);
-                                navigate("/Meet");
-                            }}
-                        >
-                            <img
-                                src="/icons/bottom_bar_button_1.svg"
-                                className="w-[24px] h-[24px]"
-                            />
-                        </div>
-                        <div
-                            className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center ${
-                                menuAction === 2 ? "bg-[#FFFFFF1A]" : "bg-transparent"
-                            }`}
-                            onClick={() => {
-                                setMenuAction(2);
-                            }}
-                        >
-                            <img
-                                src="/icons/bottom_bar_button_2.svg"
-                                className=" w-[24px] h-[24px]"
-                            />
-                        </div>
-                        <div
-                            className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center ${
-                                menuAction === 3 ? "bg-[#FFFFFF1A]" : "bg-transparent"
-                            }`}
-                            onClick={() => {
-                                setMenuAction(3);
-                                navigate("/streams");
-                            }}
-                        >
-                            <img
-                                src="/icons/bottom_bar_button_3.svg"
-                                className=" w-[24px] h-[24px]"
-                            />
-                        </div>
-                        <div
-                            className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center ${
-                                menuAction === 4 ? "bg-[#FFFFFF1A]" : "bg-transparent"
-                            }`}
-                            onClick={() => {
-                                setMenuAction(4);
-                            }}
-                        >
-                            <img
-                                src="/icons/bottom_bar_button_4.svg"
-                                className="w-[24px] h-[24px]"
-                            />
-                        </div>
-                        <div
-                            className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center ${
-                                menuAction === 5 ? "bg-[#FFFFFF1A]" : "bg-transparent"
-                            }`}
-                            onClick={() => {
-                                setMenuAction(5);
-                            }}
-                        >
-                            <img src="/icons/myta-coin.svg" className="w-[24px] h-[24px]" />
-                        </div>
-                    </div>
+                    <Navigation tab={4} />
                 </div>
             </div>
 

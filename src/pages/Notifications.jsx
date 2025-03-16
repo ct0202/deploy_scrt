@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import { Navigation } from "../components/shared/Navigation";
 import {NotificationCard} from "../components/notifications/notificationCard";
+import {SystemCard} from "../components/notifications/systemCard";
 
 const Notifications = () => {
 
@@ -9,21 +10,18 @@ const Notifications = () => {
 
     const [chats, setChats] = useState([
         { id: 1, img: '/mock/stream_chat_user_avatar.png',
-            name: 'Наташа', age: '45', lMsg: 'Hello World', count: '1', time: '11:40'},
-        { id: 1, img: '/mock/stream_chat_user_avatar.png',
-            name: 'Наташа', age: '45', lMsg: 'Hello World', count: '2', time: '11:40'},
-        { id: 1, img: '/mock/stream_chat_user_avatar.png',
-            name: 'Наташа', age: '45', lMsg: 'Hello World', count: '0', time: '1 дек 2024'},
-        { id: 1, img: '/mock/stream_chat_user_avatar.png',
-            name: 'Наташа', age: '45', lMsg: 'Hello World', count: '4', time: '1 дек 2024'},
-        { id: 1, img: '/mock/stream_chat_user_avatar.png',
-            name: 'Наташа', age: '45', lMsg: 'Hello World', count: '0', time: '1 дек 2024'},
-        { id: 1, img: '/mock/stream_chat_user_avatar.png',
-            name: 'Наташа', age: '45', lMsg: 'Hello World', count: '0', time: '1 дек 2024'},
-        { id: 1, img: '/mock/stream_chat_user_avatar.png',
-            name: 'Наташа', age: '45', lMsg: 'Hello World', count: '0', time: '1 дек 2024'},
-        { id: 1, img: '/mock/stream_chat_user_avatar.png',
-            name: 'Наташа', age: '45', lMsg: 'Hello World', count: '0', time: '1 дек 2024'},
+            name: 'Наташа', age: '45', type: 'Вам поставили СУПЕРЛАЙК!', status: 'new' },
+        { id: 2, img: '/mock/stream_chat_user_avatar.png',
+            name: 'Наташа', age: '45', type: 'У вас взаимная симпатия с', status: 'new' },
+        { id: 3, img: '/mock/stream_chat_user_avatar.png',
+            name: 'Наташа', age: '45', type: 'У вас взаимная симпатия с', status: 'old' },
+        { id: 4, img: '/mock/stream_chat_user_avatar.png',
+            name: 'Наташа', age: '45', type: 'У вас взаимная симпатия с', status: 'old' },
+    ]);
+
+    const [systemN, setSystemN] = useState([
+        { id: 1, title: 'Заголовок сообщения', desc: 'Lorem ipsum dolor sit amet consectetur. Proin sodales elit faucibus at enim aliquam feugiat tempor. Mauris porta eu tristique orci quam condimentum fermentum cras ornare.', status: 'new' },
+        { id: 2, title: 'Заголовок сообщения', desc: 'Lorem ipsum dolor sit amet consectetur. Proin sodales elit faucibus at enim aliquam feugiat tempor. Mauris porta eu tristique orci quam condimentum fermentum cras ornare.', status: 'old' },
     ]);
 
     return(
@@ -42,7 +40,7 @@ const Notifications = () => {
                     flex justify-center items-center cursor-pointer rounded-[400px] 
                     ${option === 1 ? "bg-[#FFFFFF1A] text-[#A1F69E]" : "bg-transparent"} `}
                          onClick={() => setOption(1)}>
-                        Симпатии
+                        Симпатии (4)
                     </div>
                     <div className={`w-[167px] h-[33px] pt-1 pb-1 font-raleway 
                     flex justify-center items-center rounded-[400px] cursor-pointer 
@@ -60,19 +58,34 @@ const Notifications = () => {
                     </div>:
                     null }
                 <div className='mt-[70px]'>
-                { chats.length > 0 ? chats.map((chat, index) => (
-                        <>
-                        <div key={index} className="border-b border-[#233636] w-[100vw]">
-                            <NotificationCard id={chat.id} img={chat.img} name={chat.name} age={chat.age} msg={chat.msg} key={chat.id} count={chat.status} />
+                    {option === 1 ? (
+                        chats.length > 0 ? (
+                            chats.map((chat) => (
+                                <div key={chat.id} className="border-b border-[#233636] w-[100vw]">
+                                    <NotificationCard
+                                        id={chat.id}
+                                        img={chat.img}
+                                        name={chat.name}
+                                        age={chat.age}
+                                        type={chat.type}
+                                        status={chat.status}
+                                    />
+                                </div>
+                            ))
+                        ) : null
+                    ) : option === 2 ? (
+                        <div className="flex flex-col w-[100vw] items-center justify-center mt-[200px] text-white">
+                            <img src="/icons/notif_page.svg" alt="empty chats icon" className="w-[48px] h-[48px]" />
+                            <p className="text-[24px] mt-[30px]">Нет уведомлений</p>
+                            <p className="text-[16px] mt-[10px]">Здесь появятся ваши уведомления</p>
                         </div>
-                        </>
-                    )) :
-                    <div className="flex flex-col items-center justify-center w-full mt-[200px] text-white">
-                        <img src="/icons/notif_page.svg" alt="empty chats icon" className='w-[48px] h-[48px]' />
-                        <p className='text-[24px] mt-[30px]'>Нет уведомлений</p>
-                        <p className='text-[16px] mt-[10px]'>Здесь появится ваши уведомления</p>
-                    </div>
-                }
+                    ) : option === 3 ? (
+                        systemN.map((chat, index) => (
+                            <div key={index} className="border-b border-[#233636] w-[100vw]">
+                                <SystemCard title={chat.title} desc={chat.desc} status={chat.status} />
+                            </div>
+                        ))
+                    ) : null}
                 </div>
             </div>
 
