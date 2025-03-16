@@ -10,7 +10,8 @@ function Streams() {
   return (
     <div className="flex flex-col justify-center items-center pt-[70px] w-[100%] h-[auto] relative">
       <div className="flex justify-between items-center w-[343px] h-[44px] mt-[21px]">
-        <img src="/icons/Button-menu.svg" alt="" />
+        <img src="/icons/Button-menu.svg" alt="" onClick={() => navigate("/profileMenu")}
+        />
         <div className="flex gap-[8px]">
           <img src="/icons/Button-filters.svg" alt="" onClick={() => navigate("/StreamFilters")} />
           <img src="/icons/Button-notifications.svg" alt=""

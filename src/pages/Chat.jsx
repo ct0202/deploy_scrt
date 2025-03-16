@@ -243,6 +243,7 @@ function Chat() {
                     <img
                         src="/icons/Button-menu.svg"
                         className="mt-3 w-[44px] h-[44px]"
+                        onClick={() => navigate("/profileMenu")}
                     />
                     <div className="flex flex-row justify-end flex-grow">
                         <img

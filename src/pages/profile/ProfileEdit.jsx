@@ -1,0 +1,161 @@
+import React, {useState, useEffect, useRef} from "react";
+import { useNavigate } from "react-router-dom";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "../styles/SwiperCustomPagination.css";
+
+function ProfileEdit() {
+    const navigate = useNavigate();
+
+    return (
+        <div>
+            <div className="relative h-[100%]">
+                <div className="w-[100%] pt-[100px] pb-[80px] flex flex-col !items-center">
+
+                    <div className="z-0 w-full flex justify-center items-center flex-col">
+                        <div className="w-[343px] flex flex-row ">
+                            <img
+                                src="/icons/Button-back.svg"
+                                onClick={() => {navigate(-1)}}
+                                className="mt-3 w-[44px] h-[44px]"
+                            />
+                        </div>
+                        <div></div>
+                        <div className="w-[100%] flex justify-center align-center mt-4">
+                            <div className="relative w-[343px] rounded-[16px]">
+
+
+                                <div className="w-full relative">
+                                    <div
+                                        className="custom-pagination"
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            zIndex: 10,
+                                            left: '50%',
+                                            transform: 'translateX(-50%)',
+                                        }}
+                                    ></div>
+                                </div>
+                                <Swiper
+                                    modules={[Pagination]}
+                                    spaceBetween={0}
+                                    slidesPerView={1}
+                                    className="h-[560px]"
+
+                                    pagination = {{
+                                        el: '.custom-pagination'
+                                    }}
+
+                                >
+                                    <SwiperSlide>
+                                        <img
+                                            src="/mock/user_5/image%2010.png"
+                                            className="z-[1] w-[363px] h-[544px] rounded-[16px] object-cover"
+                                        />
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <img
+                                            src="/mock/user_5/image%2010.png"
+                                            className="z-[1] w-[363px] h-[544px] rounded-[16px] object-cover"
+                                        />
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <img
+                                            src="/mock/user_5/image%2010.png"
+                                            className="z-[1] w-[363px] h-[544px] rounded-[16px] object-cover"
+                                        />
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <img
+                                            src="/mock/user_5/image%2010.png"
+                                            className="z-[1] w-[363px] h-[544px] rounded-[16px] object-cover"
+                                        />
+                                    </SwiperSlide>
+                                </Swiper>
+
+                                <img src='/icons/redactirovat_photo.svg' className='absolute z-[10]
+                                left-[30px]
+                                top-[500px]'  onClick={()=>navigate('/photo')}/>
+                                <img src='/icons/izmenit.svg' className='absolute z-[10] top-[565px] left-[230px]' onClick={()=>navigate('/main')} />
+                                <img src='/icons/izmenit.svg' className='absolute z-[10] top-[607px] left-[180px]' onClick={()=>navigate('/main')}/>
+                                <img src='/icons/izmenit.svg' className='absolute z-[10] top-[680px] left-[200px]' onClick={()=>navigate('/meetGoal')} />
+                                <img src='/icons/izmenit.svg' className='absolute z-[10] top-[765px] left-[180px]' onClick={()=>navigate('/audio')}/>
+                                <img src='/icons/izmenit.svg' className='absolute z-[10] top-[890px] left-[130px]' onClick={()=>navigate('/interests')}/>
+                                <div className="shadow-[0_-25px_30px_rgba(0,0,0,0.9)] rounded-[16px] rounded-t-none relative z-[5] flex flex-col pl-[24px] pr-[24px] bg-[#010D0D] translate-y-[-27px] drop-shadow-[0_0_30px_0_rgb(0,0,0)]">
+                                    <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
+                                        Андрей, 35 лет
+                                    </h1>
+                                    <h1 className="font-raleway font-light mt-2 text-white text-[18px]">
+                                        Минск, Беларусь
+                                    </h1>
+                                    <div className="border-b-2 border-white/30 pt-5" />
+                                    <h1 className="font-raleway font-bold mt-6 text-white text-[18px]">
+                                        Цель знакомства
+                                    </h1>
+                                    <h1 className="font-raleway font-light mt-2 text-white text-[18px]">
+                                        Серьезные отношения
+                                    </h1>
+                                    <h1 className="font-raleway font-bold mt-6 text-white text-[18px]">
+                                        Аудио визитка
+                                    </h1>
+                                    <img
+                                        src="/icons/user_voice_message.svg"
+                                        className="w-[295px] h-[64px] mt-2"
+                                    />
+                                    <h1 className="font-raleway font-bold mt-6 text-white text-[18px]">
+                                        Интересы
+                                    </h1>
+                                    <h1 className="font-raleway font-light mt-2 text-white text-[18px]">
+                                        Джин с тоником, Гимнастика, Горячая йога, Spotify, Суши{" "}
+                                    </h1>
+                                    <h1 className="font-raleway font-bold mt-6 text-white text-[18px]">
+                                        Подарки
+                                    </h1>
+                                    <div>
+                                        <Swiper
+                                            modules={[]}
+                                            spaceBetween={10}
+                                            slidesPerView={2}
+                                            className="h-[170px]"
+                                        >
+                                            <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
+                                                <img
+                                                    src="/icons/present.svg"
+                                                    className="w-[80px] h-[80px]"
+                                                />
+                                            </SwiperSlide>
+                                            <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
+                                                <img
+                                                    src="/icons/present.svg"
+                                                    className="w-[80px] h-[80px]"
+                                                />
+                                            </SwiperSlide>
+                                            <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
+                                                <img
+                                                    src="/icons/present.svg"
+                                                    className="w-[80px] h-[80px]"
+                                                />
+                                            </SwiperSlide>
+                                            <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
+                                                <img
+                                                    src="/icons/present.svg"
+                                                    className="w-[80px] h-[80px]"
+                                                />
+                                            </SwiperSlide>
+                                        </Swiper>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default ProfileEdit;

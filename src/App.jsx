@@ -16,16 +16,23 @@ import TextChats from "./pages/TextChats";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import ProfileMenu from "./pages/profileMenu";
+import ProfileEdit from "./pages/profile/ProfileEdit";
 
 import ScrollBlocker from "./ScrollBlocker";
+import Photo from "./pages/profile/Photo";
+import Main from "./pages/profile/Main";
+import MeetGoal from "./pages/profile/MeetGoal";
+import Audio from "./pages/profile/Audio";
+import Interests from "./pages/profile/Interests";
+
 
 function App() {
   useEffect(() => {
-    const tg = window.Telegram.WebApp;
-    tg.disableVerticalSwipes();
-    tg.requestFullscreen();
-    window.Telegram.WebApp.ready();
-    window.Telegram.WebApp.expand();
+    // const tg = window.Telegram.WebApp;
+    // tg.disableVerticalSwipes();
+    // tg.requestFullscreen();
+    // window.Telegram.WebApp.ready();
+    // window.Telegram.WebApp.expand();
   }, []);
 
   return (
@@ -51,6 +58,13 @@ function App() {
             <Route path="/1/profile" element={<Profile />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/profileMenu" element={<ProfileMenu />} />
+
+            <Route path="/profileEdit" element={<ProfileEdit/>} />
+            <Route path="/photo" element={<Photo />} />
+            <Route path="/main" element={<Main />} />
+            <Route path="/meetGoal" element={<MeetGoal />} />
+            <Route path="/audio" element={<Audio />} />
+            <Route path="/interests" element={<Interests />} />
           </Route>
         </Routes>
       </div>

@@ -2,9 +2,10 @@ import React, {useEffect, useState} from 'react';
 
 import { Navigation } from "../components/shared/Navigation";
 import {ChatCard} from "../components/chat/chatCard";
+import {useNavigate} from "react-router-dom";
 
 const TextChats = () => {
-
+    const navigate = useNavigate();
     const [chats, setChats] = useState([
         { id: 1, img: '/mock/stream_chat_user_avatar.png',
             name: 'Наташа', age: '45', lMsg: 'Hello World', count: '1', time: '11:40'},
@@ -28,7 +29,8 @@ const TextChats = () => {
         <div className='w-full pt-[100px] pb-[80px] flex flex-col items-center overflow-hidden'>
             
             <div className='flex justify-between w-[343px]'>
-                <img src = "/icons/button-menu.svg" className='w-[44px] h-[44px]'/>
+                <img src = "/icons/button-menu.svg" className='w-[44px] h-[44px]' onClick={() => navigate("/profileMenu")}
+                />
                 <img src = "/icons/Button-notifications.svg" className='w-[44px] h-[44px]'
                      onClick={() => {navigate('/notifications')}}
                 />
