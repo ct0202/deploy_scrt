@@ -14,6 +14,7 @@ import StreamFilters from "./pages/StreamFilters";
 import Match from "./pages/Match";
 import TextChats from "./pages/TextChats";
 import Profile from "./pages/Profile";
+import Notifications from "./pages/Notifications";
 
 import ScrollBlocker from "./ScrollBlocker";
 
@@ -47,6 +48,7 @@ function App() {
             <Route path="/StreamFilters" element={<StreamFilters />} />
             <Route path="/textChats" element={<TextChats />} />
             <Route path="/1/profile" element={<Profile />} />
+            <Route path="/notifications" element={<Notifications />} />
           </Route>
         </Routes>
       </div>
