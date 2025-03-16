@@ -12,16 +12,19 @@ import Filters from "./pages/Filters";
 import Chat from "./pages/Chat"
 import StreamFilters from "./pages/StreamFilters";
 import Match from "./pages/Match";
+import TextChats from "./pages/TextChats";
+import Profile from "./pages/Profile";
 
 import ScrollBlocker from "./ScrollBlocker";
 
 function App() {
-  useEffect(() => {
-    const tg = window.Telegram.WebApp;
-    tg.requestFullscreen();
-    window.Telegram.WebApp.ready();
-    window.Telegram.WebApp.expand();
-  }, []);
+  // useEffect(() => {
+  //   const tg = window.Telegram.WebApp;
+  //   tg.disableVerticalSwipes();
+  //   tg.requestFullscreen();
+  //   window.Telegram.WebApp.ready();
+  //   window.Telegram.WebApp.expand();
+  // }, []);
 
   return (
     <FiltersProvider>
@@ -42,6 +45,8 @@ function App() {
             <Route path="/match" element={<Match />} />
             <Route path="/filters" element={<Filters />} />
             <Route path="/StreamFilters" element={<StreamFilters />} />
+            <Route path="/textChats" element={<TextChats />} />
+            <Route path="/1/profile" element={<Profile />} />
           </Route>
         </Routes>
       </div>

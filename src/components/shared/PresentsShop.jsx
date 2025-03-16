@@ -102,7 +102,7 @@ function PresentsShop() {
                                                                          className="w-[20px] h-[20px] ml-1"/>
                 </div>
                 <div className="text-[#A1F69E] text-[18px]">
-                    Пополнить счет >
+                    Пополнить счет
                 </div>
             </div>
         </div>

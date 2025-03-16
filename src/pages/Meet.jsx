@@ -2,11 +2,15 @@ import React, {useState, useEffect, useRef} from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
+import { Navigation } from "../components/shared/Navigation";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "./styles/SwiperCustomPagination.css";
+
+import { INSTRUCTIONS_MEET } from "../constants/instructions";
 
 import DayLimit from "../components/shared/DayLimit";
 import PresentsShop from "../components/shared/PresentsShop";
@@ -20,56 +24,6 @@ function Meet() {
   const [presentsShop, setPresentsShop] = useState(false);
 
   const navigate = useNavigate();
-
-  const instructions = [
-    {
-      id: 1,
-      svg: "/icons/instr1.svg",
-      title: "Лайк",
-      description:
-        "Если вам понравился человек и вы хотели бы начать общение – поставтье лайк",
-    },
-    {
-      id: 2,
-      svg: "/icons/instr2.svg",
-      title: "Супер-Лайк",
-      description:
-        "Супер-лайк отобразится в уведомлениях человека, который вам понравился, и не останется незамеченным",
-    },
-    {
-      id: 3,
-      svg: "/icons/instr3.svg",
-      title: "Дизлайк",
-      description: "Если анкета вам не интересна – поставтье дизлайк",
-    },
-    {
-      id: 4,
-      svg: "/icons/instr4.svg",
-      title: "Начать переписку",
-      description:
-        "Вы уверены в своих силах и не хотите дожидаться симпатии? Напишите первым",
-    },
-    {
-      id: 5,
-      svg: "/icons/instr5.svg",
-      title: "Вернуть предыдущую анкету",
-      description: "Верните предыдущую анкету человека, вдруг это ваша судьба",
-    },
-    {
-      id: 6,
-      svg: "/icons/instr6.svg",
-      title: "Просмотр фотографий",
-      description:
-        "Чтобы листать фотографии нажмите на левую или правую область фото",
-    },
-    {
-      id: 7,
-      svg: "/icons/instr7.svg",
-      title: "Просмотр анкеты",
-      description:
-        "Листайте анкету вниз, чтобы увидеть дополнительную информацию о человеке",
-    },
-  ];
 
   useEffect(() => {
     const isFirstVisit = localStorage.getItem("firstVisit");
@@ -133,7 +87,7 @@ function Meet() {
               Основные функции и жесты
             </h1>
             <div className="grid grid-cols-1 justify-center flex-wrap items-center gap-[16px] mt-[16px]">
-              {instructions.map((ins) => (
+              {INSTRUCTIONS_MEET.map((ins) => (
                   <div
                       key={ins.id}
                       className={`w-[343px] h-[120px] gap-[12px] border-b border-[#6D6D6D] flex text-white`}
@@ -295,7 +249,7 @@ function Meet() {
 
             <div className="shadow-[0_-25px_30px_rgba(0,0,0,0.9)] rounded-[16px] rounded-t-none relative z-[5] flex flex-col pl-[24px] pr-[24px] bg-[#010D0D] translate-y-[-27px] drop-shadow-[0_0_30px_0_rgb(0,0,0)]">
               <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
-                Наташа, 26 лет
+                Наташа, 25 лет
               </h1>
               <h1 className="font-raleway font-light mt-2 text-white text-[18px]">
                 Минск, Беларусь
@@ -360,7 +314,7 @@ function Meet() {
           </div>
         </div>
         <div className="fixed bottom-0 z-[6] w-[100%] flex items-center justify-center">
-          <div className="w-[338px] h-[70px] mb-4 bg-[#022424] flex flex-row justify-evenly items-center rounded-[400px]">
+          {/* <div className="w-[338px] h-[70px] mb-4 bg-[#022424] flex flex-row justify-evenly items-center rounded-[400px]">
             <div
               className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center ${
                 menuAction === 1 ? "bg-[#FFFFFF1A]" : "bg-transparent"
@@ -425,7 +379,8 @@ function Meet() {
             >
               <img src="/icons/myta-coin.svg" className="w-[24px] h-[24px]" />
             </div>
-          </div>
+          </div> */}
+          <Navigation tab={1} />
         </div>
       </div>
       {showToast && (
