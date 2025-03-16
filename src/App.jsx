@@ -28,11 +28,11 @@ import Interests from "./pages/profile/Interests";
 
 function App() {
   useEffect(() => {
-    // const tg = window.Telegram.WebApp;
-    // tg.disableVerticalSwipes();
-    // tg.requestFullscreen();
-    // window.Telegram.WebApp.ready();
-    // window.Telegram.WebApp.expand();
+    const tg = window.Telegram.WebApp;
+    tg.disableVerticalSwipes();
+    tg.requestFullscreen();
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
   }, []);
 
   return (
