@@ -60,7 +60,7 @@ function Step2({ setStep }) {
       <h1 className="font-raleway font-light mt-3 text-white text-[16px]">
         Перетащите, чтобы изменить порядок
       </h1>
-        <div className="fixed bottom-2">
+        <div className="fixed bottom-[100px]">
       <Button onclick={() => setStep(3)}>
         Далее
       </Button>
