@@ -15,6 +15,7 @@ export const Navigation = ({tab}) => {
               }`}
               onClick={() => {
                 setMenuAction(1);
+                navigate("/Meet")
               }}
             >
               <img
@@ -70,6 +71,7 @@ export const Navigation = ({tab}) => {
               }`}
               onClick={() => {
                 setMenuAction(5);
+                  navigate("/Premium");
               }}
             >
               <img src="/icons/myta-coin.svg" className="w-[24px] h-[24px]" />

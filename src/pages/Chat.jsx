@@ -356,7 +356,7 @@ function Chat() {
                     }
                 </div>
                 <div className="mt-5 w-[100%] flex items-center justify-center">
-                    <Navigation tab={4} />
+                    <Navigation tab={2} />
                 </div>
             </div>
 

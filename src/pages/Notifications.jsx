@@ -3,9 +3,11 @@ import React, {useEffect, useState} from 'react';
 import { Navigation } from "../components/shared/Navigation";
 import {NotificationCard} from "../components/notifications/notificationCard";
 import {SystemCard} from "../components/notifications/systemCard";
+import {useNavigate} from "react-router-dom";
 
 const Notifications = () => {
 
+    const navigate = useNavigate();
     const [option, setOption] = useState(1);
 
     const [chats, setChats] = useState([
@@ -28,7 +30,8 @@ const Notifications = () => {
         <div className='w-full pt-[100px] pb-[80px] flex flex-col items-center overflow-hidden'>
 
             <div className='flex justify-between w-[343px]'>
-                <img src = "/icons/button-menu.svg" className='w-[44px] h-[44px]'/>
+                <img src = "/icons/button-menu.svg" className='w-[44px] h-[44px]' onClick={() => navigate("/profileMenu")}
+                />
                 <img src = "/icons/Button-notifications.svg" className='w-[44px] h-[44px]'/>
             </div>
 

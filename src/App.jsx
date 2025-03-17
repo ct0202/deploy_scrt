@@ -25,6 +25,10 @@ import MeetGoal from "./pages/profile/MeetGoal";
 import Audio from "./pages/profile/Audio";
 import Interests from "./pages/profile/Interests";
 
+import Invite from "./pages/profile/Invite";
+import Support from "./pages/profile/Support";
+
+import Premium from "./pages/Premium";
 
 function App() {
   useEffect(() => {
@@ -65,6 +69,10 @@ function App() {
             <Route path="/meetGoal" element={<MeetGoal />} />
             <Route path="/audio" element={<Audio />} />
             <Route path="/interests" element={<Interests />} />
+            <Route path="/invite" element={<Invite />} />
+            <Route path="/support" element={<Support />} />
+
+            <Route path="/premium" element={<Premium />}/>
           </Route>
         </Routes>
       </div>
