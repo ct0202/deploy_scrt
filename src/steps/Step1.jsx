@@ -9,7 +9,6 @@ function Step1({ setStep }) {
   const navigate = useNavigate();
 
     const [formData, setFormData] = useState(() => {
-        // Загружаем данные из localStorage при монтировании
         return JSON.parse(localStorage.getItem("step1Data")) || {
             name: "",
             gender: null,

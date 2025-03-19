@@ -32,11 +32,19 @@ import Premium from "./pages/Premium";
 
 function App() {
   useEffect(() => {
-    const tg = window.Telegram.WebApp;
-    tg.disableVerticalSwipes();
-    tg.requestFullscreen();
-    window.Telegram.WebApp.ready();
-    window.Telegram.WebApp.expand();
+    // const tg = window.Telegram.WebApp;
+    // tg.disableVerticalSwipes();
+    // tg.requestFullscreen();
+    // window.Telegram.WebApp.ready();
+    // window.Telegram.WebApp.expand();
+    if (0) {
+      console.log("Telegram WebApp detected!");
+      const tg = window.Telegram.WebApp;
+      tg.disableVerticalSwipes();
+      tg.requestFullscreen();
+      tg.ready();
+      tg.expand();
+    }
   }, []);
 
   return (
@@ -60,6 +68,7 @@ function App() {
             <Route path="/StreamFilters" element={<StreamFilters />} />
             <Route path="/textChats" element={<TextChats />} />
             <Route path="/1/profile" element={<Profile />} />
+            <Route path="/1/fullchat" element={<Profile />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/profileMenu" element={<ProfileMenu />} />
 

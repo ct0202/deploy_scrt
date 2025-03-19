@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 function Layout() {
   return (
     <div className="flex flex-col justify-start items-center w-[100%] h-[100%]">
-      <div className="flex flex-col w-full h-full overflow-auto">
+      <div className="flex flex-col w-full h-full overflow-auto mt-[90px]">
         <Outlet/>
       </div>
     </div>
