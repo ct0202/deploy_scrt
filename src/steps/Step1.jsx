@@ -6,6 +6,8 @@ function Step1({ setStep }) {
   console.log("step1");
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedTargetGender, setSelectedTargetGender] = useState(null);
+  const [disabled, setDisabled] = useState(true);
+
   const navigate = useNavigate();
 
     const [formData, setFormData] = useState(() => {
@@ -50,6 +52,18 @@ function Step1({ setStep }) {
             ...prev,
             [e.target.name]: e.target.value,
         }));
+
+        if ( formData.name.trim() &&
+            formData.gender !== null &&
+            formData.targetGender !== null &&
+            formData.birthDate.trim() &&
+            formData.country.trim() &&
+            formData.city.trim()) {
+            setDisabled(false);
+        }
+        else{
+            setDisabled(true);
+        }
     };
 
   return (
@@ -153,6 +167,7 @@ function Step1({ setStep }) {
           <Button
               className={"mt-[37px] mb-[20px]"}
               onclick={() => setStep(2)}
+              disabled={disabled}
           >
               Далее
           </Button>

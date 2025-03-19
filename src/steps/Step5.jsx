@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
-function Step4({ setStep }) {
+function Step5({ setStep }) {
     const navigate = useNavigate();
+    const [disabled, setDisabled] = useState(true);
+
     console.log("step4");
 
     const [selectedOptions, setSelectedOptions] = useState([]);
@@ -25,6 +27,14 @@ function Step4({ setStep }) {
         setSelectedOptions((prev) =>
             prev.includes(optionId) ? prev.filter((id) => id !== optionId) : [...prev, optionId]
         );
+
+        if(selectedOptions.length + 1 >= 5){
+            console.log(selectedOptions.length);
+            setDisabled(false);
+        }
+        else {
+            setDisabled(true);
+        }
     };
 
     const saveDataAndNext = () => {
@@ -37,11 +47,11 @@ function Step4({ setStep }) {
     };
 
     const options = [
-        { id: "Harry Potter", title: "Harry Potter" },
-        { id: "Дети 90-x", title: "Дети 90-x" },
-        { id: "Хеви-метал", title: "Хеви-метал" },
-        { id: "Вечеринки дома", title: "Вечеринки дома" },
-        { id: "Джин с тоником", title: "Джин с тоником" },
+        { id: "Harry Potter"},
+        { id: "Дети 90-x"},
+        { id: "Хеви-метал"},
+        { id: "Вечеринки дома"},
+        { id: "Джин с тоником" },
     ];
 
     return (
@@ -64,12 +74,12 @@ function Step4({ setStep }) {
                                 : "bg-[#022424] border-[1px] border-[#233636]"
                         }`}
                     >
-                        <span>{option.title}</span>
+                        <span>{option.id}</span>
                     </div>
                 ))}
             </div>
             <div className="fixed bottom-[20px]">
-                <Button onclick={saveDataAndNext}>
+                <Button onclick={saveDataAndNext} disabled={disabled}>
                     Начать знакомства
                 </Button>
             </div>
@@ -77,4 +87,4 @@ function Step4({ setStep }) {
     );
 }
 
-export default Step4;
+export default Step5;
