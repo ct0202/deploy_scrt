@@ -5,7 +5,7 @@ function ReportMenu() {
     const [openReport, setOpenReport] = useState(false);
     return (
         <div
-            className="w-[100%] h-[680px] bg-[#043939] flex flex-col justify-start items-center fixed bottom-0 overflow-y-scroll z-20 text-white"
+            className="w-[100%] h-[580px] bg-[#043939] flex flex-col justify-start items-center fixed bottom-0 overflow-y-scroll z-20 text-white"
             style={{borderRadius: "32px 32px 0 0 "}}>
             <div className="bg-[#0b6666] w-[80px] h-[6px] rounded-[20px] mt-[12px] text-[#043939]">
                 .

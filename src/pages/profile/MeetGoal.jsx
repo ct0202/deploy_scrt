@@ -46,7 +46,7 @@ function MeetGoal() {
     return (
         <div className="w-[100vw] flex flex-col justify-center items-center">
         <div className="flex flex-col items-center w-[343px] h-[100%] overflow-x-hidden ">
-            <div className='mt-[80px] mb-[30px] w-full pr-[16px] pl-[16px] flex-row text-[18px] flex justify-between'>
+            <div className='mt-[90px] mb-[30px] w-full pr-[16px] pl-[16px] flex-row text-[18px] flex justify-between'>
                 <span className='text-white' onClick={() => {navigate(-1)}}>Отмена</span>
                 <span className='text-[#A1F69E]' onClick={() => {navigate(-1)}}>Сохранить</span>
             </div>

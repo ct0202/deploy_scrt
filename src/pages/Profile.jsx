@@ -13,13 +13,13 @@ import "./styles/SwiperCustomPagination.css";
 import { INSTRUCTIONS_MEET } from "../constants/instructions";
 import PresentsShop from "../components/shared/PresentsShop";
 import ReportMenu from "../components/shared/ReportMenu";
+import BlockUser from "../components/shared/BlockUser";
 
 function Profile() {
     const [showInstruction, setShowInstruction] = useState(false);
-
     const [openToast, setOpenToast] = useState(false);
     const [reportMenu, setReportMenu] = useState(false);
-
+    const [blockUser, setBlockUser] = useState(false);
     const navigate = useNavigate();
 
     const [swipeStart, setSwipeStart] = useState(0);
@@ -257,7 +257,8 @@ function Profile() {
                             onClick={() => {setReportMenu(true)}}>
                                 <span>Пожаловаться</span><img src='/icons/report.svg'/>
                             </div>
-                            <div className="w-full h-[60px] flex items-center justify-between pl-[16px] pr-[16px]">
+                            <div className="w-full h-[60px] flex items-center justify-between pl-[16px] pr-[16px]"
+                            onClick={() => {setBlockUser(true)}}>
                                 <span>Заблокировать</span><img src='/icons/block_user.svg'/>
                             </div>
                         </div>
@@ -291,6 +292,37 @@ function Profile() {
                                     onTouchEnd={handleTouchEnd}
                                 ></div>
                                 <ReportMenu />
+                            </div>
+                        </div>
+                    )}
+                    {reportMenu && (
+                        <div
+                            className="fixed inset-0 bg-opacity-50 flex justify-center items-end z-20 bg-black/80 backdrop-blur-[10px]"
+                            style={{ pointerEvents: "none" }}
+                            onClick={() => {
+                                setReportMenu(false)
+                            }}
+                        >
+                            <div
+                                className="w-full rounded-t-2xl transform transition-transform duration-300 translate-y-0"
+                                style={{
+                                    transform: `translateY(${swipeDiff}px)`,
+                                    transition: swipeDiff ? "none" : "transform 0.3s ease-out",
+                                    pointerEvents: "auto",
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                                ref={reportMenuRef}
+                                onTouchStart={handleTouchStart}
+                                onTouchMove={handleTouchMove}
+                                onTouchEnd={handleTouchEnd}
+                            >
+                                <div
+                                    className="w-16 h-2 bg-gray-400 rounded-full mx-auto my-3 cursor-pointer"
+                                    onTouchStart={handleTouchStart}
+                                    onTouchMove={handleTouchMove}
+                                    onTouchEnd={handleTouchEnd}
+                                ></div>
+                                <BlockUser />
                             </div>
                         </div>
                     )}
