@@ -29,7 +29,7 @@ const TextChats = () => {
         <div className='w-full pt-[100px] pb-[80px] flex flex-col items-center overflow-hidden'>
             
             <div className='flex justify-between w-[343px]'>
-                <img src = "/icons/button-menu.svg" className='w-[44px] h-[44px]' onClick={() => navigate("/profileMenu")}
+                <img src = "/icons/button-menu-copy.svg" className='w-[44px] h-[44px]' onClick={() => navigate("/profileMenu")}
                 />
                 <img src = "/icons/Button-notifications.svg" className='w-[44px] h-[44px]'
                      onClick={() => {navigate('/notifications')}}
