@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
+import { INTEREST } from "../constants/interests";
+
 function Step5({ setStep }) {
     const navigate = useNavigate();
     const [disabled, setDisabled] = useState(true);
@@ -46,13 +48,7 @@ function Step5({ setStep }) {
         }
     };
 
-    const options = [
-        { id: "Harry Potter"},
-        { id: "Дети 90-x"},
-        { id: "Хеви-метал"},
-        { id: "Вечеринки дома"},
-        { id: "Джин с тоником" },
-    ];
+    const options = INTEREST;
 
     return (
         <div className="flex flex-col items-center w-[343px] h-[100%] overflow-x-hidden">
@@ -62,7 +58,7 @@ function Step5({ setStep }) {
             <h1 className="font-raleway font-light mt-2 text-white text-center text-[16px]">
                 Выберите не менее 5 интересов, чтобы поделиться ими с другими пользователями
             </h1>
-            <div className="flex flex-wrap gap-[8px] mt-[16px]">
+            <div className="flex flex-wrap gap-[8px] mt-[16px] mb-[100px]">
                 {options.map((option) => (
                     <div
                         key={option.id}
