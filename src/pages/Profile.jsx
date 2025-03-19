@@ -257,7 +257,7 @@ function Profile() {
                             onClick={() => {setReportMenu(true)}}>
                                 <span>Пожаловаться</span><img src='/icons/report.svg'/>
                             </div>
-                            <div className="w-full h-auto h-[60px] flex items-center justify-between pl-[16px] pr-[16px]">
+                            <div className="w-full h-[60px] flex items-center justify-between pl-[16px] pr-[16px]">
                                 <span>Заблокировать</span><img src='/icons/block_user.svg'/>
                             </div>
                         </div>

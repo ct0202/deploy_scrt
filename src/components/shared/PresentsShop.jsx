@@ -1,7 +1,9 @@
 import React, {useState} from "react";
 
-function PresentsShop() {
+function PresentsShop({page}) {
     const [option, setOption] = useState(1);
+    const [selectedPresent, setSelectedPresent] = useState(-1);
+
     const [presents, setPresents] = useState([
         {id: 1, name: 'Молочный шоколад', price: '3', bonus: '60'},
         {id: 2, name: 'Вишня', price: '3', bonus: '60'},
@@ -25,7 +27,7 @@ function PresentsShop() {
             <div className="bg-[#0b6666] w-[80px] h-[6px] rounded-[20px] mt-[12px] text-[#043939]">
                 .
             </div>
-            <h1 className="text-[18px] font-semibold ml-1 mr-1 mt-3 text-center font-raleway">Напишите тому, кто вам понравился, не дожидаясь симпатии, за подарок 🎁 Возможно, это ваша судьба ❤</h1>
+            <h1 className="text-[18px] font-semibold ml-1 mr-1 mt-3 text-center font-raleway">{page !== "stream" ? 'Напишите тому, кто вам понравился, не дожидаясь симпатии, за подарок 🎁 Возможно, это ваша судьба ❤' : 'Обозначь себя, сделав человеку приятно. Это шаг к новым знакомствам!'}</h1>
             <div className="mt-4 rounded-[400px] flex flex-row bg-[#FFFFFF1A] h-[44px] w-[343px] justify-center items-center">
                 <div className={`w-[167px] h-[33px] pt-1 pb-1 font-raleway flex justify-center items-center cursor-pointer rounded-[400px] ${option === 1 ? "bg-[#FFFFFF1A] text-[#A1F69E]" : "bg-transparent"} `} onClick={() => setOption(1)}>
                     Магазин подарков
@@ -39,8 +41,8 @@ function PresentsShop() {
                     <div className="w-full grid gap-1.5 grid-cols-3">
 
                         {
-                            presents.map((present) => (
-                                <div className={`relative w-[109px] h-[109px]`}>
+                            presents.map((present, index) => (
+                                <div className={`relative w-[109px] h-[109px]`} onClick={() => {setSelectedPresent(index)}}>
                                     <div>
                                         <div
                                             className="absolute right-0 top-0 mr-1 mt-1 text-[11px] font-raleway flex flex-row items-center">+{present.bonus}
@@ -57,6 +59,12 @@ function PresentsShop() {
                                                  className="w-[11px] h-[11px] mr-0.5"/>{present.price}
                                         </div>
                                     </div>
+                                    { selectedPresent === index ?
+                                    <div className='absolute w-[109px] bottom-0 h-[29px] flex justify-center items-center bg-[#A1F69E] rounded-bl-[13.42px] rounded-br-[13.42px]'>
+                                        <span className='text-black text-center text-[12px]'>Отправить</span>
+                                    </div>
+                                        : null
+                                    }
                                 </div>
                             ))
                         }
