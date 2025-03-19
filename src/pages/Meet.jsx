@@ -26,7 +26,7 @@ function Meet() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const isFirstVisit = localStorage.getItem("firstVisit");
+    // const isFirstVisit = localStorage.getItem("firstVisit");
     const isFirstVisit = false;
 
     if (!isFirstVisit) {
