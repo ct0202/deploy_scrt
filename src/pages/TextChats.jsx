@@ -66,8 +66,8 @@ const TextChats = () => {
                 }
             </div>
 
-            <div className="fixed bottom-2">
-                <Navigation tab={4}/>
+            <div className="fixed bottom-0 z-[6] w-[100%] flex items-center justify-center">
+                <Navigation tab={4} />
             </div>
         </div>
     );

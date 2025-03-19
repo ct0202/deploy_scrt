@@ -56,9 +56,9 @@ function Streams() {
         className="fixed bottom-[112px] right-[24px] "
         alt=""
       />
-      <div className="w-[100%] flex items-center justify-center fixed bottom-0 bg-[#032b2b] ">
-        <Navigation tab={3} />
-      </div>
+        <div className="fixed bottom-0 z-[6] w-[100%] flex items-center justify-center">
+            <Navigation tab={3} />
+        </div>
     </div>
   );
 }
