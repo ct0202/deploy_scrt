@@ -79,19 +79,21 @@ function Meet() {
       <div>
       {showInstruction && (
           <div
-              className={`z-[40] w-[100vw] h-[100vh] pt-[450px] pb-[100px] fixed flex justify-center items-center flex-col bg-black/80 backdrop-blur-[10px] overflow-y-scroll`}
+              className={`z-[40] w-[100vw] h-[100vh] pb-[100px] fixed flex justify-start items-center flex-col bg-black/80 backdrop-blur-[10px] overflow-y-scroll`}
           >
-            <h1 className="font-raleway font-bold mt-6 text-white text-[26px] pt-[40px]">
+            <h1 className="font-raleway font-bold text-white text-[26px] mt-[90px]">
               Инструкция
             </h1>
             <h1 className="font-raleway font-light mt-2 text-white text-center text-[18px]">
               Основные функции и жесты
             </h1>
             <div className="grid grid-cols-1 justify-center flex-wrap items-center gap-[16px] mt-[16px]">
-              {INSTRUCTIONS_MEET.map((ins) => (
+              {INSTRUCTIONS_MEET.map((ins, index) => (
                   <div
                       key={ins.id}
-                      className={`w-[343px] h-[120px] gap-[12px] border-b border-[#6D6D6D] flex text-white`}
+                      className={`w-[343px] pt-[10px] pb-[10px] gap-[12px] border-b ${
+                                index === INSTRUCTIONS_MEET.length - 1 ? "border-none" : "border-[#6D6D6D]"
+                            } flex text-white`}
                   >
                     <div className="h-[89px] flex justify-center items-center">
                       <img src={ins.svg} className="w-[40px] h-[40px]" />
