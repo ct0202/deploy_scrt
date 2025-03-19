@@ -68,7 +68,7 @@ function Step4({ setStep }) {
                     </div>
                 ))}
             </div>
-            <div className="fixed bottom-3">
+            <div className="fixed bottom-[20px]">
                 <Button onclick={saveDataAndNext}>
                     Начать знакомства
                 </Button>

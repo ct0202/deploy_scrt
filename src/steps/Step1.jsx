@@ -53,7 +53,7 @@ function Step1({ setStep }) {
     };
 
   return (
-      <div className="flex flex-col justify-start items-start w-[343px] mb-[50px]">
+      <div className="flex flex-col justify-start items-start w-[343px]">
           <h1 className="font-raleway font-semibold mt-6 text-white text-[20px]">
               Как вас зовут?
           </h1>
@@ -151,7 +151,7 @@ function Step1({ setStep }) {
               className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
           />
           <Button
-              className={"mt-[37px] mb-6"}
+              className={"mt-[37px] mb-[20px]"}
               onclick={() => setStep(2)}
           >
               Далее

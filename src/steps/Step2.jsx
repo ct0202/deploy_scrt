@@ -12,7 +12,7 @@ function Step2({ setStep }) {
       <h1 className="font-raleway font-light mt-2 text-white text-[16px]">
         Минимум одно, а лучше – все четыре
       </h1>
-      <div className={`w-[343] h-[343] mb-[200px] mt-5 grid grid-cols-2 gap-[15px]`}>
+      <div className={`w-[343px] h-[343px] mt-5 grid grid-cols-2 gap-[15px]`}>
         <div
           id="photo1"
           className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] relative flex items-center justify-center cursor-pointer`}
@@ -57,13 +57,13 @@ function Step2({ setStep }) {
           <img src="/icons/camera.svg" />
         </div>
       </div>
-      <h1 className="font-raleway font-light mt-3 text-white text-[16px]">
+      <h1 className="font-raleway font-light mt-[15px] text-white text-[16px]">
         Перетащите, чтобы изменить порядок
       </h1>
-        <div className="fixed bottom-[100px]">
-      <Button onclick={() => setStep(3)}>
-        Далее
-      </Button>
+        <div className="fixed bottom-[20px]">
+          <Button onclick={() => setStep(3)}>
+            Далее
+          </Button>
         </div>
     </div>
   );

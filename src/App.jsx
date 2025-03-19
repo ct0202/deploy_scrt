@@ -37,7 +37,7 @@ function App() {
     // tg.requestFullscreen();
     // window.Telegram.WebApp.ready();
     // window.Telegram.WebApp.expand();
-    if (1) {
+    if (0) {
       console.log("Telegram WebApp detected!");
       const tg = window.Telegram.WebApp;
       tg.disableVerticalSwipes();
