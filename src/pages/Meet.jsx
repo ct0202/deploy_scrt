@@ -27,6 +27,7 @@ function Meet() {
 
   useEffect(() => {
     const isFirstVisit = localStorage.getItem("firstVisit");
+    // const isFirstVisit = false;
 
     if (!isFirstVisit) {
       console.log("Пользователь нажал OK");
@@ -80,7 +81,7 @@ function Meet() {
           <div
               className={`z-[40] w-[100vw] h-[100vh] pt-[450px] pb-[100px] fixed flex justify-center items-center flex-col bg-black/80 backdrop-blur-[10px] overflow-y-scroll`}
           >
-            <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
+            <h1 className="font-raleway font-bold mt-6 text-white text-[26px] pt-[40px]">
               Инструкция
             </h1>
             <h1 className="font-raleway font-light mt-2 text-white text-center text-[18px]">
