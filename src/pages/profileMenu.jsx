@@ -36,7 +36,7 @@ function ProfileMenu() {
     };
 
     return (
-        <div className='w-[100vw] flex flex-col items-center justify-center font-raleway mt-[30px]'>
+        <div className='w-[100vw] flex flex-col items-center justify-center font-raleway mt-[90px]'>
             <div className='flex items-center justify-center relative text-white text-[24px] w-full h-[120px]
             border-b border-[#233636]'>
                 <img src='/icons/Button-close.svg' onClick={() => {navigate(-1)}} className='absolute top-[45px] left-[16px] w-[44px] h-[44px]'/>
