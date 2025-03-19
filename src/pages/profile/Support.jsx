@@ -9,14 +9,14 @@ function Support() {
     return (
         <div className='w-[100vw] flex flex-col items-center justify-center font-raleway overflow-scroll'>
             <div className='flex items-center justify-center relative text-white text-[24px] w-full
-            border-b border-[#233636] relative pb-[10px] pt-[70px]'>
-                <img src='/icons/Button-back.svg' onClick={() => {navigate(-1)}} className='absolute top-[85px] left-[16px] w-[44px] h-[44px]'/>
-                <p className='mt-5 ml-8'>Техническая поддержка</p>
+            border-b border-[#233636] relative pb-[10px] pt-[90px]'>
+                <img src='/icons/Button-back.svg' onClick={() => {navigate(-1)}} className='absolute top-[105px] left-[16px] w-[44px] h-[44px]'/>
+                <p className='mt-5 ml-10'>Техническая поддержка</p>
             </div>
             {!sent ?
                 <>
-            <p className='pl-[16px] pr-[16px] text-white text-[20px] mt-[12px]'>Напишите, пожалуйста, с какой проблемой вы столкнулись, и мы вам поможем</p>
-            <textarea placeholder='Опишите сложившуюся ситуацию' className='rounded-[8px] h-[240px] w-[343px] pl-1 pt-2
+            <p className='pl-[16px] pr-[16px] text-white text-[20px] mt-[12px] mb-[20px]'>Напишите, пожалуйста, с какой проблемой вы столкнулись, и мы вам поможем</p>
+            <textarea placeholder='Опишите сложившуюся ситуацию' className='rounded-[8px] h-[240px] w-[343px] pl-[12px] pt-[15px]
             border border-[#233636] bg-[#022424] text-white'/>
             <div className='text-black fixed bottom-[20px]'>
                 <Button onclick={() => {setSent(true)}}>

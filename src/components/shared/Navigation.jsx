@@ -71,7 +71,7 @@ export const Navigation = ({tab}) => {
               }`}
               onClick={() => {
                 setMenuAction(5);
-                  navigate("/Premium");
+                  navigate("/mytaidea");
               }}
             >
               <img src="/icons/myta-coin.svg" className="w-[24px] h-[24px]" />

@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import PresentsShop from "../components/shared/PresentsShop";
 import React, {useRef, useState} from "react";
+import Policy from "../components/shared/Policy";
 
 function ProfileMenu() {
     const navigate = useNavigate();
@@ -35,6 +36,34 @@ function ProfileMenu() {
         }
     };
 
+
+    const [showPolicy, setShowPolicy] = useState(false);
+
+    const handlePolicyClick = () => {
+        setShowPolicy(true);
+    };
+
+    const closePolicy = () => {
+        setShowPolicy(false);
+    };
+
+    const [swipeStartP, setSwipeStartP] = useState(0);
+    const policyRef = useRef(null);
+
+    const handleTouchStartP = (e) => {
+        setSwipeStart(e.touches[0].clientY);
+    };
+
+    const handleTouchMoveP = (e) => {
+        const swipeEnd = e.touches[0].clientY;
+        const diff = swipeEnd - swipeStart;
+
+        // Если свайпнули вниз на 100px — закрываем
+        if (diff > 100) {
+            closePolicy();
+        }
+    };
+
     return (
         <div className='w-[100vw] flex flex-col items-center justify-center font-raleway mt-[90px]'>
             <div className='flex items-center justify-center relative text-white text-[24px] w-full h-[120px]
@@ -42,12 +71,12 @@ function ProfileMenu() {
                 <img src='/icons/Button-close.svg' onClick={() => {navigate(-1)}} className='absolute top-[45px] left-[16px] w-[44px] h-[44px]'/>
                 <p className='mt-5'>Меню</p>
             </div>
-            <img src='/icons/premium-connect-banner.svg' className='w-[343px] mt-[20px]'/>
+            <img src='/icons/premium-connect-banner.png' className='w-[343px] mt-[20px]' onClick={() => {navigate('/premium')}}/>
             <div className='flex flex-row text-white w-full ml-[48px] mt-[30px]'>
                 <img src='/mock/user_5/user_5_avatar_2.svg' className='w-[64px] h-[64px] mr-[20px]'/>
                 <div className='flex flex-col'>
                     <p className='text-[18px] font-medium'>Андрей, 35 лет</p>
-                    <div className='flex flex-row mt-[10px] gap-[30px]'>
+                    <div className='flex flex-row mt-[2px] gap-[30px]'>
                         <div className='flex flex-col '>
                             <p className='opacity-50'>Монеты:</p>
                             <div className='flex flex-row'><img src='/icons/coin.svg' className='mr-[4px]'/> 100</div>
@@ -83,8 +112,8 @@ function ProfileMenu() {
                 </div>
             </div>
             <div className='absolute bottom-[30px] left-[20px] flex flex-col gap-[15px] text-white opacity-70'>
-                <p>Политика конфиденциальности</p>
-                <p>Удалить аккаунт</p>
+                <p onClick={() => setShowPolicy(true)}>Политика конфиденциальности</p>
+                <p onClick={() => navigate('/deleteprofile')}>Удалить аккаунт</p>
             </div>
             {presentsShop && (
                 <div
@@ -115,6 +144,23 @@ function ProfileMenu() {
                             onTouchEnd={handleTouchEnd}
                         ></div>
                         <PresentsShop />
+                    </div>
+                </div>
+            )}
+
+            {showPolicy && (
+                <div
+                    className="fixed inset-0 bg-opacity-50 flex justify-center items-end z-20"
+                    onClick={closePolicy}
+                >
+                    <div
+                        className="w-full rounded-t-2xl transform transition-transform duration-300 translate-y-0"
+                        onClick={(e) => e.stopPropagation()}
+                        ref={policyRef}
+                        onTouchStart={handleTouchStartP}
+                        onTouchMove={handleTouchMoveP}
+                    >
+                        <Policy />
                     </div>
                 </div>
             )}

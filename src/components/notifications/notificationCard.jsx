@@ -1,9 +1,9 @@
 import {useNavigate} from "react-router-dom";
 
-export const NotificationCard = ({id, img, name, age, type, status})  => {
+export const NotificationCard = ({id, img, name, age, type, status, superlike})  => {
     const navigate = useNavigate();
     return (
-        <div className="text-white w-full flex flex-row h-[84px] items-center font-raleway">
+        <div className={`text-white w-full flex flex-row h-[84px] items-center font-raleway`} onClick={ superlike && (() => {navigate('/1/reaction')})} >
             <img src={img} alt="user avatar" className='w-[48px] h-[48px] rounded-[50%] ml-[16px] mr-[16px]' onClick={() => {navigate(`/${id}/profile`)}}/>
             <div className="flex flex-col w-[220px] gap-1">
                 <p className='text-[14px] font-normal '>{type}</p>

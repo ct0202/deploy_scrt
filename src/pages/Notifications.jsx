@@ -12,7 +12,7 @@ const Notifications = () => {
 
     const [chats, setChats] = useState([
         { id: 1, img: '/mock/stream_chat_user_avatar.png',
-            name: 'Наташа', age: '45', type: 'Вам поставили СУПЕРЛАЙК!', status: 'new' },
+            name: 'Наташа', age: '45', type: 'Вам поставили СУПЕРЛАЙК!', status: 'new', superlike: true},
         { id: 2, img: '/mock/stream_chat_user_avatar.png',
             name: 'Наташа', age: '45', type: 'У вас взаимная симпатия с', status: 'new' },
         { id: 3, img: '/mock/stream_chat_user_avatar.png',
@@ -30,7 +30,7 @@ const Notifications = () => {
         <div className='w-full pt-[100px] pb-[80px] flex flex-col items-center overflow-hidden'>
 
             <div className='flex justify-between w-[343px]'>
-                <img src = "/icons/button-menu.svg" className='w-[44px] h-[44px]' onClick={() => navigate("/profileMenu")}
+                <img src = "/icons/Button-menu.svg" className='w-[44px] h-[44px]' onClick={() => navigate("/profileMenu")}
                 />
                 <img src = "/icons/Button-notifications.svg" className='w-[44px] h-[44px]'/>
             </div>
@@ -72,6 +72,7 @@ const Notifications = () => {
                                         age={chat.age}
                                         type={chat.type}
                                         status={chat.status}
+                                        superlike={chat.superlike}
                                     />
                                 </div>
                             ))

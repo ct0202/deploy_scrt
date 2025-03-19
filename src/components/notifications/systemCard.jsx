@@ -6,7 +6,7 @@ export const SystemCard = ({title, desc, status})  => {
         <div className="text-white w-full flex flex-row h-[200px] items-center font-raleway relative">
             <div className="flex flex-col w-full gap-1 ml-[16px]">
                 <p className='text-[16px] font-semibold leading-[24px]'>{title}</p>
-                <p className='text-[14px] font-normal '>{desc}</p>
+                <p className='text-[14px] font-normal w-[343px]'>{desc}</p>
             </div>
             <div className="absolute top-[40px] right-1 flex flex-col justify-center w-[100px] items-end mr-3">
                 {status === 'new' ?

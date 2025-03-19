@@ -24,11 +24,15 @@ import Main from "./pages/profile/Main";
 import MeetGoal from "./pages/profile/MeetGoal";
 import Audio from "./pages/profile/Audio";
 import Interests from "./pages/profile/Interests";
+import DeleteProfile from "./pages/profile/DeleteProfile";
+import ConfirmDeleteProfile from "./pages/profile/ConfirmDeleteProfile";
 
 import Invite from "./pages/profile/Invite";
 import Support from "./pages/profile/Support";
+import ReactOnUser from "./pages/ReactOnUser";
 
 import Premium from "./pages/Premium";
+import MytaIdea from "./pages/profile/MytaIdea";
 
 function App() {
   useEffect(() => {
@@ -67,6 +71,7 @@ function App() {
             <Route path="/StreamFilters" element={<StreamFilters />} />
             <Route path="/textChats" element={<TextChats />} />
             <Route path="/1/profile" element={<Profile />} />
+            <Route path="/1/reaction" element={<ReactOnUser />} />
             <Route path="/1/fullchat" element={<Profile />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/profileMenu" element={<ProfileMenu />} />
@@ -79,8 +84,12 @@ function App() {
             <Route path="/interests" element={<Interests />} />
             <Route path="/invite" element={<Invite />} />
             <Route path="/support" element={<Support />} />
+            <Route path="/deleteprofile" element={<DeleteProfile />} />
+            <Route path="/confirmdeleteprofile" element={<ConfirmDeleteProfile />} />
+
 
             <Route path="/premium" element={<Premium />}/>
+            <Route path="/mytaidea" element={<MytaIdea/>} />
           </Route>
         </Routes>
       </div>
