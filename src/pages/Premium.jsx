@@ -1,9 +1,13 @@
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
+import {Button} from "../components/Button";
 
 function Premium() {
     const navigate = useNavigate();
-    const [choice, setChoice] = useState('2');
+    const [choice, setChoice] = useState(2);
+
+    const price = choice === 1 ? '4.49' : choice === 2 ? '2.26' : '1.43';
+
 
     return (
         <div className='w-full pt-[90px] h-[12000px] bg-[#010D0D] overflow-scroll flex flex-col items-center justify-start relative'>
@@ -55,10 +59,14 @@ function Premium() {
             </div>
 
             <img src='/icons/Group%2048095574.svg' className='absolute top-[560px]'/>
-            <div className='absolute top-[1120px] pb-[100px]'>
+            <div className='absolute top-[1120px] pb-[100px] w-full flex items-center justify-center'>
                 <img src='/icons/Text.svg' />
             </div>
-            <img src='/icons/premium-button-main.svg' className='fixed bottom-[30px]'/>
+            <div className='fixed bottom-[30px]'>
+                <Button>
+                    Подписаться за {price} $ в неделю
+                </Button>
+            </div>
         </div>
     );
 }

@@ -19,7 +19,7 @@ function MytaIdea() {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center w-[100%] h-[auto] pt-[70px] relative">
+        <div className="flex flex-col justify-center items-center w-[100%] h-[auto] mt-[90px] relative">
             <div
                 className="w-[100%] h-[81px] flex justify-center items-center"
                 style={{ borderBottom: "1px solid #233636" }}
@@ -28,7 +28,7 @@ function MytaIdea() {
                 <img
                     src="/icons/Button-back.svg"
                     alt=""
-                    className="w-[44px] absolute top-[96px] left-[16px]"
+                    className="w-[44px] absolute top-[20px] left-[16px]"
                 />
                 <img src="/logo1.svg" className="w-[134px] my-[19px]" alt="" />
             </div>
@@ -159,7 +159,7 @@ function MytaIdea() {
                     </div>
                 )
             }
-            <div className='h-[64px] mb-[30px] mt-[20px]'>
+            <div className='h-[64px] mb-[60px] mt-[20px]'>
                 <Button
                     onclick={() => setTonInput(true)}
                 >
