@@ -295,7 +295,7 @@ function Profile() {
                             </div>
                         </div>
                     )}
-                    {reportMenu && (
+                    {blockUser && (
                         <div
                             className="fixed inset-0 bg-opacity-50 flex justify-center items-end z-20 bg-black/80 backdrop-blur-[10px]"
                             style={{ pointerEvents: "none" }}

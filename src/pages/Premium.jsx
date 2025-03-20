@@ -59,6 +59,7 @@ function Premium() {
             </div>
 
             <img src='/icons/Group%2048095574.svg' className='absolute top-[560px]'/>
+            <span className='absolute top-[1066px] right-[37px] bg-[#010D0D]'>🎁</span>
             <div className='absolute top-[1120px] pb-[100px] w-full flex items-center justify-center'>
                 <img src='/icons/Text.svg' />
             </div>

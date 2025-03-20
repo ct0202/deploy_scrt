@@ -178,8 +178,8 @@ function Chat() {
     };
 
     useEffect(() => {
-        // const isFirstVisitChat = localStorage.getItem("firstVisitChat");
-        const isFirstVisitChat = false;
+        const isFirstVisitChat = localStorage.getItem("firstVisitChat2");
+        // const isFirstVisitChat = false;
         if (!isFirstVisitChat) {
             console.log("Пользователь нажал OK");
             setShowInstruction(true);
@@ -193,7 +193,7 @@ function Chat() {
                 }, 900);
             }, 3000);
 
-            localStorage.setItem("firstVisitChat", "true");
+            localStorage.setItem("firstVisitChat2", "true");
         }
     }, []);
 

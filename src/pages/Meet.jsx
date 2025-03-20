@@ -26,8 +26,8 @@ function Meet() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // const isFirstVisit = localStorage.getItem("firstVisit");
-    const isFirstVisit = false;
+    const isFirstVisit = localStorage.getItem("firstVisit3");
+    // const isFirstVisit = false;
 
     if (!isFirstVisit) {
       console.log("Пользователь нажал OK");
@@ -42,7 +42,7 @@ function Meet() {
         }, 900);
       }, 3000);
 
-      localStorage.setItem("firstVisit", "true");
+      localStorage.setItem("firstVisit3", "true");
     }
   }, []);
 

@@ -65,7 +65,7 @@ function ProfileMenu() {
     };
 
     return (
-        <div className='w-[100vw] flex flex-col items-center justify-center font-raleway mt-[90px]'>
+        <div className='w-[100vw] flex flex-col items-center justify-center font-raleway mt-[30px]'>
             <div className='flex items-center justify-center relative text-white text-[24px] w-full h-[120px]
             border-b border-[#233636]'>
                 <img src='/icons/Button-close.svg' onClick={() => {navigate(-1)}} className='absolute top-[45px] left-[16px] w-[44px] h-[44px]'/>
@@ -111,9 +111,9 @@ function ProfileMenu() {
                     Техническая поддержка
                 </div>
             </div>
-            <div className='absolute bottom-[30px] left-[20px] flex flex-col gap-[15px] text-white opacity-70'>
+            <div className='absolute bottom-[0px] left-[20px] flex flex-col gap-[15px] text-white opacity-70'>
                 <p onClick={() => setShowPolicy(true)}>Политика конфиденциальности</p>
-                <p className='pb-[60px]' onClick={() => navigate('/deleteprofile')}>Удалить аккаунт</p>
+                <p className='pb-[20px]' onClick={() => navigate('/deleteprofile')}>Удалить аккаунт</p>
             </div>
             {presentsShop && (
                 <div

@@ -36,7 +36,7 @@ const TextChats = () => {
                 />
             </div>
 
-            <div className='relative w-full h-[64px]'>
+            <div className='relative w-full flex justify-center h-[64px]'>
 
                 <input type = 'text'
                        placeholder='Поиск'
@@ -48,7 +48,7 @@ const TextChats = () => {
                                   pl-12
                                   text-white'/>
 
-                <img src = '/icons/search.svg' className='absolute top-[37px] left-[14px] w-[20px] h-[20px]'/>
+                <img src = '/icons/search.svg' className='absolute top-[37px] left-[30px] w-[20px] h-[20px]'/>
 
             </div>
 
