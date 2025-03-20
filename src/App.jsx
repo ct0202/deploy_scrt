@@ -41,7 +41,7 @@ function App() {
     // tg.requestFullscreen();
     // window.Telegram.WebApp.ready();
     // window.Telegram.WebApp.expand();
-    if (1) {
+    if (0) {
       const tg = window.Telegram.WebApp;
       tg.disableVerticalSwipes();
       tg.requestFullscreen();
@@ -54,7 +54,7 @@ function App() {
   return (
     <FiltersProvider>
       <div
-        className="App flex flex-col justify-start items-center w-[100%] h-[100%] [background:linear-gradient(180deg,rgb(1,13,13)_0%,rgb(3.01,42.5,42.5)_100%)] bg-[100%_100%]"
+        className="App flex flex-col justify-start items-center w-[100%] h-[100%] [background:linear-gradient(180deg,rgb(1,13,13)_0%,rgb(3.01,42.5,42.5)_100%)] bg-[100%_100%] bg-repeat-y bg-cover"
         style={{ height: "100vh" }}
       >
         <ScrollBlocker />
