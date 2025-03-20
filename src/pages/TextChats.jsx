@@ -26,7 +26,7 @@ const TextChats = () => {
     ]);
 
     return(
-        <div className='w-full pt-[100px] pb-[80px] flex flex-col items-center overflow-hidden'>
+        <div className='w-[343px] pt-[100px] pb-[80px] flex flex-col items-center overflow-hidden'>
             
             <div className='flex justify-between w-[343px]'>
                 <img src = "/icons/Button-menu.svg" className='w-[44px] h-[44px]' onClick={() => navigate("/profileMenu")}
@@ -36,7 +36,7 @@ const TextChats = () => {
                 />
             </div>
 
-            <div className='relative w-[343px] h-[64px]'>
+            <div className='relative w-full h-[64px]'>
 
                 <input type = 'text'
                        placeholder='Поиск'
