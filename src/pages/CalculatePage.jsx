@@ -77,7 +77,7 @@ function CalculatePage() {
     // const userId = filters?.userId
     // axios.post(`/updateUserInfo/${userId}`, { about: filters?.about })
     // .then(res => res.data)
-    // .then(data => {
+    // .then(data => {`
     //   if(data){
     //     console.log(data);
         
@@ -89,9 +89,9 @@ function CalculatePage() {
   }
 
   return (
-    <div className='flex flex-col justify-center items-center w-[100%] pt-[230px] h-screen overflow-y-auto overflow-x-hidden'>
-      <div className="flex flex-col justify-center items-start w-[343px] mt-[160px]">
-        <ProgressBar 
+    <div className={`flex flex-col justify-center items-center w-[100%] ${step === 1 ? 'mt-[90px]' : ''} h-screen overflow-y-auto overflow-x-hidden`}>
+      <div className={`flex flex-col justify-start items-center w-[343px] mt-[90px]`} >
+        <ProgressBar
           current={step} 
           max={6} 
           onArrowClick={step >= 2 ? () => setStep((prev) => prev - 1) : () => {navigate(-1)}}
