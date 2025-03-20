@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {INTEREST} from "../../constants/interests";
 
 function Interests() {
     const navigate = useNavigate();
@@ -34,13 +35,7 @@ function Interests() {
         }
     };
 
-    const options = [
-        { id: "Harry Potter", title: "Harry Potter" },
-        { id: "Дети 90-x", title: "Дети 90-x" },
-        { id: "Хеви-метал", title: "Хеви-метал" },
-        { id: "Вечеринки дома", title: "Вечеринки дома" },
-        { id: "Джин с тоником", title: "Джин с тоником" },
-    ];
+    const options = INTEREST;
 
     return (
         <div className="w-[100vw] flex items-center justify-center flex-col">
