@@ -21,6 +21,13 @@ function Step1({ setStep }) {
         };
     });
 
+    useEffect(() => {
+        const storedData = localStorage.getItem("step1Data");
+        if (storedData) {
+            setDisabled(false);
+        }
+    }, []);
+
   const genders = [
     { id: "male", label: "Мужчина", emoji: "👱🏻‍♂️" },
     { id: "female", label: "Женщина", emoji: "👱🏻‍♀️" }
@@ -48,22 +55,31 @@ function Step1({ setStep }) {
     }, [formData]);
 
     const handleChange = (e) => {
-        setFormData((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value,
-        }));
+        const {name, value} = e.target;
 
-        if ( formData.name.trim() &&
-            formData.gender !== null &&
-            formData.targetGender !== null &&
-            formData.birthDate.trim() &&
-            formData.country.trim() &&
-            formData.city.trim()) {
-            setDisabled(false);
-        }
-        else{
-            setDisabled(true);
-        }
+        setFormData((prev) => {
+            const newFormData = {
+                ...prev,
+                [name]: value,
+            };
+
+            // Проверяем, заполнены ли все поля
+            if (
+                newFormData.name.trim() &&
+                newFormData.gender !== null &&
+                newFormData.targetGender !== null &&
+                newFormData.birthDate.trim() &&
+                newFormData.country.trim() &&
+                newFormData.city.trim() &&
+                newFormData.city.length > 0
+            ) {
+                setDisabled(false);
+            } else {
+                setDisabled(true);
+            }
+
+            return newFormData;
+        });
     };
 
   return (
