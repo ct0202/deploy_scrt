@@ -47,7 +47,7 @@ function App() {
       tg.requestFullscreen();
       tg.ready();
       tg.expand();
-      alert('9');
+      alert('10');
     }
   }, []);
 
