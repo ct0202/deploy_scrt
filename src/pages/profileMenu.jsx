@@ -113,7 +113,7 @@ function ProfileMenu() {
             </div>
             <div className='absolute bottom-[30px] left-[20px] flex flex-col gap-[15px] text-white opacity-70'>
                 <p onClick={() => setShowPolicy(true)}>Политика конфиденциальности</p>
-                <p onClick={() => navigate('/deleteprofile')}>Удалить аккаунт</p>
+                <p className='pb-[60px]' onClick={() => navigate('/deleteprofile')}>Удалить аккаунт</p>
             </div>
             {presentsShop && (
                 <div
