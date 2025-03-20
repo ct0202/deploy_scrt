@@ -9,7 +9,20 @@ function MytaIdea() {
     const [tonString, setTonString] = useState("");
     const [tonStringCorrect, setTonStringCorrect] = useState(false);
 
+    const inputRef = useRef(null);
 
+    useEffect(() => {
+        const handleFocus = () => {
+            setTimeout(() => {
+                inputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+            }, 300);
+        };
+
+        const input = inputRef.current;
+        input?.addEventListener("focus", handleFocus);
+
+        return () => input?.removeEventListener("focus", handleFocus);
+    }, []);
 
     const handleTonString = (e) => {
         setTonString(e.target.value);
@@ -147,6 +160,7 @@ function MytaIdea() {
                             Ваш TON кошелек:
                         </h1>
                         <input
+                            ref={inputRef}
                             type="text"
                             name="ton"
                             value={tonString}
