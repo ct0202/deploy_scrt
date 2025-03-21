@@ -11,12 +11,12 @@ function Premium() {
 
     return (
         <div className='w-full flex items-center justify-center bg-[#010D0D]'>
-            <div className='w-[343px] pt-[90px] overflow-scroll flex flex-col items-center justify-start relative'>
-                <img src='/icons/premium_people.svg' />
-                <img src='/icons/Rectangle%2074.svg' className='absolute' />
+            <div className='w-full pt-[90px] overflow-scroll flex flex-col items-center justify-start relative'>
+                <img src='/icons/premium_people.svg' className='w-full' />
+                <img src='/icons/Rectangle%2074.svg' className='absolute w-full' />
                 <img src='/icons/Button-close.svg' className='absolute top-[130px] right-[16px]' onClick={() => {navigate(-1)}} />
-                <img src='/icons/laurel-wreath_3217720%201.svg' className='absolute top-[190px] right-[150px]'/>
-                <p className='font-raleway text-[40px] font-bold absolute top-[250px] text-white'>MYTA PREMIUM</p>
+                <img src='/icons/laurel-wreath_3217720%201.svg' className='absolute top-[190px] right-55%'/>
+                <p className='font-raleway text-[40px] font-bold absolute top-[250px] w-full text-center text-white'>MYTA PREMIUM</p>
                 <p className='font-raleway text-[16px] font-medium text-white top-[310px] absolute text-center w-[254px]'>C Premium вы найдёте партнёра в два раза быстрее</p>
 
 
