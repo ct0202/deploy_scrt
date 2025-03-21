@@ -38,17 +38,19 @@ const TextChats = () => {
 
             <div className='relative w-full flex justify-center h-[64px]'>
 
-                <input type = 'text'
-                       placeholder='Поиск'
-                       className='w-[343px] h-[64px]
-                                  mt-4 rounded-[8px]
-                                  bg-[#022424]
-                                  border-[1px]
-                                  border-[#233636]
-                                  pl-12
-                                  text-white'/>
+                <div className='w-[343px] relative'>
+                    <input type = 'text'
+                           placeholder='Поиск'
+                           className='w-[343px] h-[64px]
+                                      mt-4 rounded-[8px]
+                                      bg-[#022424]
+                                      border-[1px]
+                                      border-[#233636]
+                                      pl-12
+                                      text-white'/>
 
-                <img src = '/icons/search.svg' className='absolute top-[37px] left-[30px] w-[20px] h-[20px]'/>
+                    <img src = '/icons/search.svg' className='absolute top-[37px] left-[15px] w-[20px] h-[20px]'/>
+                </div>
 
             </div>
 
