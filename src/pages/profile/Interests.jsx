@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import {INTEREST} from "../../constants/interests";
 
 function Interests() {
@@ -35,8 +35,6 @@ function Interests() {
         }
     };
 
-    const options = INTEREST;
-
     return (
         <div className="w-[100vw] flex items-center justify-center flex-col">
             <div className='mt-[80px] mb-[30px] w-full pr-[16px] pl-[16px] flex-row text-[18px] flex justify-between'>
@@ -51,18 +49,18 @@ function Interests() {
                 Выберите не менее 5 интересов, чтобы поделиться ими с другими пользователями
             </h1>
             <div className="flex flex-wrap gap-[8px] mt-[16px]">
-                {options.map((option) => (
+                {INTEREST.map((option) => (
                     <div
                         key={option.id}
                         onClick={() => addOption(option.id)}
-                        className={`w-auto p-3 h-[48px] rounded-[400px] flex justify-center items-center text-[18px] font-light text-white gap-[4   px] cursor-pointer transition-all
+                        className={`w-auto ${ option.id === "Права людей с ограниченными возможностями" ? "text-[15px] p-2" :"p-3 text-[18px]"} h-[48px] rounded-[400px] flex justify-center items-center font-light text-white cursor-pointer transition-all
               ${
                             selectedOptions.includes(option.id)
                                 ? "bg-[#043939] border-[1.5px] border-[#a1f69e]"
                                 : "bg-[#022424] border-[1px] border-[#233636]"
                         }`}
                     >
-                        <span>{option.title}</span>
+                        <span>{option.id}</span>
                     </div>
                 ))}
             </div>

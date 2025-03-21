@@ -63,7 +63,7 @@ function Step5({ setStep }) {
                     <div
                         key={option.id}
                         onClick={() => addOption(option.id)}
-                        className={`w-auto p-3 h-[48px] rounded-[400px] flex justify-center items-center text-[18px] font-light text-white gap-[4   px] cursor-pointer transition-all
+                        className={`w-auto ${ option.id === "Права людей с ограниченными возможностями" ? "text-[15px] p-2" :"p-3 text-[18px]"} h-[48px] rounded-[400px] flex justify-center items-center font-light text-white cursor-pointer transition-all
               ${
                             selectedOptions.includes(option.id)
                                 ? "bg-[#043939] border-[1.5px] border-[#a1f69e]"
