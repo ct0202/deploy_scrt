@@ -33,6 +33,7 @@ import ReactOnUser from "./pages/ReactOnUser";
 
 import Premium from "./pages/Premium";
 import MytaIdea from "./pages/profile/MytaIdea";
+import MakePayment from "./pages/MakePayment";
 
 function App() {
   useEffect(() => {
@@ -47,7 +48,7 @@ function App() {
       tg.requestFullscreen();
       tg.ready();
       tg.expand();
-      alert('30');
+      alert('31');
     }
   }, []);
 
@@ -87,6 +88,7 @@ function App() {
             <Route path="/support" element={<Support />} />
             <Route path="/deleteprofile" element={<DeleteProfile />} />
             <Route path="/confirmdeleteprofile" element={<ConfirmDeleteProfile />} />
+            <Route path="/makepayment" element={<MakePayment />} />
 
 
             <Route path="/premium" element={<Premium />}/>

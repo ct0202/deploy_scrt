@@ -19,18 +19,23 @@ function ProfileMenu() {
 
     return (
         <div className='w-[100vw] h-[100%] flex flex-col items-center justify-center font-raleway overflow-scroll pt-[90px]'>
-            <div className='flex items-center justify-center relative text-white text-[24px] w-full
-            border-b border-[#233636] relative pb-[10px] pt-[90px]'>
-                <img src='/icons/Button-back.svg' onClick={() => {navigate(-1)}} className='absolute top-[105px] left-[16px] w-[44px] h-[44px]'/>
-                <p className='mt-5'>Пригласить</p>
+            <div className='flex items-center justify-center relative text-white text-[24px] w-full pb-[26px] pt-[26px] mt-[140px]
+            border-b border-[#233636]'>
+                <div className="w-[343px] flex justify-center items-center relative">
+                    <img src='/icons/Button-back.svg' onClick={() => {
+                        navigate(-1)
+                    }} className='absolute left-0 w-[44px] h-[44px]'/>
+                    <p className=''>Пригласить</p>
+                </div>
             </div>
             <img src='/icons/invite_info_block.svg' className='mt-[10px]'/>
             <img src='/icons/invite-info-block-2.svg' className='mt-[10px]'/>
             <div className='mb-[120px]'>
-            <div className='w-[343px] border border-[#233636] p-[15px] text-white rounded-[24px] h-[138px] flex flex-col mt-[10px]'>
-                <p className='w-full text-center text-[20px] font-semibold'>Ссылка приглашение</p>
-                <div className='flex flex-row w-full mt-[15px]'>
-                    <p className='w-[260px] text-[16px] text-left'>https://invite.fake123/cominvite/<br/>fake123.com</p>
+                <div
+                    className='w-[343px] border border-[#233636] p-[15px] text-white rounded-[24px] h-[138px] flex flex-col mt-[10px]'>
+                    <p className='w-full text-center text-[20px] font-semibold'>Ссылка приглашение</p>
+                    <div className='flex flex-row w-full mt-[15px]'>
+                        <p className='w-[260px] text-[16px] text-left'>https://invite.fake123/cominvite/<br/>fake123.com</p>
                     <img src='/icons/Button-copy.svg' onClick={handleCopy}/>
                 </div>
             </div>

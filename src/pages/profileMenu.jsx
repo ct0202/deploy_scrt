@@ -91,7 +91,7 @@ function ProfileMenu() {
                 </div>
             </div>
             <div className='w-full flex items-center justify-center'>
-                <div className='bg-[#A1F69E1A] h-[44px] rounded-[400px] w-[343px] text-[#A1F69E] text-[18px] flex flex-row items-center justify-center mt-[10px]'>
+                <div className='bg-[#A1F69E1A] h-[44px] rounded-[400px] w-[343px] text-[#A1F69E] text-[18px] flex flex-row items-center justify-center mt-[10px]' onClick={()=>navigate('/makepayment')}>
                         Пополнить баланс <img src='/icons/coin.svg' className='ml-2 w-[20px] h-[20px]'/>
                 </div>
             </div>

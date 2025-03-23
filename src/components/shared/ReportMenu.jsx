@@ -52,7 +52,7 @@ function ReportMenu() {
                         Заблокировать
                     </Button>
                 </div>
-                <div className='text-[#FFFFFF] opacity-50 mt-[20px]' onClick={() => {setOpenReport(false)}}>Отмена</div>
+                {/*<div className='text-[#FFFFFF] opacity-50 mt-[20px]' onClick={() => {setReportMenu(false)}}>Отмена</div>*/}
             </div>
             }
         </div>
