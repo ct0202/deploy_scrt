@@ -42,13 +42,13 @@ function App() {
     // tg.requestFullscreen();
     // window.Telegram.WebApp.ready();
     // window.Telegram.WebApp.expand();
-    if (1) {
+    if (0) {
       const tg = window.Telegram.WebApp;
       tg.disableVerticalSwipes();
       tg.requestFullscreen();
       tg.ready();
       tg.expand();
-      alert('33');
+      alert('35');
     }
   }, []);
 
