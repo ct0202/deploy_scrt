@@ -25,6 +25,7 @@ function Profile() {
     const [swipeStart, setSwipeStart] = useState(0);
     const [swipeDiff, setSwipeDiff] = useState(0);
     const reportMenuRef = useRef(null);
+    const blockUserRef = useRef(null);
 
     const handleTouchStart = (e) => {
         setSwipeStart(e.touches[0].clientY);
@@ -311,7 +312,7 @@ function Profile() {
                                     pointerEvents: "auto",
                                 }}
                                 onClick={(e) => e.stopPropagation()}
-                                ref={reportMenuRef}
+                                ref={blockUserRef}
                                 onTouchStart={handleTouchStart}
                                 onTouchMove={handleTouchMove}
                                 onTouchEnd={handleTouchEnd}

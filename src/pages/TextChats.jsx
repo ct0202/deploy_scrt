@@ -51,12 +51,11 @@ const TextChats = () => {
 
                     <img src = '/icons/search.svg' className='absolute top-[37px] left-[15px] w-[20px] h-[20px]'/>
                 </div>
-
             </div>
 
             <div className='mt-[20px] overflow-scroll'>
                 { chats.length > 0 ? chats.map((chat, index) => (
-                    <div key={index} className="border-b border-[#233636] w-[100vw]">
+                    <div key={index} className="border-b border-[#233636] w-[100vw] flex justify-center">
                         <ChatCard id={chat.id} img={chat.img} name={chat.name} age={chat.age} lMsg={chat.lMsg} key={chat.id} time={chat.time} count={chat.count} />
                     </div>
                 )) :
