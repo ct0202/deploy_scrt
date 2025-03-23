@@ -7,7 +7,7 @@ function MakePayment() {
 
     return (
         <div className="flex flex-col justify-start items-center w-[100%] font-raleway">
-            <div className='flex items-center justify-center relative text-white text-[24px] w-full pb-[26px] pt-[26px]
+            <div className='flex items-center justify-center relative text-white text-[24px] w-full mt-[100px] pb-[26px] pt-[26px]
             border-b border-[#233636]'>
                 <div className="w-[343px] flex justify-center items-center relative">
                     <img src='/icons/Button-back.svg' onClick={() => {
