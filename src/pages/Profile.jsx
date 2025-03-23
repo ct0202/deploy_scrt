@@ -47,6 +47,7 @@ function Profile() {
     const handleTouchEnd = () => {
         if (swipeDiff > 20) {
             setReportMenu(false);
+            setBlockUser(false);
         } else {
             setSwipeDiff(0);
         }
