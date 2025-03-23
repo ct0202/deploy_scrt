@@ -328,6 +328,10 @@ function Profile() {
                                                 </div>
                                                 <div className='border-b border-[#6D6D6D] h-[60px] flex items-center'
                                                      onClick={() => setOpenReport(!openReport)}>
+                                                    <span>Оскорбления</span>
+                                                </div>
+                                                <div className='border-b border-[#6D6D6D] h-[60px] flex items-center'
+                                                     onClick={() => setOpenReport(!openReport)}>
                                                     <span>Поведение вне MYTA</span>
                                                 </div>
                                                 <div className='h-[60px] flex items-center'
@@ -366,7 +370,7 @@ function Profile() {
                             }}
                         >
                             <div
-                                className="w-full h-[700px] rounded-t-2xl transform transition-transform duration-300 translate-y-0"
+                                className="w-full rounded-t-2xl transform transition-transform duration-300 translate-y-0"
                                 style={{
                                     transform: `translateY(${swipeDiff}px)`,
                                     transition: swipeDiff ? "none" : "transform 0.3s ease-out",
@@ -385,7 +389,7 @@ function Profile() {
                                     onTouchEnd={handleTouchEnd}
                                 ></div>
                                 <div
-                                    className="w-[100%] h-[650px] bg-[#043939] flex flex-col justify-start items-center fixed bottom-0 overflow-y-scroll z-20 text-white"
+                                    className="w-[100%] h-[740px] bg-[#043939] flex flex-col justify-start items-center fixed bottom-0 overflow-y-scroll z-20 text-white"
                                     style={{borderRadius: "32px 32px 0 0 "}}>
                                     <div
                                         className="bg-[#0b6666] w-[80px] h-[6px] rounded-[20px] mt-[12px] text-[#043939]">
