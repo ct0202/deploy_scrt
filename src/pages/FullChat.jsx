@@ -28,20 +28,23 @@ function FullChat () {
     const [bottomOffset, setBottomOffset] = useState(24); // Стандартное значение отступа
 
     useEffect(() => {
-        const handleResize = () => {
-            const windowHeight = window.innerHeight;
-            const fullHeight = document.documentElement.clientHeight;
+        const tg = window.Telegram.WebApp;
 
-            if (windowHeight < fullHeight) {
-                setBottomOffset(500); // Поднимаем поле ввода (настраиваем по высоте клавиатуры)
+        const handleResize = () => {
+            const stableHeight = tg.viewportStableHeight;
+            const currentHeight = tg.viewportHeight;
+
+            if (currentHeight < stableHeight) {
+                setBottomOffset(currentHeight - stableHeight + 24); // Смещаем вверх
             } else {
-                setBottomOffset(24); // Возвращаем на место
+                setBottomOffset(24); // Возвращаем обратно
             }
         };
 
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+        tg.onEvent("viewportChanged", handleResize);
+        return () => tg.offEvent("viewportChanged", handleResize);
     }, []);
+
 
     return (
         <div className='w-[100vw] pt-[90px] flex justify-center items-center flex-col'>
