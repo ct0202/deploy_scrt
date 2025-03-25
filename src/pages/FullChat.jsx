@@ -30,14 +30,9 @@ function FullChat () {
     useEffect(() => {
         const handleResize = () => {
             const inputElement = document.querySelector("#input"); // Убедись, что ID совпадает
-            if (window.innerHeight < 500) { // Проверяем, уменьшилась ли высота окна
-                setBottomOffset(300); // Поднимаем поле ввода
                 if (inputElement) {
                     inputElement.scrollIntoView({ behavior: "smooth", block: "center" });
                 }
-            } else {
-                setBottomOffset(24); // Возвращаем поле на место
-            }
         };
 
         window.addEventListener("resize", handleResize);
@@ -72,7 +67,7 @@ function FullChat () {
                     <span className='flex flex-row justify-start items-center'><img src='/icons/writing_message.png' className='mr-[5px] w-[12px] h-[12px]'/>Наташа пишет сообщение</span>
                 </div>
             </div>
-            <div className='absolute w-full flex pb-[100px] items-center justify-center text-white font-raleway' style={{bottom: `${bottomOffset}px`}}>
+            <div className='absolute bottom-[24px] w-full flex items-center justify-center text-white font-raleway'>
                 <input placeholder="Сообщение" className='text-[18px] text-white pl-[16px] w-[269px] h-[64px] bg-[#FFFFFF33] rounded-[400px]'>
 
                 </input>
