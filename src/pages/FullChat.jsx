@@ -33,7 +33,7 @@ function FullChat () {
             const fullHeight = document.documentElement.clientHeight;
 
             if (windowHeight < fullHeight) {
-                setBottomOffset(300); // Поднимаем поле ввода (настраиваем по высоте клавиатуры)
+                setBottomOffset(500); // Поднимаем поле ввода (настраиваем по высоте клавиатуры)
             } else {
                 setBottomOffset(24); // Возвращаем на место
             }
