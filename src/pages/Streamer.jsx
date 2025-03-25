@@ -14,13 +14,18 @@ import { INSTRUCTIONS_MEET } from "../constants/instructions";
 import PresentsShop from "../components/shared/PresentsShop";
 import ReportMenu from "../components/shared/ReportMenu";
 import BlockUser from "../components/shared/BlockUser";
+import DayLimit from "../components/shared/DayLimit";
 
-function Profile() {
+function Streamer() {
+    const [presentsShop, setPresentsShop] = useState(false);
     const [showInstruction, setShowInstruction] = useState(false);
     const [openToast, setOpenToast] = useState(false);
     const [reportMenu, setReportMenu] = useState(false);
     const [blockUser, setBlockUser] = useState(false);
+    const [dayLimit, setDayLimit] = useState(false);
     const navigate = useNavigate();
+
+    const presentsRef = useRef(null);
 
     const [openReport, setOpenReport] = useState(false);
 
@@ -139,7 +144,7 @@ function Profile() {
                                     slidesPerView={1}
                                     className="h-[560px]"
 
-                                    pagination = {{
+                                    pagination={{
                                         el: '.custom-pagination'
                                     }}
 
@@ -170,15 +175,40 @@ function Profile() {
                                     </SwiperSlide>
                                 </Swiper>
 
+                                <div
+                                    className="z-[8] translate-y-[-120px] absolute w-[100%] flex items-center justify-center">
+                                    <div className="w-[338px] h-[70px] mb-4 flex gap-[16px] flex-row justify-center items-center">
+                                        <div
+                                            className={`w-[58px] h-[58px] rounded-[50%] flex justify-center items-center`}
+                                            onClick={() => {
+                                                setDayLimit(true)
+                                            }}
+                                        >
+                                            <img
+                                                src="/icons/photo_overlay_button_4.svg"
+                                                className="w-[58px] h-[58px]"
+                                            />
+                                        </div>
+                                        <div
+                                            className={`w-[58px] h-[58px] rounded-[50%] flex justify-center items-center`}
+                                            onClick={() => {
+                                                setPresentsShop(true)
+                                            }}
+                                        >
+                                            <img src="/icons/photo_overlay_button_5.svg" className="w-[58px] h-[58px]"/>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                <div className="shadow-[0_-25px_30px_rgba(0,0,0,0.9)] rounded-[16px] rounded-t-none relative z-[5] flex flex-col pl-[24px] pr-[24px] bg-[#010D0D] translate-y-[-27px] drop-shadow-[0_0_30px_0_rgb(0,0,0)]">
+                                <div
+                                    className="shadow-[0_-25px_30px_rgba(0,0,0,0.9)] rounded-[16px] rounded-t-none relative z-[5] flex flex-col pl-[24px] pr-[24px] bg-[#010D0D] translate-y-[-27px] drop-shadow-[0_0_30px_0_rgb(0,0,0)]">
                                     <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
                                         Наташа, 25 лет
                                     </h1>
                                     <h1 className="font-raleway font-light mt-2 text-white text-[18px]">
                                         Минск, Беларусь
                                     </h1>
-                                    <div className="border-b-2 border-white/30 pt-5" />
+                                    <div className="border-b-2 border-white/30 pt-5"/>
                                     <h1 className="font-raleway font-bold mt-6 text-white text-[18px]">
                                         Цель знакомства
                                     </h1>
@@ -208,25 +238,29 @@ function Profile() {
                                             slidesPerView={2}
                                             className="h-[170px]"
                                         >
-                                            <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
+                                            <SwiperSlide
+                                                className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
                                                 <img
                                                     src="/icons/present.svg"
                                                     className="w-[80px] h-[80px]"
                                                 />
                                             </SwiperSlide>
-                                            <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
+                                            <SwiperSlide
+                                                className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
                                                 <img
                                                     src="/icons/present.svg"
                                                     className="w-[80px] h-[80px]"
                                                 />
                                             </SwiperSlide>
-                                            <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
+                                            <SwiperSlide
+                                                className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
                                                 <img
                                                     src="/icons/present.svg"
                                                     className="w-[80px] h-[80px]"
                                                 />
                                             </SwiperSlide>
-                                            <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
+                                            <SwiperSlide
+                                                className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
                                                 <img
                                                     src="/icons/present.svg"
                                                     className="w-[80px] h-[80px]"
@@ -239,31 +273,36 @@ function Profile() {
                         </div>
                     </div>
                     {openToast && (
-                        <div className='absolute top-[115px] left-[15px] border border-[#233636] rounded-[12px] h-[180px] w-[291px] bg-[#1A2626] text-white'>
-                            <div className="w-full border-b border-[#233636] h-[60px] flex items-center justify-between pl-[16px] pr-[16px]"
-                                 onClick={() => {
-                                     if (navigator.share) {
-                                         navigator
-                                             .share({
-                                                 title: "Поделиться профилем",
-                                                 text: "Поделитесь своим профилем",
-                                                 url: window.location.href,
-                                             })
-                                             .then(() => console.log("Успешно поделились"))
-                                             .catch((error) => console.log("Ошибка при отправке:", error));
-                                     } else {
-                                         alert("Ваш браузер не поддерживает данную функцию");
-                                     }
-                                 }}
+                        <div
+                            className='absolute top-[115px] left-[15px] border border-[#233636] rounded-[12px] h-[180px] w-[291px] bg-[#1A2626] text-white'>
+                            <div
+                                className="w-full border-b border-[#233636] h-[60px] flex items-center justify-between pl-[16px] pr-[16px]"
+                                onClick={() => {
+                                    if (navigator.share) {
+                                        navigator
+                                            .share({
+                                                title: "Поделиться профилем",
+                                                text: "Поделитесь своим профилем",
+                                                url: window.location.href,
+                                            })
+                                            .then(() => console.log("Успешно поделились"))
+                                            .catch((error) => console.log("Ошибка при отправке:", error));
+                                    } else {
+                                        alert("Ваш браузер не поддерживает данную функцию");
+                                    }
+                                }}
                             >
                                 <span>Поделиться</span><img src='/icons/share.svg'/>
                             </div>
-                            <div className="w-full border-b border-[#233636] h-[60px] flex items-center justify-between pl-[16px] pr-[16px]"
-                            onClick={() => {setReportMenu(true)}}>
+                            <div
+                                className="w-full border-b border-[#233636] h-[60px] flex items-center justify-between pl-[16px] pr-[16px]"
+                                onClick={() => {
+                                    setReportMenu(true)
+                                }}>
                                 <span>Пожаловаться</span><img src='/icons/report.svg'/>
                             </div>
                             <div className="w-full h-[60px] flex items-center justify-between pl-[16px] pr-[16px]"
-                            onClick={() => {setBlockUser(true)}}>
+                                 onClick={() => {setBlockUser(true)}}>
                                 <span>Заблокировать</span><img src='/icons/block_user.svg'/>
                             </div>
                         </div>
@@ -428,10 +467,55 @@ function Profile() {
                             </div>
                         </div>
                     )}
+                    {presentsShop && (
+                        <div
+                            className="fixed inset-0 bg-opacity-50 flex justify-center items-end z-20 bg-black/80 backdrop-blur-[10px]"
+                            style={{ pointerEvents: "none" }}
+                            onClick={() => {
+                                setPresentsShop(false)
+                            }}
+                        >
+                            <div
+                                className="w-full rounded-t-2xl transform transition-transform duration-300 translate-y-0"
+                                style={{
+                                    transform: `translateY(${swipeDiff}px)`,
+                                    transition: swipeDiff ? "none" : "transform 0.3s ease-out",
+                                    pointerEvents: "auto", // Включаем взаимодействие только с контентом
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                                ref={presentsRef}
+                                onTouchStart={handleTouchStart}
+                                onTouchMove={handleTouchMove}
+                                onTouchEnd={handleTouchEnd}
+                            >
+                                {/* Хендл для удобного захвата */}
+                                <div
+                                    className="w-16 h-2 bg-gray-400 rounded-full mx-auto my-3 cursor-pointer"
+                                    onTouchStart={handleTouchStart}
+                                    onTouchMove={handleTouchMove}
+                                    onTouchEnd={handleTouchEnd}
+                                ></div>
+                                <PresentsShop />
+                            </div>
+                        </div>
+                    )}
+                    {dayLimit && (
+                        <div
+                            className="fixed inset-0  bg-opacity-50 flex justify-center items-end z-20"
+                            onClick={() => {setDayLimit(false)}}
+                        >
+                            <div
+                                className="w-full rounded-t-2xl transform transition-transform duration-300 translate-y-0"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <DayLimit />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
     );
 }
 
-export default Profile;
+export default Streamer;

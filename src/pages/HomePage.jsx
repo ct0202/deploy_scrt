@@ -7,6 +7,7 @@ import Policy from "../components/shared/Policy";
 export const HomePage = () => {
   const navigate = useNavigate();
   const [showPolicy, setShowPolicy] = useState(false);
+  const [agree, setAgree] = useState(false);
 
   const handlePolicyClick = () => {
     setShowPolicy(true);
@@ -33,8 +34,6 @@ export const HomePage = () => {
     }
   };
 
-
-
   return (
     <div className="relative w-[100%] h-[100%] overflow-x-hidden overflow-y-hidden">
       <img src={background} alt="" className="absolute w-[100vw] z-0" />
@@ -51,16 +50,25 @@ export const HomePage = () => {
 
         <div className="absolute bottom-4 pointer-events-none">
 
-        <Button onclick={() => navigate("/menu")} className="pointer-events-auto">
+        <Button onclick={() => navigate("/menu")} disabled={!agree} className="pointer-events-auto">
           Начать
         </Button>
 
         <div className="flex justify-start items-center gap-[12px] mt-3">
+          {agree ?
+          <div className='w-[25px] h-[25px] p-0'>
           <img
-            className="w-[24px] cursor-pointer"
+            className="w-[28px] cursor-pointer pointer-events-auto"
             alt="Checkbox"
             src={"/icons/famicons_checkbox.svg"}
+            onClick={() => setAgree(!agree)}
+          /></div>:
+          <div
+              className="w-[25px] h-[25px] cursor-pointer border border-white rounded-[4px] pointer-events-auto"
+              alt="Checkbox"
+              onClick={() => setAgree(!agree)}
           />
+          }
           <div className="w-[309px] h-[42px]">
             <p className="w-[309px] opacity-70 font-raleway font-medium text-sm text-white">
               Нажав кнопку “Начать”, я соглашаюсь с{" "}

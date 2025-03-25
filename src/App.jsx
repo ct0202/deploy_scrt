@@ -34,6 +34,7 @@ import ReactOnUser from "./pages/ReactOnUser";
 import Premium from "./pages/Premium";
 import MytaIdea from "./pages/profile/MytaIdea";
 import MakePayment from "./pages/MakePayment";
+import Streamer from "./pages/Streamer";
 
 function App() {
   useEffect(() => {
@@ -48,7 +49,7 @@ function App() {
       tg.requestFullscreen();
       tg.ready();
       tg.expand();
-      alert('36');
+      alert('38');
     }
   }, []);
 
@@ -73,6 +74,7 @@ function App() {
             <Route path="/StreamFilters" element={<StreamFilters />} />
             <Route path="/textChats" element={<TextChats />} />
             <Route path="/1/profile" element={<Profile />} />
+            <Route path="/1/streamer" element={<Streamer />} />
             <Route path="/1/reaction" element={<ReactOnUser />} />
             <Route path="/1/fullchat" element={<Profile />} />
             <Route path="/notifications" element={<Notifications />} />

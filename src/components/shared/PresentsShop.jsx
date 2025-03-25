@@ -1,6 +1,8 @@
 import React, {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 function PresentsShop({page}) {
+    const navigate = useNavigate();
     const [option, setOption] = useState(1);
     const [selectedPresent, setSelectedPresent] = useState(-1);
 
@@ -15,8 +17,10 @@ function PresentsShop({page}) {
         {id: 8, name: 'Пишу с любовью', price: '12', bonus: '240'},
         {id: 9, name: 'Сладкий персик', price: '12', bonus: '240'},
         {id: 10, name: 'Может выпьем?', price: '12', bonus: '240'},
-        {id: 11, name: 'Шикарный букет', price: '24', bonus: '360'},
-        {id: 12, name: 'Безграничная любовь', price: '24', bonus: '360'}
+        {id: 11, name: 'Шикарный букет', price: '18', bonus: '360'},
+        {id: 12, name: 'Безграничная любовь', price: '18', bonus: '360'},
+        {id: 13, name: 'Страстный поцелуй', price: '18', bonus: '360'},
+        {id: 14, name: 'У нас все серьезно', price: '36', bonus: '720'},
     ]);
 
 
@@ -109,7 +113,7 @@ function PresentsShop({page}) {
                         className="text-[white] ml-1">100</span></p><img src="/icons/coin.svg"
                                                                          className="w-[20px] h-[20px] ml-1"/>
                 </div>
-                <div className="text-[#A1F69E] text-[18px]">
+                <div className="text-[#A1F69E] text-[18px]" onClick={() => navigate('/makepayment')}>
                     Пополнить счет
                 </div>
             </div>

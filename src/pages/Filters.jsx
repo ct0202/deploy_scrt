@@ -3,6 +3,7 @@ import {Button} from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
 import DoubleRangeSlider from "../components/ui/DoubleRangeSlider";
+import {INTEREST} from "../constants/interests";
 
 function Filters() {
     const [selectedTargetGender, setSelectedTargetGender] = useState(null);
@@ -46,13 +47,7 @@ function Filters() {
         { id: "all", label: "Всех", emoji: "💕" },
     ];
 
-    const interests = [
-        { id: "Harry Potter", title: "Harry Potter" },
-        { id: "Дети 90-x", title: "Дети 90-x" },
-        { id: "Хеви-метал", title: "Хеви-метал" },
-        { id: "Вечеринки дома", title: "Вечеринки дома" },
-        { id: "Джин с тоником", title: "Джин с тоником" },
-    ];
+    const interests = INTEREST;
 
     const options = [
         {
@@ -220,7 +215,7 @@ function Filters() {
                             : "bg-[#022424] border-[1px] border-[#233636]"
                         }`}
                     >
-                        <span>{option.title}</span>
+                        <span>{option.id}</span>
                     </div>
                 ))}
             </div>

@@ -55,9 +55,11 @@ const TextChats = () => {
 
             <div className='mt-[20px] overflow-scroll'>
                 { chats.length > 0 ? chats.map((chat, index) => (
-                    <div key={index} className="border-b border-[#233636] w-[100vw] flex justify-center">
-                        <ChatCard id={chat.id} img={chat.img} name={chat.name} age={chat.age} lMsg={chat.lMsg} key={chat.id} time={chat.time} count={chat.count} />
-                    </div>
+                    <>
+                        <div key={index} className="border-b border-[#233636] w-[100vw] flex justify-center z-5">
+                            <ChatCard id={chat.id} img={chat.img} name={chat.name} age={chat.age} lMsg={chat.lMsg} key={chat.id} time={chat.time} count={chat.count} />
+                        </div>
+                    </>
                 )) :
                     <div className="flex flex-col items-center justify-center w-full mt-[200px] text-white">
                         <img src="/icons/empty_chats.svg" alt="empty chats icon" className='w-[48px] h-[48px]' />
