@@ -25,6 +25,24 @@ function FullChat () {
         },
     ];
 
+    const [bottomOffset, setBottomOffset] = useState(24); // Стандартное значение отступа
+
+    useEffect(() => {
+        const handleResize = () => {
+            const windowHeight = window.innerHeight;
+            const fullHeight = document.documentElement.clientHeight;
+
+            if (windowHeight < fullHeight) {
+                setBottomOffset(300); // Поднимаем поле ввода (настраиваем по высоте клавиатуры)
+            } else {
+                setBottomOffset(24); // Возвращаем на место
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     return (
         <div className='w-[100vw] pt-[90px] flex justify-center items-center flex-col'>
             <div className='flex items-center justify-center text-white text-[24px] w-full pb-[26px] pt-[26px]
@@ -52,7 +70,7 @@ function FullChat () {
                     <span className='flex flex-row justify-start items-center'><img src='/icons/writing_message.png' className='mr-[5px] w-[12px] h-[12px]'/>Наташа пишет сообщение</span>
                 </div>
             </div>
-            <div className='fixed bottom-[24px] w-full flex items-center justify-center text-white font-raleway'>
+            <div className='fixed w-full flex items-center justify-center text-white font-raleway' style={{bottom: `${bottomOffset}px`}}>
                 <input placeholder="Сообщение" className='text-[18px] text-white pl-[16px] w-[269px] h-[64px] bg-[#FFFFFF33] rounded-[400px]'>
 
                 </input>

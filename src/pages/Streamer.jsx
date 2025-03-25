@@ -55,6 +55,7 @@ function Streamer() {
         if (swipeDiff > 20) {
             setReportMenu(false);
             setBlockUser(false);
+            setPresentsShop(false);
             //setOpenReport(false);
         } else {
             setSwipeDiff(0);
