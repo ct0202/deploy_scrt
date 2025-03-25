@@ -41,7 +41,7 @@ function FullChat () {
 
 
     return (
-        <div className='w-[100vw] pt-[90px] h-[100%] flex justify-start items-center flex-col relative'>
+        <div className='w-[100vw] pt-[90px] mb-[100px] h-[100%] flex justify-start items-center flex-col relative'>
             <div className='flex items-center justify-center text-white text-[24px] w-full pb-[26px] pt-[26px]
             border-b border-[#233636]'>
                 <div className='w-[100vw] flex items-center justify-center'>
