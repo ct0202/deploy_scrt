@@ -49,7 +49,7 @@ function App() {
       tg.requestFullscreen();
       tg.ready();
       tg.expand();
-      alert('38');
+      alert('39');
     }
   }, []);
 

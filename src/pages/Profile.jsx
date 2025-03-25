@@ -50,7 +50,7 @@ function Profile() {
         if (swipeDiff > 20) {
             setReportMenu(false);
             setBlockUser(false);
-            //setOpenReport(false);
+            setOpenReport(false);
         } else {
             setSwipeDiff(0);
         }
@@ -342,18 +342,12 @@ function Profile() {
                                         </>
                                         :
                                         <div className="flex flex-col justify-start items-center w-full mt-[40px]">
-                                            <img src='/icons/Layer_1.svg' className='w-[80px] h-[80px]'/>
-                                            <p className='text-center w-[300px] mt-[30px] font-semibold text-[22px]'>Вы
-                                                действительно хотите заблокировать данного пользователя?</p>
-                                            <p className='text-center text-[16px] mt-[20px] font-normal pl-2 pr-2'>Заблокированный
-                                                пользователь больше не сможет видеть ваш профиль и общаться с вами через
-                                                наше приложение. Мы скроем профиль, чат и уведомления от этого
-                                                пользователя</p>
-                                            <div className='text-black mt-[40px]'>
-                                                <Button onclick={() => setOpenReport(!openReport)}>
-                                                    Заблокировать
-                                                </Button>
-                                            </div>
+                                            <img src='/icons/report_sent.svg' className='w-[80px] h-[80px]'/>
+                                            <p className='text-center w-[300px] mt-[30px] font-semibold text-[22px]'>Ваша
+                                                жалоба отправлена</p>
+                                            <p className='text-center text-[16px] mt-[20px] font-normal pl-2 pr-2'>Мы
+                                                внимательно рассмотрим вашу жалобу и примем соответствующие меры.
+                                                Спасибо, что помогаете сделать наше приложение лучше</p>
                                             {/*<div className='text-[#FFFFFF] opacity-50 mt-[20px]' onClick={() => {setReportMenu(false)}}>Отмена</div>*/}
                                         </div>
                                     }
@@ -366,7 +360,7 @@ function Profile() {
                             className="fixed inset-0 bg-opacity-50 flex justify-center items-end z-20 bg-black/80 backdrop-blur-[10px]"
                             style={{pointerEvents: "none"}}
                             onClick={() => {
-                                setReportMenu(false)
+                                setBlockUser(false)
                             }}
                         >
                             <div
