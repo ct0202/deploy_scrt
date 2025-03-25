@@ -25,7 +25,7 @@ function FullChat () {
         },
     ];
 
-    const [bottomOffset, setBottomOffset] = useState(24); // Стандартное значение отступа
+    const [bottomOffset, setBottomOffset] = useState(100); // Стандартное значение отступа
 
     useEffect(() => {
         const handleResize = () => {
@@ -36,7 +36,7 @@ function FullChat () {
                     inputElement.scrollIntoView({ behavior: "smooth", block: "center" });
                 }
             } else {
-                setBottomOffset(24); // Возвращаем поле на место
+                setBottomOffset(100); // Возвращаем поле на место
             }
         };
 
