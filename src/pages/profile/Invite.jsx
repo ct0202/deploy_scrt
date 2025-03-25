@@ -18,7 +18,7 @@ function ProfileMenu() {
     };
 
     return (
-        <div className='w-[100vw] h-[100%] flex flex-col items-center justify-center font-raleway overflow-scroll pt-[90px]'>
+        <div className='w-[100vw] h-[100%] flex flex-col items-center justify-center font-raleway overflow-scroll pt-[120px]'>
             <div className='flex items-center justify-center relative text-white text-[24px] w-full pb-[26px] pt-[26px] mt-[140px]
             border-b border-[#233636]'>
                 <div className="w-[343px] flex justify-center items-center relative">
