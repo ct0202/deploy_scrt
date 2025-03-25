@@ -50,7 +50,7 @@ function App() {
       tg.requestFullscreen();
       tg.ready();
       tg.expand();
-      alert('42');
+      alert('44');
     }
   }, []);
 
