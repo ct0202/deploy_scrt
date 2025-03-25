@@ -31,7 +31,7 @@ function FullChat () {
         const handleResize = () => {
             const inputElement = document.querySelector("#input"); // Убедись, что ID совпадает
                 if (inputElement) {
-                    inputElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                    inputElement.scrollIntoView({ behavior: "smooth", block: "start" });
                 }
         };
 
