@@ -39,7 +39,7 @@ export const ChatCard = ({id, img, name, age, lMsg, time, count, onDelete})  => 
                          onClick={() => {
                              navigate(`/${id}/profile`)
                          }}/>
-                    <div className="flex flex-col w-[220px] gap-1">
+                    <div className="flex flex-col w-[220px] gap-1" onClick={() => navigate(`/1/fullchat`)}>
                         <p className='text-[16px] font-semibold leading-[24px] '>{name}, {age}</p>
                         <p className='text-[14px] font-normal'>{lMsg}</p>
                     </div>

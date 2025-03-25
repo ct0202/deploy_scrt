@@ -17,6 +17,7 @@ import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import ProfileMenu from "./pages/profileMenu";
 import ProfileEdit from "./pages/profile/ProfileEdit";
+import FullChat from "./pages/FullChat";
 
 import ScrollBlocker from "./ScrollBlocker";
 import Photo from "./pages/profile/Photo";
@@ -49,7 +50,7 @@ function App() {
       tg.requestFullscreen();
       tg.ready();
       tg.expand();
-      alert('40');
+      alert('41');
     }
   }, []);
 
@@ -76,7 +77,7 @@ function App() {
             <Route path="/1/profile" element={<Profile />} />
             <Route path="/1/streamer" element={<Streamer />} />
             <Route path="/1/reaction" element={<ReactOnUser />} />
-            <Route path="/1/fullchat" element={<Profile />} />
+            <Route path="/1/fullchat" element={<FullChat />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/profileMenu" element={<ProfileMenu />} />
 
