@@ -25,19 +25,19 @@ function FullChat () {
         },
     ];
 
-    const [bottomOffset, setBottomOffset] = useState(24); // Стандартное значение отступа
-
-    useEffect(() => {
-        const handleResize = () => {
-            const inputElement = document.querySelector("#input"); // Убедись, что ID совпадает
-                if (inputElement) {
-                    inputElement.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
+    // const [bottomOffset, setBottomOffset] = useState(24); // Стандартное значение отступа
+    //
+    // useEffect(() => {
+    //     const handleResize = () => {
+    //         const inputElement = document.querySelector("#input"); // Убедись, что ID совпадает
+    //             if (inputElement) {
+    //                 inputElement.scrollIntoView({ behavior: "smooth", block: "start" });
+    //             }
+    //     };
+    //
+    //     window.addEventListener("resize", handleResize);
+    //     return () => window.removeEventListener("resize", handleResize);
+    // }, []);
 
 
     return (
