@@ -4,6 +4,7 @@ import { Navigation } from "../components/shared/Navigation";
 import {NotificationCard} from "../components/notifications/notificationCard";
 import {SystemCard} from "../components/notifications/systemCard";
 import {useNavigate} from "react-router-dom";
+import {Button} from "../components/Button";
 
 const Notifications = () => {
 
@@ -35,7 +36,7 @@ const Notifications = () => {
                 <img src = "/icons/Button-notifications.svg" className='w-[44px] h-[44px]'/>
             </div>
 
-            <div className='mt-[10px] overflow-scroll relative'>
+            <div className='mt-[10px] relative overflow-scroll'>
                 { chats.length > 0 ?
                     <div className="fixed flex items-center pl-[16px] pr-[16px] w-[100vw]">
                 <div className="mt-4 rounded-[400px] flex flex-row bg-[#FFFFFF1A] h-[44px] pl-[10px] pr-[10px] w-full justify-center items-center text-white">
@@ -78,10 +79,22 @@ const Notifications = () => {
                             ))
                         ) : null
                     ) : option === 2 ? (
-                        <div className="flex flex-col w-[100vw] items-center justify-center mt-[200px] text-white">
-                            <img src="/icons/notif_page.svg" alt="empty chats icon" className="w-[48px] h-[48px]" />
-                            <p className="text-[24px] mt-[30px]">Нет уведомлений</p>
-                            <p className="text-[16px] mt-[10px]">Здесь появятся ваши уведомления</p>
+                        <div className='w-[100vw] flex justify-center items-start relative h-[566px] overflow-scroll'>
+                            <div
+                                className="flex-col w-[343px] items-center justify-center text-white grid grid-cols-2 gap-[16px]">
+                                <img src='/icons/like_locked.png' className='w-[163px] h-[220px]'/>
+                                <img src='/icons/like_locked.png' className='w-[163px] h-[220px]'/>
+                                <img src='/icons/like_locked.png' className='w-[163px] h-[220px]'/>
+                                <img src='/icons/like_locked.png' className='w-[163px] h-[220px]'/>
+                                <img src='/icons/like_locked.png' className='w-[163px] h-[220px]'/>
+                                <img src='/icons/like_locked.png' className='w-[163px] h-[220px]'/>
+                                <img src='/icons/like_locked.png' className='w-[163px] h-[220px]'/>
+                            </div>
+                            <div className='fixed top-[710px] w-full flex justify-center'>
+                                <Button>
+                                    Хочу узнать, кто меня лайкнул
+                                </Button>
+                            </div>
                         </div>
                     ) : option === 3 ? (
                         systemN.map((chat, index) => (
