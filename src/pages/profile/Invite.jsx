@@ -18,8 +18,8 @@ function ProfileMenu() {
     };
 
     return (
-        <div className='w-[100vw] h-[100%] flex flex-col items-center justify-center font-raleway overflow-scroll pt-[120px]'>
-            <div className='flex items-center justify-center relative text-white text-[24px] w-full pb-[26px] pt-[26px] mt-[140px]
+        <div className='w-[100vw] flex flex-col items-center justify-center font-raleway mt-[90px]'>
+            <div className='flex items-center justify-center relative text-white text-[24px] w-full pb-[26px] pt-[26px]
             border-b border-[#233636]'>
                 <div className="w-[343px] flex justify-center items-center relative">
                     <img src='/icons/Button-back.svg' onClick={() => {
@@ -30,7 +30,7 @@ function ProfileMenu() {
             </div>
             <img src='/icons/invite_info_block.svg' className='mt-[10px]'/>
             <img src='/icons/invite-info-block-2.svg' className='mt-[10px]'/>
-            <div className='mb-[120px]'>
+            <div className='mb-[120px] overflow-scroll'>
                 <div
                     className='w-[343px] border border-[#233636] p-[15px] text-white rounded-[24px] h-[138px] flex flex-col mt-[10px]'>
                     <p className='w-full text-center text-[20px] font-semibold'>Ссылка приглашение</p>
