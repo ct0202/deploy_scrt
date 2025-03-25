@@ -68,7 +68,11 @@ function FullChat () {
                 </div>
             </div>
             <div className='w-full flex items-center justify-center text-white font-raleway'>
-                <input placeholder="Сообщение" className='text-[18px] text-white pl-[16px] w-[269px] h-[64px] bg-[#FFFFFF33] rounded-[400px]'>
+                <input onFocus={() => {
+                    setTimeout(() => {
+                        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+                    }, 300);
+                }} placeholder="Сообщение" className='text-[18px] text-white pl-[16px] w-[269px] h-[64px] bg-[#FFFFFF33] rounded-[400px]'>
 
                 </input>
                 <div className='ml-[10px] cursor-pointer w-[64px] h-[64px] flex items-center justify-center bg-[#A1F69E] rounded-[50%]'>
