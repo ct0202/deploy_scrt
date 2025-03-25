@@ -34,7 +34,7 @@ function Premium() {
                 <div className='absolute flex flex-row justify-center gap-[8px] top-[445px] font-raleway'>
                     <div key='1' className={`flex flex-col items-center justify-start w-[109px] h-[142px] text-white border ${choice === 1 ? 'border-[#A1F69E] bg-[#043939]' : 'border-[#233636] bg-[#022424]'}  rounded-[16px]`}
                         onClick={() => {setChoice(1)}}>
-                        <span className='border-b pt-[10px] pb-[5px] border-[#233636] text-[16px] w-[100px] text-center'>Неделя</span>
+                        <span className={`border-b pt-[10px] pb-[5px] ${choice === 1 ? 'border-[#0F7474]' : 'border-[#233636]'} text-[16px] w-[100px] text-center`}>Неделя</span>
                         <span className='text-[22px] font-semibold mt-[10px] leading-[15px] mb-[4px]'>{payment === 1 ? '4.49 $' : <div className='flex flex-row items-center justify-center'>220 <img src='/icons/tg_star.png' className='ml-[4px] w-[16px] h-[16px]'/></div>}</span>
                         <span className='text-[14px]'>в неделю</span>
                         <span className='opacity-50 text-[14px]'>{payment === 1 ? '4.49 $' : <div className='flex flex-row items-center justify-center'>220 <img src='/icons/tg_star.png' className='ml-[4px] w-[12px] h-[12px]'/></div>}</span>
@@ -48,7 +48,7 @@ function Premium() {
 
                     <div className={`flex flex-col items-center justify-start w-[109px] h-[142px] text-white border ${choice === 2 ? 'border-[#A1F69E] bg-[#043939]' : 'border-[#233636] bg-[#022424]'}  rounded-[16px]`}
                          onClick={() => {setChoice(2)}}>
-                        <span className='border-b pt-[10px] pb-[5px] border-[#233636] text-[16px] w-[100px] text-center'>1 месяц</span>
+                        <span className={`border-b pt-[10px] pb-[5px] ${choice === 2 ? 'border-[#0F7474]' : 'border-[#233636]'} text-[16px] w-[100px] text-center`}>1 месяц</span>
                         <span className='text-[22px] font-semibold mt-[10px] leading-[15px] mb-[4px]'>{payment === 1 ? '2.26 $' : <div className='flex flex-row items-center justify-center'>110 <img src='/icons/tg_star.png' className='ml-[4px] w-[16px] h-[16px]'/></div>}</span>
                         <span className='text-[14px]'>в неделю</span>
                         <span className='opacity-50 text-[14px]'>{payment === 1 ? '9.99 $' : <div className='flex flex-row items-center justify-center'>487 <img src='/icons/tg_star.png' className='ml-[4px] w-[16px] h-[16px]'/></div>}</span>
@@ -59,7 +59,7 @@ function Premium() {
                     </div>
                     <div key='3' className={`flex flex-col items-center justify-start w-[109px] h-[142px] text-white border ${choice === 3 ? 'border-[#A1F69E] bg-[#043939]' : 'border-[#233636] bg-[#022424]'}  rounded-[16px]`}
                          onClick={() => {setChoice(3)}}>
-                        <span className='border-b pt-[10px] pb-[5px] border-[#233636] text-[16px] w-[100px] text-center'>3 месяца</span>
+                        <span className={`border-b pt-[10px] pb-[5px] ${choice === 3 ? 'border-[#0F7474]' : 'border-[#233636]'} text-[16px] w-[100px] text-center`}>3 месяца</span>
                         <span className='text-[22px] font-semibold mt-[10px] leading-[15px] mb-[4px]'>{payment === 1 ? '1.43 $' : <div className='flex flex-row items-center justify-center'>70 <img src='/icons/tg_star.png' className='ml-[4px] w-[16px] h-[16px]'/></div>}</span>
                         <span className='text-[14px]'>в неделю</span>
                         <span className='opacity-50 text-[14px]'>{payment === 1 ? '18.99 $' : <div className='flex flex-row items-center justify-center'>930 <img src='/icons/tg_star.png' className='ml-[4px] w-[16px] h-[16px]'/></div>}</span>

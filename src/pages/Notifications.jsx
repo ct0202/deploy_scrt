@@ -90,7 +90,7 @@ const Notifications = () => {
                                 <img src='/icons/like_locked.png' className='w-[163px] h-[220px]'/>
                                 <img src='/icons/like_locked.png' className='w-[163px] h-[220px]'/>
                             </div>
-                            <div className='fixed top-[710px] w-full flex justify-center'>
+                            <div className='fixed bottom-[135px] w-full flex justify-center'>
                                 <Button>
                                     Хочу узнать, кто меня лайкнул
                                 </Button>
@@ -106,7 +106,7 @@ const Notifications = () => {
                 </div>
             </div>
 
-            <div className="fixed bottom-2">
+            <div className="absolute bottom-2">
                 <Navigation tab={0}/>
             </div>
         </div>
