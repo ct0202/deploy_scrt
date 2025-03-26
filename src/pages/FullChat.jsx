@@ -4,20 +4,31 @@ import {useNavigate} from "react-router-dom";
 
 function FullChat () {
     const navigate = useNavigate();
-    const inputRef = useRef(null);
+    const inputContainerRef = useRef(null);
+    const [isInputFocused, setIsInputFocused] = useState(false);
+
+    const handleInputClick = () => {
+        setIsInputFocused(true);
+        setTimeout(() => {
+            if (inputContainerRef.current) {
+                inputContainerRef.current.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+            }
+        }, 100);
+    };
+
+    const handleClickOutside = (e) => {
+        if (inputContainerRef.current && !inputContainerRef.current.contains(e.target)) {
+            setIsInputFocused(false);
+        }
+    };
 
     useEffect(() => {
-        const input = inputRef.current;
-        const handleFocus = () => {
-            alert('focus');
-            setTimeout(() => {
-                input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 300);
-        };
-
-        input.addEventListener('focus', handleFocus);
+        document.addEventListener('click', handleClickOutside);
         return () => {
-            input.removeEventListener('focus', handleFocus);
+            document.removeEventListener('click', handleClickOutside);
         };
     }, []);
 
@@ -68,7 +79,8 @@ function FullChat () {
                     <span className='flex flex-row justify-start items-center'><img src='/icons/writing_message.png' className='mr-[5px] w-[12px] h-[12px]'/>Наташа пишет сообщение</span>
                 </div>
             </div>
-            <div ref={inputRef} className='w-full flex items-center pb-[50px] justify-center text-white font-raleway'>
+            <div ref={inputContainerRef} onClick={handleInputClick}
+                 className={`w-full flex items-center pb-[50px] justify-center text-white font-raleway ${isInputFocused ? 'fixed bottom-0 bg-[#032A2A] py-3 z-10' : ''}`}>
                 <input id='msginput' placeholder="Сообщение" className='text-[18px] text-white pl-[16px] w-[269px] h-[64px] bg-[#FFFFFF33] rounded-[400px]'>
 
                 </input>
