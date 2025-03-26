@@ -52,7 +52,7 @@ function FullChat () {
                     <span className='flex flex-row justify-start items-center'><img src='/icons/writing_message.png' className='mr-[5px] w-[12px] h-[12px]'/>Наташа пишет сообщение</span>
                 </div>
             </div>
-            <div className='w-full flex items-center mb-[500px] justify-center text-white font-raleway'>
+            <div className='w-full flex items-center pb-[50px] mb-[500px] justify-center text-white font-raleway'>
                 <input id='msginput' placeholder="Сообщение" className='text-[18px] text-white pl-[16px] w-[269px] h-[64px] bg-[#FFFFFF33] rounded-[400px]'>
 
                 </input>
