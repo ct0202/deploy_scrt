@@ -9,6 +9,7 @@ function FullChat () {
     useEffect(() => {
         const input = inputRef.current;
         const handleFocus = () => {
+            alert('focus');
             setTimeout(() => {
                 input.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 300);
