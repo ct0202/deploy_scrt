@@ -26,7 +26,7 @@ function FullChat () {
     ];
 
     return (
-        <div className='w-[100vw] pt-[90px] mb-[0px] h-[2000px] flex justify-start items-center flex-col relative'>
+        <div className='w-[100vw] pt-[90px] mb-[0px] h-[100vh] flex justify-start items-center flex-col relative'>
             <div className='flex items-center justify-center text-white text-[24px] w-full pb-[26px] pt-[26px]
             border-b border-[#233636]'>
                 <div className='w-[100vw] flex items-center justify-center'>
@@ -47,12 +47,12 @@ function FullChat () {
                     </div>
                 ))}
             </div>
-            <div className='font-raleway w-full flex items-center justify-center text-white text-[14px] opacity-80'>
+            <div className='font-raleway mb-[10px] w-full flex items-center justify-center text-white text-[14px] opacity-80'>
                 <div className='w-[343px] flex justify-start'>
                     <span className='flex flex-row justify-start items-center'><img src='/icons/writing_message.png' className='mr-[5px] w-[12px] h-[12px]'/>Наташа пишет сообщение</span>
                 </div>
             </div>
-            <div className='w-full flex items-center pb-[50px] mb-[500px] justify-center text-white font-raleway'>
+            <div className='w-full flex items-center pb-[50px] justify-center text-white font-raleway'>
                 <input id='msginput' placeholder="Сообщение" className='text-[18px] text-white pl-[16px] w-[269px] h-[64px] bg-[#FFFFFF33] rounded-[400px]'>
 
                 </input>
