@@ -1,9 +1,31 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 
 
 function FullChat () {
     const navigate = useNavigate();
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        const inputElement = inputRef.current;
+
+        const handleFocus = () => {
+            setTimeout(() => {
+                inputElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        };
+
+        if (inputElement) {
+            inputElement.addEventListener('focus', handleFocus);
+        }
+
+        return () => {
+            if (inputElement) {
+                inputElement.removeEventListener('focus', handleFocus);
+            }
+        };
+    }, []);
+
 
     const messages = [
         {
@@ -62,17 +84,13 @@ function FullChat () {
                     </div>
                 ))}
             </div>
-            <div className='font-raleway w-full flex items-center justify-center text-white text-[14px] opacity-80'>
+            <div className='absolute bottom-[100px] font-raleway w-full flex items-center justify-center text-white text-[14px] opacity-80'>
                 <div className='w-[343px] flex justify-start'>
                     <span className='flex flex-row justify-start items-center'><img src='/icons/writing_message.png' className='mr-[5px] w-[12px] h-[12px]'/>Наташа пишет сообщение</span>
                 </div>
             </div>
-            <div className='w-full flex items-center justify-center text-white font-raleway'>
-                <input onFocus={() => {
-                    setTimeout(() => {
-                        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-                    }, 300);
-                }} placeholder="Сообщение" className='text-[18px] text-white pl-[16px] w-[269px] h-[64px] bg-[#FFFFFF33] rounded-[400px]'>
+            <div className='absolute bottom-[24px] w-full flex items-center justify-center text-white font-raleway'>
+                <input  ref={inputRef} id='msginput' placeholder="Сообщение" className='text-[18px] text-white pl-[16px] w-[269px] h-[64px] bg-[#FFFFFF33] rounded-[400px]'>
 
                 </input>
                 <div className='ml-[10px] cursor-pointer w-[64px] h-[64px] flex items-center justify-center bg-[#A1F69E] rounded-[50%]'>
