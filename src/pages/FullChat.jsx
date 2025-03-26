@@ -4,28 +4,6 @@ import {useNavigate} from "react-router-dom";
 
 function FullChat () {
     const navigate = useNavigate();
-    const inputRef = useRef(null);
-
-    useEffect(() => {
-        const inputElement = inputRef.current;
-
-        const handleFocus = () => {
-            setTimeout(() => {
-                inputElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 300);
-        };
-
-        if (inputElement) {
-            inputElement.addEventListener('focus', handleFocus);
-        }
-
-        return () => {
-            if (inputElement) {
-                inputElement.removeEventListener('focus', handleFocus);
-            }
-        };
-    }, []);
-
 
     const messages = [
         {
@@ -47,23 +25,8 @@ function FullChat () {
         },
     ];
 
-    // const [bottomOffset, setBottomOffset] = useState(24); // Стандартное значение отступа
-    //
-    // useEffect(() => {
-    //     const handleResize = () => {
-    //         const inputElement = document.querySelector("#input"); // Убедись, что ID совпадает
-    //             if (inputElement) {
-    //                 inputElement.scrollIntoView({ behavior: "smooth", block: "start" });
-    //             }
-    //     };
-    //
-    //     window.addEventListener("resize", handleResize);
-    //     return () => window.removeEventListener("resize", handleResize);
-    // }, []);
-
-
     return (
-        <div className='w-[100vw] pt-[90px] mb-[0px] h-[100%] flex justify-start items-center flex-col relative'>
+        <div className='w-[100vw] pt-[90px] mb-[0px] h-[2000px] flex justify-start items-center flex-col relative'>
             <div className='flex items-center justify-center text-white text-[24px] w-full pb-[26px] pt-[26px]
             border-b border-[#233636]'>
                 <div className='w-[100vw] flex items-center justify-center'>
@@ -74,7 +37,7 @@ function FullChat () {
                     </div>
                 </div>
             </div>
-            <div className='w-[343px] h-[500px] flex justify-start items-center flex-col text-white font-raleway'>
+            <div className='w-[343px] h-[60vh] flex justify-start items-center flex-col text-white font-raleway'>
                 {messages.map((message, index) => (
                     <div className={`${message.type === 'to' ? 'self-end bg-[#0A2438] border border-[#233636] rounded-tr-[16px] rounded-tl-[16px] rounded-bl-[16px]' :
                         'self-start bg-[#032A2A] border border-[#233636] rounded-tr-[16px] rounded-tl-[16px] rounded-br-[16px]'} 
@@ -84,13 +47,13 @@ function FullChat () {
                     </div>
                 ))}
             </div>
-            <div className='absolute bottom-[100px] font-raleway w-full flex items-center justify-center text-white text-[14px] opacity-80'>
+            <div className='font-raleway w-full flex items-center justify-center text-white text-[14px] opacity-80'>
                 <div className='w-[343px] flex justify-start'>
                     <span className='flex flex-row justify-start items-center'><img src='/icons/writing_message.png' className='mr-[5px] w-[12px] h-[12px]'/>Наташа пишет сообщение</span>
                 </div>
             </div>
-            <div className='absolute bottom-[24px] w-full flex items-center justify-center text-white font-raleway'>
-                <input  ref={inputRef} id='msginput' placeholder="Сообщение" className='text-[18px] text-white pl-[16px] w-[269px] h-[64px] bg-[#FFFFFF33] rounded-[400px]'>
+            <div className='w-full flex items-center mb-[500px] justify-center text-white font-raleway'>
+                <input id='msginput' placeholder="Сообщение" className='text-[18px] text-white pl-[16px] w-[269px] h-[64px] bg-[#FFFFFF33] rounded-[400px]'>
 
                 </input>
                 <div className='ml-[10px] cursor-pointer w-[64px] h-[64px] flex items-center justify-center bg-[#A1F69E] rounded-[50%]'>
