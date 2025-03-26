@@ -80,7 +80,7 @@ function FullChat () {
                 </div>
             </div>
             <div ref={inputContainerRef} onClick={handleInputClick}
-                 className={`w-full flex items-center pb-[50px] justify-center text-white font-raleway ${isInputFocused ? 'fixed bottom-[32vh] bg-[#032A2A] pb-[400px] z-10' : ''}`}>
+                 className={`w-full flex items-center pb-[50px] justify-center text-white font-raleway ${isInputFocused ? 'fixed bottom-[32vh] pb-[400px] z-10' : ''}`}>
                 <input id='msginput' placeholder="Сообщение" className='text-[18px] text-white pl-[16px] w-[269px] h-[64px] bg-[#FFFFFF33] rounded-[400px]'>
 
                 </input>
