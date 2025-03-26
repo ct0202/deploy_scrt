@@ -4,6 +4,21 @@ import {useNavigate} from "react-router-dom";
 
 function FullChat () {
     const navigate = useNavigate();
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        const input = inputRef.current;
+        const handleFocus = () => {
+            setTimeout(() => {
+                input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        };
+
+        input.addEventListener('focus', handleFocus);
+        return () => {
+            input.removeEventListener('focus', handleFocus);
+        };
+    }, []);
 
     const messages = [
         {
@@ -52,7 +67,7 @@ function FullChat () {
                     <span className='flex flex-row justify-start items-center'><img src='/icons/writing_message.png' className='mr-[5px] w-[12px] h-[12px]'/>Наташа пишет сообщение</span>
                 </div>
             </div>
-            <div className='w-full flex items-center pb-[50px] justify-center text-white font-raleway'>
+            <div ref={inputRef} className='w-full flex items-center pb-[50px] justify-center text-white font-raleway'>
                 <input id='msginput' placeholder="Сообщение" className='text-[18px] text-white pl-[16px] w-[269px] h-[64px] bg-[#FFFFFF33] rounded-[400px]'>
 
                 </input>
