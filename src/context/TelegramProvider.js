@@ -10,6 +10,7 @@ export const TelegramProvider = ({ children }) => {
     useEffect(() => {
             const tg = window.Telegram.WebApp;
             setUser(tg.initData);
+            console.log('init data : ', tg.initData);
     }, []);
 
     return (
