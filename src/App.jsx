@@ -49,7 +49,7 @@ function App() {
       tg.requestFullscreen();
       tg.ready();
       tg.expand();
-      console.log(user);
+      console.log('user  === ', user);
     }
   }, []);
 
