@@ -1,13 +1,26 @@
-import React, {useRef, useState} from "react";
+import React, {useRef, useState, useEffect} from "react";
 import { Button } from "../components/Button";
 import background from "../assets/background.svg";
 import { useNavigate } from "react-router-dom";
 import Policy from "../components/shared/Policy";
+import axios from "axios";
 
 export const HomePage = () => {
   const navigate = useNavigate();
   const [showPolicy, setShowPolicy] = useState(false);
   const [agree, setAgree] = useState(false);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      // if(localStorage.getItem("userId")){
+      //   const res = await axios.get(`/getUserInfo/${localStorage.getItem("userId")}`);
+      //   if(res.data){
+      //     navigate("/menu");
+      //   }
+      // }
+    };
+    checkUser();
+  }, []);
 
   const handlePolicyClick = () => {
     setShowPolicy(true);
@@ -28,7 +41,6 @@ export const HomePage = () => {
     const swipeEnd = e.touches[0].clientY;
     const diff = swipeEnd - swipeStart;
 
-    // Если свайпнули вниз на 100px — закрываем
     if (diff > 100) {
       closePolicy();
     }
@@ -71,7 +83,7 @@ export const HomePage = () => {
           }
           <div className="w-[309px] h-[42px]">
             <p className="w-[309px] opacity-70 font-raleway font-medium text-sm text-white">
-              Нажав кнопку “Начать”, я соглашаюсь с{" "}
+              Нажав кнопку "Начать", я соглашаюсь с{" "}
               <span
                 className="underline cursor-pointer pointer-events-auto"
                 onClick={handlePolicyClick}
