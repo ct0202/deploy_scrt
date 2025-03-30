@@ -37,20 +37,17 @@ import MytaIdea from "./pages/profile/MytaIdea";
 import MakePayment from "./pages/MakePayment";
 import Streamer from "./pages/Streamer";
 
-import { useTelegram } from "./context/TelegramProvider";
-
 function App() {
-  const { user } = useTelegram();
-
   useEffect(() => {
     if (1) {
       const tg = window.Telegram.WebApp;
       tg.disableVerticalSwipes();
       tg.requestFullscreen();
       tg.ready();
-      tg.expand()
-      console.log('update 2');
-      console.log('user  === ', user);
+      tg.expand();
+      let userData = new URLSearchParams(tg.initData);
+      userData = JSON.parse(userData.get("user"));
+      console.log(userData);
     }
   }, []);
 

@@ -3,14 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { TelegramProvider } from "../src/context/TelegramProvider";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-      <TelegramProvider>
-            <App />
-      </TelegramProvider>
+      <App />
   </BrowserRouter>
 );
 
