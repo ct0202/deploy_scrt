@@ -49,8 +49,8 @@ function App() {
       tg.requestFullscreen();
       tg.ready();
       tg.expand()
-      console.log('update 1');
-      console.log('user  === ', user.id);
+      console.log('update 2');
+      console.log('user  === ', user);
     }
   }, []);
 
