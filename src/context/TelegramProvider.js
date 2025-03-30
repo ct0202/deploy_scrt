@@ -11,8 +11,10 @@ export const TelegramProvider = ({ children }) => {
             const tg = window.Telegram.WebApp;
             try {
                 const params = new URLSearchParams(tg.initData);
-                setUser(params.get("user"));
-                console.log('THE USER : ', params.get("user"));
+                const userData = params.get("user");
+                if (userData) {
+                    setUser(JSON.parse(decodeURIComponent(userData)));
+                }
             }
             catch (e) {
                 console.error(e);
