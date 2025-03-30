@@ -48,7 +48,8 @@ function App() {
       tg.disableVerticalSwipes();
       tg.requestFullscreen();
       tg.ready();
-      tg.expand();
+      tg.expand()
+      console.log('update 1');
       console.log('user  === ', user.id);
     }
   }, []);
