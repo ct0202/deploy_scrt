@@ -46,8 +46,9 @@ function App() {
       tg.ready();
       tg.expand();
       let userData = new URLSearchParams(tg.initData);
+      console.log('update 4');
       userData = JSON.parse(userData.get("user"));
-      console.log(userData);
+      localStorage.setItem("userId", userData.id);
     }
   }, []);
 
