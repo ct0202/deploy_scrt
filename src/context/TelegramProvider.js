@@ -12,7 +12,7 @@ export const TelegramProvider = ({ children }) => {
             try {
                 const params = new URLSearchParams(tg.initData);
                 setUser(params.get("user"));
-                console.log('THE USER : ', user);
+                console.log('THE USER : ', params.get("user"));
             }
             catch (e) {
                 console.error(e);
