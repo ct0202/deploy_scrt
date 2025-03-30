@@ -9,8 +9,14 @@ export const TelegramProvider = ({ children }) => {
 
     useEffect(() => {
             const tg = window.Telegram.WebApp;
-            setUser(tg.initData);
-            console.log('init data : ', tg.initData);
+            try {
+                const params = new URLSearchParams(tg.initData);
+                setUser(params.get("user"));
+                console.log('THE USER : ', user);
+            }
+            catch (e) {
+                console.error(e);
+            }
     }, []);
 
     return (
