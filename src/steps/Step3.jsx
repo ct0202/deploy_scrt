@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "../components/Button";
-
+import ListenVoice from "../components/ui/ListenVoice";
 import VoiceProgress from "../components/ui/VoiceProgress";
 
 function Step3({ setStep }) {
@@ -23,7 +23,9 @@ function Step3({ setStep }) {
         className="w-[220px] h-[220px] mt-10"
         alt="recorder icon"
       /> */}
+
       <VoiceProgress onRecordingStateChange={setIsRecording} />
+      <ListenVoice />
 
       <p className="font-raleway font-medium mt-4 text-white text-center text-[16px] pl-1">
         {isRecording ? "ИДЁТ ЗАПИСЬ..." : (

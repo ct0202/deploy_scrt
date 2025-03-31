@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../components/Button";
 import { useRegistration } from "../context/RegistrationContext";
 
@@ -6,6 +6,10 @@ function Step2({ setStep }) {
   const { registrationData, updatePhoto, deletePhoto, reorderPhotos } = useRegistration();
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    checkPhotos();
+  }, []);
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
   const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -27,14 +31,16 @@ function Step2({ setStep }) {
     const reader = new FileReader();
     reader.onloadend = () => {
       updatePhoto(index, reader.result);
-      checkPhotos();
+      if (index === 0) {
+        setDisabled(false);
+      }
     };
     reader.readAsDataURL(file);
   };
 
   const checkPhotos = () => {
-    const hasPhotos = registrationData.photos.some(photo => photo !== null);
-    setDisabled(!hasPhotos);
+    const hasMainPhoto = registrationData.photos[0] !== null;
+    setDisabled(!hasMainPhoto);
   };
 
   const handleDragStart = (index) => {
