@@ -41,7 +41,7 @@ import Streamer from "./pages/Streamer";
 
 function App() {
   useEffect(() => {
-    if (0) {
+    if (1) {
       const tg = window.Telegram.WebApp;
 
       tg.disableVerticalSwipes();
