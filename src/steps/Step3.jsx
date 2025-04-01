@@ -7,6 +7,7 @@ function Step3({ setStep }) {
   console.log("step3");
 
   const [isRecording, setIsRecording] = useState(false);
+  const [RecordingComplete, setRecordingComplete] = useState(false);
 
   return (
     <div className="flex flex-col items-center w-[343px] h-[750px] overflow-y-auto overflow-x-hidden ">
@@ -24,9 +25,10 @@ function Step3({ setStep }) {
         alt="recorder icon"
       /> */}
 
-      <VoiceProgress onRecordingStateChange={setIsRecording} />
-      <ListenVoice />
+      <VoiceProgress onRecordingStateChange={setIsRecording} onRecordingComplete={() => setRecordingComplete(true)} />
 
+      {!RecordingComplete && (
+        <>
       <p className="font-raleway font-medium mt-4 text-white text-center text-[16px] pl-1">
         {isRecording ? "ИДЁТ ЗАПИСЬ..." : (
           <>
@@ -41,6 +43,8 @@ function Step3({ setStep }) {
       >
         Пропустить
       </button>
+      </>
+      )}
     </div>
   );
 }

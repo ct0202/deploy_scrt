@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Button } from "../Button";
 
-const VoiceProgress = ({ onRecordingStateChange }) => {
+const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
     const [isRecording, setIsRecording] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [audioBlob, setAudioBlob] = useState(null);
     const [audioUrl, setAudioUrl] = useState(null);
     const mediaRecorderRef = useRef(null);
+    const audioRef = useRef(null);
     const chunksRef = useRef([]);
     const radius = 100;
     const circumference = 2 * Math.PI * radius;
+    const [currentTime, setCurrentTime] = useState(0);
 
     useEffect(() => {
         let intervalId;
@@ -85,13 +89,14 @@ const VoiceProgress = ({ onRecordingStateChange }) => {
         if (audioBlob) {
             const url = URL.createObjectURL(audioBlob);
             setAudioUrl(url);
+            onRecordingComplete?.(true);
             return () => {
                 if (url) {
                     URL.revokeObjectURL(url);
                 }
             };
         }
-    }, [audioBlob]);
+    }, [audioBlob, onRecordingComplete]);
 
     const handleTouchStart = async () => {
         if (!isRecording) {
@@ -107,8 +112,44 @@ const VoiceProgress = ({ onRecordingStateChange }) => {
 
     const strokeDashoffset = circumference - (progress / 100) * circumference;
 
+    const togglePlay = () => {
+        if (audioRef.current) {
+            if (isPlaying) {
+                audioRef.current.pause();
+            } else {
+                audioRef.current.play();
+            }
+            setIsPlaying(!isPlaying);
+        }
+    };
+
+    const handleAudioEnded = () => {
+        setIsPlaying(false);
+    };
+
+    const handleTimeUpdate = () => {
+        if (audioRef.current) {
+            setCurrentTime(audioRef.current.currentTime);
+        }
+    };
+
+    // Вычисляем, сколько палочек должно быть закрашено
+    const getBarColor = (index, currentTime, duration) => {
+        if (!audioRef.current) return "#085252";
+        const progress = (currentTime / audioRef.current.duration) * 42;
+        return index <= progress ? "#A1F69E" : "#085252";
+    };
+
+    const formatTime = (time) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
+
     return (
-        <div className="w-[220px] h-[220px] relative mt-10">
+        <div className="w-fullh-[220px] flex items-center justify-center relative mt-10">
+                        {!audioUrl && (
+                            <>
             <svg
                 width="220"
                 height="220"
@@ -179,19 +220,62 @@ const VoiceProgress = ({ onRecordingStateChange }) => {
                     onMouseLeave={handleTouchEnd}
                     className="absolute inset-0 w-full h-full cursor-pointer"
                 />
-        
-            
+                </>
+            )}
             {audioUrl && (
-                <div className="mt-4 w-full max-w-[300px]">
-                    <audio 
-                        controls 
-                        src={audioUrl} 
-                        className="w-full"
-                        controlsList="nodownload"
-                        preload="auto"
+                <div className="mt-6 w-[343px] h-[64px] border border-[#233636] bg-[#022424] gap-[17px] rounded-[8px] flex items-center justify-center">
+                    <button 
+                        onClick={togglePlay}
+                        className="ml-[10px] w-8 h-8 flex items-center justify-center bg-[#A1F69E] rounded-full"
                     >
-                        Ваш браузер не поддерживает аудио-плеер.
-                    </audio>
+                        {isPlaying ? (
+                            <object data="/icons/VoiceStopButton.svg" type="image/svg+xml" className="w-[44px] h-[44px] pointer-events-none" />
+                        ) : (
+                            <object data="/icons/VoiceStartButton.svg" type="image/svg+xml" className="w-[44px] h-[44px] pointer-events-none" />
+                        )}
+                    </button>
+                    <div className="flex-1 h-[30px] w-[206px] overflow-hidden">
+                        <div className=" flex items-center gap-[2px]">
+                            {Array.from({ length: 50 }).map((_, index) => (
+                                <div
+                                    key={index}
+                                    className="w-[2px] h-[40px] rounded-[13px]"
+                                    style={{
+                                        height: `20px`,
+                                        backgroundColor: getBarColor(index, currentTime, audioRef.current?.duration)
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                    <span className="text-white font-medium mr-[13px]">
+                        {formatTime(currentTime)}
+                    </span>
+                    <audio 
+                        ref={audioRef}
+                        src={audioUrl} 
+                        onEnded={handleAudioEnded}
+                        onTimeUpdate={handleTimeUpdate}
+                        className="hidden"
+                    />
+                    <div className="fixed bottom-[30px]">
+                        <div className="w-[343px] h-[64px] mb-[20px] rounded-[400px] border border-[#A1F69E] flex items-center justify-center"
+                        onClick={() => {
+                            setAudioBlob(null);
+                            setAudioUrl(null);
+                            setCurrentTime(0);
+                            setIsPlaying(false);
+                            if (audioRef.current) {
+                                audioRef.current.pause();
+                            }
+                            onRecordingComplete?.(false); 
+                        }}
+                        >
+                            <object data="/icons/Microphone.svg" type="image/svg+xml" className="w-[24px] h-[24px] pointer-events-none" />
+                            <span className="text-white font-medium">Перезаписать</span>
+                        </div>
+                        <Button>Далее</Button>
+                    </div>
                 </div>
             )}
         </div>
