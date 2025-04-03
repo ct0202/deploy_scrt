@@ -1,8 +1,6 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useRef} from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
-
-import { Navigation } from "../components/shared/Navigation";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
@@ -12,8 +10,6 @@ import "./styles/SwiperCustomPagination.css";
 
 import { INSTRUCTIONS_MEET } from "../constants/instructions";
 import PresentsShop from "../components/shared/PresentsShop";
-import ReportMenu from "../components/shared/ReportMenu";
-import BlockUser from "../components/shared/BlockUser";
 import DayLimit from "../components/shared/DayLimit";
 
 function Streamer() {
@@ -82,7 +78,7 @@ function Streamer() {
                                 className={`w-[343px] h-[120px] gap-[12px] border-b border-[#6D6D6D] flex text-white`}
                             >
                                 <div className="h-[89px] flex justify-center items-center">
-                                    <img src={ins.svg} className="w-[40px] h-[40px]" />
+                                    <img alt={ins.title} src={ins.svg} className="w-[40px] h-[40px]" />
                                 </div>
                                 <div className={`flex flex-col gap-[4px]`}>
                   <span className={`w-[270px] text-[18px] font-semibold`}>
@@ -110,12 +106,14 @@ function Streamer() {
                     <div className="z-0 w-full flex justify-center items-center flex-col">
                         <div className="w-[343px] flex flex-row ">
                             <img
+                                alt="Назад"
                                 src="/icons/Button-back.svg"
                                 onClick={() => {navigate(-1)}}
                                 className="mt-3 w-[44px] h-[44px]"
                             />
                             <div className="flex flex-row justify-end flex-grow">
                                 <img
+                                    alt="Точки"
                                     src="/icons/Button-dots.svg"
                                     onClick={() => {setOpenToast(!openToast)}}
                                     className="mt-3 ml-3 w-[44px] h-[44px]"
@@ -152,24 +150,28 @@ function Streamer() {
                                 >
                                     <SwiperSlide>
                                         <img
+                                            alt="Аватар"
                                             src="/mock/user_1/mock_user_avatar_1_1.png"
                                             className="z-[1] w-[363px] h-[544px] rounded-[16px] object-cover"
                                         />
                                     </SwiperSlide>
                                     <SwiperSlide>
                                         <img
+                                            alt="Аватар"
                                             src="/mock/user_1/mock_user_avatar_1_1.png"
                                             className="z-[1] w-[363px] h-[544px] rounded-[16px] object-cover"
                                         />
                                     </SwiperSlide>
                                     <SwiperSlide>
                                         <img
+                                            alt="Avatar"
                                             src="/mock/user_1/mock_user_avatar_1_1.png"
                                             className="z-[1] w-[363px] h-[544px] rounded-[16px] object-cover"
                                         />
                                     </SwiperSlide>
                                     <SwiperSlide>
                                         <img
+                                            alt="Аватар"    
                                             src="/mock/user_1/mock_user_avatar_1_1.png"
                                             className="z-[1] w-[363px] h-[544px] rounded-[16px] object-cover"
                                         />
@@ -186,6 +188,7 @@ function Streamer() {
                                             }}
                                         >
                                             <img
+                                                alt="Фото"
                                                 src="/icons/photo_overlay_button_4.svg"
                                                 className="w-[58px] h-[58px]"
                                             />
@@ -196,7 +199,7 @@ function Streamer() {
                                                 setPresentsShop(true)
                                             }}
                                         >
-                                            <img src="/icons/photo_overlay_button_5.svg" className="w-[58px] h-[58px]"/>
+                                            <img alt="Фото" src="/icons/photo_overlay_button_5.svg" className="w-[58px] h-[58px]"/>
                                         </div>
                                     </div>
                                 </div>
@@ -220,6 +223,7 @@ function Streamer() {
                                         Аудио визитка
                                     </h1>
                                     <img
+                                        alt="Аудио визитка"
                                         src="/icons/user_voice_message.svg"
                                         className="w-[295px] h-[64px] mt-2"
                                     />
@@ -242,6 +246,7 @@ function Streamer() {
                                             <SwiperSlide
                                                 className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
                                                 <img
+                                                    alt="Podarok"
                                                     src="/icons/present.svg"
                                                     className="w-[80px] h-[80px]"
                                                 />
@@ -249,6 +254,7 @@ function Streamer() {
                                             <SwiperSlide
                                                 className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
                                                 <img
+                                                    alt="Podarok"
                                                     src="/icons/present.svg"
                                                     className="w-[80px] h-[80px]"
                                                 />
@@ -256,6 +262,7 @@ function Streamer() {
                                             <SwiperSlide
                                                 className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
                                                 <img
+                                                    alt="Podarok"
                                                     src="/icons/present.svg"
                                                     className="w-[80px] h-[80px]"
                                                 />
@@ -263,6 +270,7 @@ function Streamer() {
                                             <SwiperSlide
                                                 className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
                                                 <img
+                                                    alt="Podarok"
                                                     src="/icons/present.svg"
                                                     className="w-[80px] h-[80px]"
                                                 />
@@ -293,18 +301,18 @@ function Streamer() {
                                     }
                                 }}
                             >
-                                <span>Поделиться</span><img src='/icons/share.svg'/>
+                                <span>Поделиться</span><img alt="Поделиться" src='/icons/share.svg'/>
                             </div>
                             <div
                                 className="w-full border-b border-[#233636] h-[60px] flex items-center justify-between pl-[16px] pr-[16px]"
                                 onClick={() => {
                                     setReportMenu(true)
                                 }}>
-                                <span>Пожаловаться</span><img src='/icons/report.svg'/>
+                                <span>Пожаловаться</span><img alt="Пожаловаться" src='/icons/report.svg'/>
                             </div>
                             <div className="w-full h-[60px] flex items-center justify-between pl-[16px] pr-[16px]"
                                  onClick={() => {setBlockUser(true)}}>
-                                <span>Заблокировать</span><img src='/icons/block_user.svg'/>
+                                <span>Заблокировать</span><img alt="Заблокировать" src='/icons/block_user.svg'/>
                             </div>
                         </div>
                     )}
@@ -382,7 +390,7 @@ function Streamer() {
                                         </>
                                         :
                                         <div className="flex flex-col justify-start items-center w-full mt-[40px]">
-                                            <img src='/icons/Layer_1.svg' className='w-[80px] h-[80px]'/>
+                                            <img alt="Заблокировать" src='/icons/Layer_1.svg' className='w-[80px] h-[80px]'/>
                                             <p className='text-center w-[300px] mt-[30px] font-semibold text-[22px]'>Вы
                                                 действительно хотите заблокировать данного пользователя?</p>
                                             <p className='text-center text-[16px] mt-[20px] font-normal pl-2 pr-2'>Заблокированный
@@ -439,7 +447,7 @@ function Streamer() {
 
                                     {!openReport ?
                                         <div className="flex flex-col justify-start items-center w-full mt-[40px]">
-                                            <img src='/icons/Layer_1.svg' className='w-[80px] h-[80px]'/>
+                                            <img alt="Заблокировать" src='/icons/Layer_1.svg' className='w-[80px] h-[80px]'/>
                                             <p className='text-center w-[300px] mt-[30px] font-semibold text-[22px]'>Вы
                                                 действительно хотите заблокировать данного пользователя?</p>
                                             <p className='text-center text-[16px] mt-[20px] font-normal pl-2 pr-2'>Заблокированный
@@ -459,7 +467,7 @@ function Streamer() {
                                         </div>
                                         :
                                         <div className="flex flex-col justify-start items-center w-full mt-[40px]">
-                                            <img src='/icons/blocked_success.svg' className='w-[80px] h-[80px]'/>
+                                            <img alt="Успешно" src='/icons/blocked_success.svg' className='w-[80px] h-[80px]'/>
                                             <p className='text-center w-[300px] mt-[30px] font-semibold text-[22px]'>Пользователь
                                                 был успешно заблокирован! Больше вас не побеспокоят</p>
                                         </div>

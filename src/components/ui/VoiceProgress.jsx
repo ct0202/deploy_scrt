@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button } from "../Button";
 
 const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
     const [isRecording, setIsRecording] = useState(false);
@@ -67,6 +66,7 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
                 const blob = new Blob(chunksRef.current, { type: mimeType });
                 setAudioBlob(blob);
                 console.log('Запись завершена, размер:', blob.size);
+                onRecordingComplete?.(blob);
             };
 
             mediaRecorderRef.current.start(100);
@@ -89,14 +89,13 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
         if (audioBlob) {
             const url = URL.createObjectURL(audioBlob);
             setAudioUrl(url);
-            onRecordingComplete?.(true);
             return () => {
                 if (url) {
                     URL.revokeObjectURL(url);
                 }
             };
         }
-    }, [audioBlob, onRecordingComplete]);
+    }, [audioBlob]);
 
     const handleTouchStart = async () => {
         if (!isRecording) {
@@ -229,9 +228,9 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
                         className="ml-[10px] w-8 h-8 flex items-center justify-center bg-[#A1F69E] rounded-full"
                     >
                         {isPlaying ? (
-                            <object data="/icons/VoiceStopButton.svg" type="image/svg+xml" className="w-[44px] h-[44px] pointer-events-none" />
+                            <object data="/icons/VoiceStopButton.svg" type="image/svg+xml" className="w-[44px] h-[44px] pointer-events-none" aria-label="Остановить воспроизведение" />
                         ) : (
-                            <object data="/icons/VoiceStartButton.svg" type="image/svg+xml" className="w-[44px] h-[44px] pointer-events-none" />
+                            <object data="/icons/VoiceStartButton.svg" type="image/svg+xml" className="w-[44px] h-[44px] pointer-events-none" aria-label="Начать воспроизведение" />
                         )}
                     </button>
                     <div className="flex-1 h-[30px] w-[206px] overflow-hidden">
@@ -271,10 +270,9 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
                             onRecordingComplete?.(false); 
                         }}
                         >
-                            <object data="/icons/Microphone.svg" type="image/svg+xml" className="w-[24px] h-[24px] pointer-events-none" />
+                            <object data="/icons/Microphone.svg" type="image/svg+xml" className="w-[24px] h-[24px] pointer-events-none" aria-label="Микрофон" />
                             <span className="text-white font-medium">Перезаписать</span>
                         </div>
-                        <Button>Далее</Button>
                     </div>
                 </div>
             )}

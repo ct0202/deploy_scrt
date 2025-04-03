@@ -5,7 +5,6 @@ import Step2 from '../steps/Step2';
 import Step3 from '../steps/Step3';
 import Step4 from '../steps/Step4';
 import Step5 from '../steps/Step5';
-import Button from '../components/Button';
 import { useRegistration } from '../context/RegistrationContext';
 import axios from '../axios'
 import { useNavigate } from 'react-router-dom';
@@ -14,21 +13,6 @@ function CalculatePage() {
   const [step, setStep] = useState(1);
   const { registrationData } = useRegistration();
   const navigate = useNavigate();
-
-  const registration = () => {
-    axios.post('/register', registrationData)
-    .then(res => {
-      if(res.data){
-        console.log('Registration successful:', res.data);
-        localStorage.setItem('userId', res.data._id)
-        navigate('/meet')
-      }
-    })
-    .catch((err) => {
-      alert("У вас уже есть аккаунт либо что то пошло не так")
-      navigate('/readyLogin')
-    })
-  }
 
   return (
     <div className={`flex flex-col justify-center items-center w-[100%] ${step === 1 ? 'pt-[300px]' : ''} h-screen overflow-y-auto overflow-x-hidden`}>

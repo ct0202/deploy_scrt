@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
@@ -44,6 +44,10 @@ function Chat() {
                 <Button><img src="/icons/chat-bubble-typing.svg" className="inline mr-1 mb-1 w-[18px] h-[18px]"/>Написать</Button>
                 <p className="text-center mt-4 text-[white] font-raleway opacity-20" onClick={() => {navigate(-1)}}>Не сейчас</p>
             </div>
+            <img src="/icons/photo_overlay_button_1.svg" alt="Кнопка 1" className="w-[48px] h-[48px]" />
+            <img src="/icons/photo_overlay_button_2.svg" alt="Кнопка 2" className="w-[48px] h-[48px]" />
+            <img src="/icons/photo_overlay_button_3.svg" alt="Кнопка 3" className="w-[48px] h-[48px]" />
+            <img src="/icons/photo_overlay_button_4.svg" alt="Кнопка 4" className="w-[48px] h-[48px]" />
         </div>
     );
 }

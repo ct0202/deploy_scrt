@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -19,6 +19,7 @@ function ProfileEdit() {
                         <div className="w-[343px] flex flex-row ">
                             <img
                                 src="/icons/Button-back.svg"
+                                alt="Назад"
                                 onClick={() => {navigate(-1)}}
                                 className="mt-3 w-[44px] h-[44px]"
                             />
@@ -54,37 +55,41 @@ function ProfileEdit() {
                                     <SwiperSlide>
                                         <img
                                             src="/mock/user_5/image%2010.png"
+                                            alt="Фотография"
                                             className="z-[1] w-[363px] h-[544px] rounded-[16px] object-cover"
                                         />
                                     </SwiperSlide>
                                     <SwiperSlide>
                                         <img
                                             src="/mock/user_5/image%2010.png"
+                                            alt="Фотография"
                                             className="z-[1] w-[363px] h-[544px] rounded-[16px] object-cover"
                                         />
                                     </SwiperSlide>
                                     <SwiperSlide>
                                         <img
                                             src="/mock/user_5/image%2010.png"
+                                            alt="Фотография"
                                             className="z-[1] w-[363px] h-[544px] rounded-[16px] object-cover"
                                         />
                                     </SwiperSlide>
                                     <SwiperSlide>
                                         <img
                                             src="/mock/user_5/image%2010.png"
+                                            alt="Фотография"
                                             className="z-[1] w-[363px] h-[544px] rounded-[16px] object-cover"
                                         />
                                     </SwiperSlide>
                                 </Swiper>
 
-                                <img src='/icons/redactirovat_photo.svg' className='absolute z-[10]
+                                <img src='/icons/redactirovat_photo.svg' alt="Редактировать фото" className='absolute z-[10]
                                 left-[30px]
                                 top-[500px]'  onClick={()=>navigate('/photo')}/>
-                                <img src='/icons/izmenit.svg' className='absolute z-[10] top-[565px] left-[230px]' onClick={()=>navigate('/main')} />
-                                <img src='/icons/izmenit.svg' className='absolute z-[10] top-[607px] left-[180px]' onClick={()=>navigate('/main')}/>
-                                <img src='/icons/izmenit.svg' className='absolute z-[10] top-[680px] left-[200px]' onClick={()=>navigate('/meetGoal')} />
-                                <img src='/icons/izmenit.svg' className='absolute z-[10] top-[765px] left-[180px]' onClick={()=>navigate('/audio')}/>
-                                <img src='/icons/izmenit.svg' className='absolute z-[10] top-[890px] left-[130px]' onClick={()=>navigate('/interests')}/>
+                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[565px] left-[230px]' onClick={()=>navigate('/main')} />
+                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[607px] left-[180px]' onClick={()=>navigate('/main')}/>
+                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[680px] left-[200px]' onClick={()=>navigate('/meetGoal')} />
+                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[765px] left-[180px]' onClick={()=>navigate('/audio')}/>
+                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[890px] left-[130px]' onClick={()=>navigate('/interests')}/>
                                 <div className="shadow-[0_-25px_30px_rgba(0,0,0,0.9)] rounded-[16px] rounded-t-none relative z-[5] flex flex-col pl-[24px] pr-[24px] bg-[#010D0D] translate-y-[-27px] drop-shadow-[0_0_30px_0_rgb(0,0,0)]">
                                     <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
                                         Андрей, 35 лет
@@ -104,6 +109,7 @@ function ProfileEdit() {
                                     </h1>
                                     <img
                                         src="/icons/user_voice_message.svg"
+                                        alt="Аудио визитка"
                                         className="w-[295px] h-[64px] mt-2"
                                     />
                                     <h1 className="font-raleway font-bold mt-6 text-white text-[18px]">
@@ -125,23 +131,27 @@ function ProfileEdit() {
                                             <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
                                                 <img
                                                     src="/icons/present.svg"
+                                                    alt="Подарок"
                                                     className="w-[80px] h-[80px]"
                                                 />
                                             </SwiperSlide>
                                             <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
                                                 <img
+                                                    alt="Подарок"
                                                     src="/icons/present.svg"
                                                     className="w-[80px] h-[80px]"
                                                 />
                                             </SwiperSlide>
                                             <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
                                                 <img
+                                                    alt="Подарок"
                                                     src="/icons/present.svg"
                                                     className="w-[80px] h-[80px]"
                                                 />
                                             </SwiperSlide>
                                             <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
                                                 <img
+                                                    alt="Подарок"
                                                     src="/icons/present.svg"
                                                     className="w-[80px] h-[80px]"
                                                 />

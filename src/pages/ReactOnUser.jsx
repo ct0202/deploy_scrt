@@ -1,8 +1,6 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useRef} from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
-
-import { Navigation } from "../components/shared/Navigation";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
@@ -11,7 +9,6 @@ import "swiper/css/pagination";
 import "./styles/SwiperCustomPagination.css";
 
 import { INSTRUCTIONS_MEET } from "../constants/instructions";
-import PresentsShop from "../components/shared/PresentsShop";
 import ReportMenu from "../components/shared/ReportMenu";
 import BlockUser from "../components/shared/BlockUser";
 

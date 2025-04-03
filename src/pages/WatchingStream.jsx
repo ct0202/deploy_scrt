@@ -7,12 +7,14 @@ function WatchingStream() {
 
     const [hint, setHint] = React.useState(true);
     const [presentsShop, setPresentsShop] = React.useState(false);
-    const [comments, setComments] = React.useState([
+    // const [comments, setComments] = React.useState([
+    const comments = [
         {id: 1, avatar_src: '/mock/stream_chat_user_avatar.png', nickname: 'love_life', text: 'Как часто вы пользуетесь картой Альфа Банка?'},
         {id: 1, avatar_src: '/mock/stream_chat_user_avatar.png', nickname: 'love_life', text: 'Привет, как дела?✌️✌️✌️'},
         {id: 1, avatar_src: '/mock/stream_chat_user_avatar.png', nickname: 'love_life', text: 'Давай знакомиться, привет!!!'},
         {id: 1, avatar_src: '/mock/stream_chat_user_avatar.png', nickname: 'love_life', text: '', present: '/icons/presents/1.svg'}
-    ]);
+    // ]);
+    ];
 
 
     const [swipeStart, setSwipeStart] = useState(0);
@@ -34,12 +36,12 @@ function WatchingStream() {
 
   return (
     <div className="flex flex-col justify-center items-center mt-[70px] w-[100%] h-[100vh] relative overflow-hidden overflow-x-hidden">
-      <img src="/images/image 20.png" className="absolute z-0 top-0 w-[100vw] h-[100vh]" alt="" />
+      <img alt="Фон" src="/images/image 20.png" className="absolute z-0 top-0 w-[100vw] h-[100vh]"  />
       <div className="absolute top-0 flex justify-between items-center w-[343px] h-[44px] mt-[21px] z-10">
-        <img src="/icons/Info.svg" alt="" onClick={() => navigate("/1/streamer")} />
+        <img alt="Информация" src="/icons/Info.svg" onClick={() => navigate("/1/streamer")} />
         <img
+          alt="Назад"
           src="/icons/Button-close.svg"
-          alt=""
           onClick={() => navigate(-1)}
         />
       </div>
@@ -47,10 +49,10 @@ function WatchingStream() {
             {
                 comments.map((cmmnt, index) => (
                     <div className="flex flex-row mt-4">
-                        <img src={`${cmmnt.avatar_src}`} className="w-[32px] h-[32px] mr-3" alt="" />
+                        <img alt="Аватар" src={`${cmmnt.avatar_src}`} className="w-[32px] h-[32px] mr-3" />
                         <div>
                             <p className= "text-[14px] font-normal">{cmmnt.nickname}</p>
-                            {cmmnt.text === '' ? <img src={cmmnt.present} alt=""/> : <p className= "text-[14px] font-semibold w-[303px]">{cmmnt.text}</p>}
+                            {cmmnt.text === '' ? <img alt="Подарок" src={cmmnt.present}/> : <p className= "text-[14px] font-semibold w-[303px]">{cmmnt.text}</p>}
                         </div>
                     </div>
                 ))
@@ -60,7 +62,7 @@ function WatchingStream() {
                     <input placeholder="Оставьте комментарий" className="pl-4 text-[18px] bg-transparent h-[64px] w-[269px] rounded-[400px] text-[#FFFFFF] font-normal"/>
                 </div>
                 <div className="ml-4 rounded-[50%] bg-[#FFFFFF33] flex items-center justify-center w-[64px] h-[64px] mt-4" onClick={()=>{setPresentsShop(true)}}>
-                    <img src="/icons/present.svg" alt="" className="w-[24px] h-[24px]"/>
+                    <img alt="Подарок" src="/icons/present.svg" className="w-[24px] h-[24px]"/>
                 </div>
             </div>
         </div>
@@ -69,9 +71,9 @@ function WatchingStream() {
                         w-[188px]
                         h-[92px]
                         bottom-[120px] right-[20px] flex">
-            <img src="/icons/Hint.svg"/>
+            <img alt="Подсказка" src="/icons/Hint.svg"/>
             <p className="absolute text-white text-[13px] font-semibold pl-1.5 pt-1 pr-1"><span className="text-[#A1F69E]">Стань заметнее,</span><br/> отправь приятный<br/> комлимент!</p>
-            <img src="/icons/Button-close.svg" className="z-[10] w-[20px] h-[20px] absolute right-[10px] top-[10px]" onClick={()=> {setHint(false)}}/>
+            <img alt="Закрыть" src="/icons/Button-close.svg" className="z-[10] w-[20px] h-[20px] absolute right-[10px] top-[10px]" onClick={()=> {setHint(false)}}/>
         </div>
         )}
         {presentsShop && (

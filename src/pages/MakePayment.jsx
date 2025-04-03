@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import {Button} from "../components/Button";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function MakePayment() {
@@ -11,7 +10,9 @@ function MakePayment() {
             <div className='flex items-center justify-center relative text-white text-[24px] w-full mt-[100px] pb-[26px] pt-[26px]
             border-b border-[#233636]'>
                 <div className="w-[343px] flex justify-center items-center relative">
-                    <img src='/icons/Button-back.svg' onClick={() => {
+                    <img src='/icons/Button-back.svg' 
+                        alt="Назад"
+                        onClick={() => {
                         navigate(-1)
                     }} className='absolute left-0 w-[44px] h-[44px]'/>
                     <p className='pl-[20px]'>Пополнение счёта</p>

@@ -1,8 +1,6 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useRef} from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
-
-import { Navigation } from "../components/shared/Navigation";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
@@ -105,12 +103,14 @@ function Profile() {
                         <div className="w-[343px] flex flex-row ">
                             <img
                                 src="/icons/Button-back.svg"
+                                alt="Назад"
                                 onClick={() => {navigate(-1)}}
                                 className="mt-3 w-[44px] h-[44px]"
                             />
                             <div className="flex flex-row justify-end flex-grow">
                                 <img
                                     src="/icons/Button-dots.svg"
+                                    alt="Меню"
                                     onClick={() => {setOpenToast(!openToast)}}
                                     className="mt-3 ml-3 w-[44px] h-[44px]"
                                 />

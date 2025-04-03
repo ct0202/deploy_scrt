@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {useNavigate} from "react-router-dom";
 
 function Photo() {
@@ -22,10 +22,11 @@ function Photo() {
                     className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] relative flex items-center justify-center cursor-pointer`}
                 >
                     <img
+                        alt="Главное фото"
                         src="/icons/main_photo_label.svg"
                         className="absolute top-0 left-0"
                     />
-                    <img src="/icons/camera.svg" />
+                    <img alt="Камера" src="/icons/camera.svg" />
                 </div>
                 <div
                     id="photo2"
@@ -34,9 +35,9 @@ function Photo() {
             <span
                 className="absolute top-1 right-1 text-white font-raleway text-[15px] font-medium"
             >
-                +25 <img src="/icons/myta-coin.svg" alt="" className="inline w-[16px]"/>
+                +25 <img alt="myta-coin" src="/icons/myta-coin.svg" className="inline w-[16px]"/>
             </span>
-                    <img src="/icons/camera.svg" />
+                    <img alt="Камера" src="/icons/camera.svg" />
                 </div>
                 <div
                     id="photo3"
@@ -45,9 +46,9 @@ function Photo() {
             <span
                 className="absolute top-1 right-1 text-white font-raleway text-[15px] font-medium"
             >
-                +25 <img src="/icons/myta-coin.svg" alt="" className="inline w-[16px]"/>
+                +25 <img alt="myta-coin" src="/icons/myta-coin.svg" className="inline w-[16px]"/>
             </span>
-                    <img src="/icons/camera.svg" />
+                    <img alt="Камера" src="/icons/camera.svg" />
                 </div>
                 <div
                     id="photo4"
@@ -56,9 +57,9 @@ function Photo() {
             <span
                 className="absolute top-1 right-1 text-white font-raleway text-[15px] font-medium"
             >
-                +25 <img src="/icons/myta-coin.svg" alt="" className="inline w-[16px]"/>
+                +25 <img alt="myta-coin" src="/icons/myta-coin.svg" className="inline w-[16px]"/>
             </span>
-                    <img src="/icons/camera.svg" />
+                    <img alt="Камера" src="/icons/camera.svg" />
                 </div>
             </div>
             <h1 className="font-raleway font-light text-white text-[16px]">

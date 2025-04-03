@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import React, {useRef, useState} from "react";
+import React, {useState} from "react";
 import {Button} from "../../components/Button";
 
 function Support() {
@@ -11,7 +11,7 @@ function Support() {
             <div className='flex items-center justify-center relative text-white text-[24px] w-full pb-[26px] pt-[26px]
             border-b border-[#233636]'>
                 <div className="w-[343px] flex justify-center items-center relative">
-                    <img src='/icons/Button-back.svg' onClick={() => {
+                    <img src='/icons/Button-back.svg' alt="Назад" onClick={() => {
                         navigate(-1)
                     }} className='absolute left-0 w-[44px] h-[44px]'/>
                     <p className='pl-[50px]'>Техническая поддержка</p>
@@ -33,7 +33,7 @@ function Support() {
                 </div>
             :
                 <div className='w-[343px] h-[70vh] flex flex-col items-center justify-center font-raleway text-white'>
-                    <img src='/icons/message_sent.svg' className='w-[80px] h-[80px]'/>
+                    <img src='/icons/message_sent.svg' alt="Сообщение отправлено" className='w-[80px] h-[80px]'/>
                     <p className='text-[22px] font-semibold text-center mt-[20px]'>Ваше сообщение отправлено</p>
                     <p className='text-[16px] font-normal text-center'>Мы внимательно рассмотрим ваш вопрос и свяжемся с вами в ближайшее время</p>
                 </div>

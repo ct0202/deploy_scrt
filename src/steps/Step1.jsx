@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {Button} from "../components/Button";
-import { useNavigate } from "react-router-dom";
-import { useRegistration } from "../context/RegistrationContext";
+import { Button } from "../components/Button";
+import { useDispatch, useSelector } from 'react-redux';
+import { updateRegistrationData } from '../store/userSlice';
 
 function Step1({ setStep }) {
-  const navigate = useNavigate();
-  const { registrationData, updateRegistrationData } = useRegistration();
+  const dispatch = useDispatch();
+  const registrationData = useSelector((state) => state.user.registrationData);
   const [disabled, setDisabled] = useState(true);
 
   const genders = [
@@ -46,8 +46,8 @@ function Step1({ setStep }) {
   }, [registrationData]);
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
-    updateRegistrationData(name, value);
+    const { name, value } = e.target;
+    dispatch(updateRegistrationData({ field: name, value }));
   };
 
   return (
@@ -70,7 +70,7 @@ function Step1({ setStep }) {
         {genders.map((gender) => (
           <div
             key={gender.id}
-            onClick={() => updateRegistrationData("gender", gender.id)}
+            onClick={() => dispatch(updateRegistrationData({ field: "gender", value: gender.id }))}
             className={`w-[145px] h-[48px] rounded-[400px] flex justify-center items-center text-[18px] text-white gap-[8px] cursor-pointer transition-all 
               ${
                 registrationData.gender === gender.id
@@ -91,7 +91,7 @@ function Step1({ setStep }) {
         {targetGenders.map((gender) => (
           <div
             key={gender.id}
-            onClick={() => updateRegistrationData("wantToFind", gender.id)}
+            onClick={() => dispatch(updateRegistrationData({ field: "wantToFind", value: gender.id }))}
             className={`w-[145px] h-[48px] rounded-[400px] flex justify-center items-center text-[18px] text-white gap-[8px] cursor-pointer transition-all 
               ${
                 registrationData.wantToFind === gender.id

@@ -1,48 +1,97 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { addInterest, removeInterest } from '../store/userSlice';
 import { INTEREST } from "../constants/interests";
+import axios from '../axios';
 
 function Step5({ setStep }) {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const registrationData = useSelector((state) => state.user.registrationData);
+    const interests = useSelector((state) => state.user.registrationData.interests);
     const [disabled, setDisabled] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     console.log("step4");
 
-    const [selectedOptions, setSelectedOptions] = useState([]);
-
     useEffect(() => {
-        const storedData = localStorage.getItem("step4Data");
-        if (storedData) {
-            try {
-                const parsedData = JSON.parse(storedData);
-                setSelectedOptions(Array.isArray(parsedData) ? parsedData : []);
-            } catch (error) {
-                console.error("Ошибка парсинга step4Data:", error);
-                setSelectedOptions([]); // Если данные повреждены, сбрасываем
-            }
+        if (interests.length >= 5) {
+            setDisabled(false);
+        } else {
+            setDisabled(true);
         }
-    }, []);
+    }, [interests]);
 
     const addOption = (optionId) => {
-        setSelectedOptions((prev) =>
-            prev.includes(optionId) ? prev.filter((id) => id !== optionId) : [...prev, optionId]
-        );
-
-        if(selectedOptions.length + 1 >= 5){
-            console.log(selectedOptions.length);
-            setDisabled(false);
-        }
-        else {
-            setDisabled(true);
+        if (interests.includes(optionId)) {
+            dispatch(removeInterest(optionId));
+        } else {
+            dispatch(addInterest(optionId));
         }
     };
 
-    const saveDataAndNext = () => {
-        if (selectedOptions.length >= 5) {
-            localStorage.setItem("step4Data", JSON.stringify(selectedOptions));
-            navigate("/meet");
+    const convertBase64ToBlob = async (base64Data) => {
+        const response = await fetch(base64Data);
+        return await response.blob();
+    };
+
+    const saveDataAndNext = async () => {
+        if (interests.length >= 5) {
+            try {
+                setIsSubmitting(true);
+                
+                // Create FormData object
+                const formData = new FormData();
+                
+                // Add basic user information
+                formData.append('name', registrationData.name);
+                formData.append('gender', registrationData.gender);
+                formData.append('wantToFind', registrationData.wantToFind);
+                formData.append('birthDay', registrationData.birthDay);
+                formData.append('country', registrationData.country);
+                formData.append('city', registrationData.city);
+                formData.append('purpose', registrationData.purpose);
+                
+                // Add interests as JSON string
+                formData.append('interests', JSON.stringify(registrationData.interests));
+
+                // Add photos
+                for (let i = 0; i < registrationData.photos.length; i++) {
+                    const photo = registrationData.photos[i];
+                    if (photo) {
+                        const photoBlob = await convertBase64ToBlob(photo);
+                        formData.append(`photo${i + 1}`, photoBlob);
+                    }
+                }
+
+                // Add audio message if exists
+                if (registrationData.audioMessage) {
+                    const audioBlob = await convertBase64ToBlob(registrationData.audioMessage);
+                    formData.append('audioMessage', audioBlob);
+                }
+
+                // Submit the form data
+                const response = await axios.post('/register', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+
+                if (response.data) {
+                    // Store the token if returned
+                    if (response.data.token) {
+                        localStorage.setItem('token', response.data.token);
+                    }
+                    navigate("/meet");
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert('Произошла ошибка при регистрации. Пожалуйста, попробуйте еще раз.');
+            } finally {
+                setIsSubmitting(false);
+            }
         } else {
             alert("Выберите минимум 5 интересов!");
         }
@@ -65,7 +114,7 @@ function Step5({ setStep }) {
                         onClick={() => addOption(option.id)}
                         className={`w-auto ${ option.id === "Права людей с ограниченными возможностями" ? "text-[15px] p-2" :"p-3 text-[18px]"} h-[48px] rounded-[400px] flex justify-center items-center font-light text-white cursor-pointer transition-all
               ${
-                            selectedOptions.includes(option.id)
+                            interests.includes(option.id)
                                 ? "bg-[#043939] border-[1.5px] border-[#a1f69e]"
                                 : "bg-[#022424] border-[1px] border-[#233636]"
                         }`}
@@ -75,8 +124,11 @@ function Step5({ setStep }) {
                 ))}
             </div>
             <div className="fixed bottom-[20px]">
-                <Button onclick={saveDataAndNext} disabled={disabled}>
-                    Начать знакомства
+                <Button 
+                    onclick={saveDataAndNext} 
+                    disabled={disabled || isSubmitting}
+                >
+                    {isSubmitting ? 'Отправка...' : 'Начать знакомства'}
                 </Button>
             </div>
         </div>

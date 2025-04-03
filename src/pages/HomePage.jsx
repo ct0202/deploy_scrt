@@ -3,7 +3,6 @@ import { Button } from "../components/Button";
 import background from "../assets/background.svg";
 import { useNavigate } from "react-router-dom";
 import Policy from "../components/shared/Policy";
-import axios from "axios";
 
 export const HomePage = () => {
   const navigate = useNavigate();

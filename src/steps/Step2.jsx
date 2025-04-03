@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "../components/Button";
-import { useRegistration } from "../context/RegistrationContext";
+import { useDispatch, useSelector } from 'react-redux';
+import { updatePhoto, deletePhoto, reorderPhotos } from '../store/userSlice';
 
 function Step2({ setStep }) {
-  const { registrationData, updatePhoto, deletePhoto, reorderPhotos } = useRegistration();
+  const dispatch = useDispatch();
+  const registrationData = useSelector((state) => state.user.registrationData);
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
     checkPhotos();
-  }, []);
+  }, [checkPhotos]);
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
   const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -30,7 +32,7 @@ function Step2({ setStep }) {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      updatePhoto(index, reader.result);
+      dispatch(updatePhoto({ index, photo: reader.result }));
       if (index === 0) {
         setDisabled(false);
       }
@@ -53,7 +55,7 @@ function Step2({ setStep }) {
 
   const handleDrop = (dropIndex) => {
     if (draggedIndex === null || draggedIndex === dropIndex) return;
-    reorderPhotos(draggedIndex, dropIndex);
+    dispatch(reorderPhotos({ fromIndex: draggedIndex, toIndex: dropIndex }));
     setDraggedIndex(null);
   };
 
@@ -94,15 +96,16 @@ function Step2({ setStep }) {
                 {index === 0 && (
                   <img
                     src="/icons/main_photo_label.svg"
+                    alt=""
                     className="absolute top-0 left-0"
                   />
                 )}
                 {index > 0 && (
                   <span className="absolute top-1 right-1 text-white font-raleway text-[15px] font-medium">
-                    +25 <img src="/icons/myta-coin.svg" alt="" className="inline w-[16px]"/>
+                    +25 <img src="/icons/myta-coin.svg" alt="Монета MYTA" className="inline w-[16px]"/>
                   </span>
                 )}
-                <img src="/icons/camera.svg" />
+                <img src="/icons/camera.svg" alt="Камера" />
               </>
             )}
             <label className="absolute inset-0 flex items-center justify-center cursor-pointer">

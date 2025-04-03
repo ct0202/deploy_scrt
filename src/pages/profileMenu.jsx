@@ -39,15 +39,10 @@ function ProfileMenu() {
 
     const [showPolicy, setShowPolicy] = useState(false);
 
-    const handlePolicyClick = () => {
-        setShowPolicy(true);
-    };
-
     const closePolicy = () => {
         setShowPolicy(false);
     };
 
-    const [swipeStartP, setSwipeStartP] = useState(0);
     const policyRef = useRef(null);
 
     const handleTouchStartP = (e) => {
@@ -70,48 +65,48 @@ function ProfileMenu() {
             border-b border-[#233636]'>
                 <div className='w-full flex items-center justify-center'>
                     <div className="w-[343px] flex justify-center items-center relative">
-                        <img src='/icons/Button-close.svg' onClick={() => {navigate(-1)}} className='absolute left-0 w-[44px] h-[44px]'/>
+                        <img alt="Назад" src='/icons/Button-close.svg' onClick={() => {navigate(-1)}} className='absolute left-0 w-[44px] h-[44px]'/>
                         <p>Меню</p>
                     </div>
                 </div>
             </div>
-            <img src='/icons/premium-connect-banner.png' className='w-[343px] mt-[20px]' onClick={() => {navigate('/premium')}}/>
+            <img alt="Баннер премиум" src='/icons/premium-connect-banner.png' className='w-[343px] mt-[20px]' onClick={() => {navigate('/premium')}}/>
             <div className='flex flex-row text-white w-[343px] mt-[30px]'>
-                <img src='/mock/user_5/user_5_avatar_2.svg' className='w-[64px] h-[64px] mr-[20px]'/>
+                <img alt="Аватар" src='/mock/user_5/user_5_avatar_2.svg' className='w-[64px] h-[64px] mr-[20px]'/>
                 <div className='flex flex-col'>
                     <p className='text-[18px] font-medium'>Андрей, 35 лет</p>
                     <div className='flex flex-row mt-[2px] gap-[30px]'>
                         <div className='flex flex-col'>
                             <p className='opacity-50'>Монеты:</p>
-                            <div className='flex flex-row text-[20px] items-center'><img src='/icons/coin.svg' className='mr-[4px] w-[20px] h-[20px]'/> 100</div>
+                            <div className='flex flex-row text-[20px] items-center'><img alt="Монета" src='/icons/coin.svg' className='mr-[4px] w-[20px] h-[20px]'/> 100</div>
                         </div>
                         <div className='flex flex-col '>
                             <p className='opacity-50'>Монеты MYTA:</p>
-                            <div className='flex flex-row text-[20px] items-center'><img src='/icons/myta-coin.svg' className='mr-[4px] w-[20px] h-[20px]'/> 20</div>
+                            <div className='flex flex-row text-[20px] items-center'><img alt="Монета MYTA" src='/icons/myta-coin.svg' className='mr-[4px] w-[20px] h-[20px]'/> 20</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div className='w-full flex items-center justify-center'>
                 <div className='bg-[#A1F69E1A] h-[44px] rounded-[400px] w-[343px] text-[#A1F69E] text-[18px] flex flex-row items-center justify-center mt-[10px]' onClick={()=>navigate('/makepayment')}>
-                        Пополнить баланс <img src='/icons/coin.svg' className='ml-2 w-[20px] h-[20px]'/>
+                        Пополнить баланс <img alt="Монета" src='/icons/coin.svg' className='ml-2 w-[20px] h-[20px]'/>
                 </div>
             </div>
             <div className='flex flex-col justify-start w-[343px] mt-[24px] text-white gap-[15px]'>
                 <div className='flex flex-row items-center w-full' onClick={()=>navigate('/ProfileEdit')}>
-                    <img src='/icons/profile_edit.svg' className='w-[32px] h-[32px] mr-[20px]'/>
+                    <img alt="Редактировать профиль" src='/icons/profile_edit.svg' className='w-[32px] h-[32px] mr-[20px]'/>
                     Мой профиль
                 </div>
                 <div className='flex flex-row items-center w-full' onClick={()=>setPresentsShop(true)}>
-                    <img src='/icons/profile_presents_shop.svg' className='w-[32px] h-[32px] mr-[20px]'/>
+                    <img alt="Магазин подарков" src='/icons/profile_presents_shop.svg' className='w-[32px] h-[32px] mr-[20px]'/>
                     Магазин подарков
                 </div>
                 <div className='flex flex-row items-center w-full' onClick={()=>navigate('/invite')}>
-                    <img src='/icons/profile_share.svg' className='w-[32px] h-[32px] mr-[20px]'/>
+                    <img alt="Пригласить друга" src='/icons/profile_share.svg' className='w-[32px] h-[32px] mr-[20px]'/>
                     Пригласить друга
                 </div>
                 <div className='flex flex-row items-center w-full' onClick={()=>navigate('/support')}>
-                    <img src='/icons/support.svg' className='w-[32px] h-[32px] mr-[20px]'/>
+                    <img alt="Техническая поддержка" src='/icons/support.svg' className='w-[32px] h-[32px] mr-[20px]'/>
                     Техническая поддержка
                 </div>
             </div>

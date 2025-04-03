@@ -11,7 +11,6 @@ function Filters() {
     const [selectedInterests, setSelectedInterests] = useState([]);
     const [resetCounter, setResetCounter] = useState(0);
 
-    const [dayLimit, setDayLimit] = useState(true);
     const navigate = useNavigate();
 
     const [rangeAge, setRangeAge] = useState({ min: 18, max: 80 });

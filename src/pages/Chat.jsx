@@ -313,6 +313,7 @@ function Chat() {
                                 >
                                     <img
                                         src="/icons/photo_overlay_button_2.svg"
+                                        alt="Кнопка 2"
                                         className=" w-[64px] h-[64px]"
                                     />
                                 </div>
@@ -321,6 +322,7 @@ function Chat() {
                                 >
                                     <img
                                         src="/icons/photo_overlay_button_5.svg"
+                                        alt="Кнопка 5"
                                         className=" w-[64px] h-[64px]"
                                         onClick={() => {setPresentsShop(true)}}
                                     />
@@ -331,6 +333,7 @@ function Chat() {
                                 >
                                     <img
                                         src="/icons/photo_overlay_button_4.svg"
+                                        alt="Кнопка 4"
                                         className="w-[64px] h-[64px]"
                                     />
                                 </div>

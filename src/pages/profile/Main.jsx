@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Main() {
-    const [selectedGender, setSelectedGender] = useState(null);
-    const [selectedTargetGender, setSelectedTargetGender] = useState(null);
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState(() => {

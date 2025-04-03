@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import {Button} from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
-import DoubleRangeSlider from "../components/ui/DoubleRangeSlider";
-
 function Filters() {
     const [selectedTargetGender, setSelectedTargetGender] = useState(null);
-    const [selectedOption, setSelectedOption] = useState(null);
     const [selectedInterests, setSelectedInterests] = useState([]);
-    const [dayLimit, setDayLimit] = useState(true);
     const navigate = useNavigate();
 
     const addInterest = (optionId) => {
@@ -31,7 +27,7 @@ function Filters() {
 
                 <div className="w-full flex justify-between items-center">
                     <div onClick={() => navigate("/Streams")}>
-                        <img src="/icons/Button-back.svg" className="mt-3 w-[44px] h-[44px]"/>
+                        <img alt="Назад" src="/icons/Button-back.svg" className="mt-3 w-[44px] h-[44px]"/>
                     </div>
                     <div onClick={() => {setSelectedInterests([]); setSelectedTargetGender(null)}}>
                         <p className="text-white mt-3">Сбросить</p>

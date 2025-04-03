@@ -1,7 +1,6 @@
 import React, {useRef, useState, useEffect} from "react";
 import { Button } from "../../components/Button";
 import { useNavigate } from "react-router-dom";
-import Policy from "../../components/shared/Policy";
 
 function MytaIdea() {
     const navigate = useNavigate();
@@ -168,7 +167,7 @@ function MytaIdea() {
                             className="w-[343px] h-[64px] rounded-[8px] bg-[#053939] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
                         />
                         { tonStringCorrect ? (
-                        <img className='absolute w-[24px] h-[24px] top-[95px] right-[10px]' src='/icons/input-success.svg' />
+                        <img alt="Успешно" className='absolute w-[24px] h-[24px] top-[95px] right-[10px]' src='/icons/input-success.svg' />
                             ) : null}
                     </div>
                 )

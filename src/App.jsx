@@ -2,6 +2,8 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { RegistrationProvider } from './context/RegistrationContext';
 import { useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserId } from './store/userSlice';
 import Layout from "./pages/Layout";
 import { HomePage } from "./pages/HomePage";
 import Menu from "./pages/Menu";
@@ -40,6 +42,9 @@ import MakePayment from "./pages/MakePayment";
 import Streamer from "./pages/Streamer";
 
 function App() {
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.user.userId);
+
   useEffect(() => {
     if (1) {
       const tg = window.Telegram.WebApp;
@@ -50,16 +55,15 @@ function App() {
       tg.expand();
 
       console.log('update 5');
-      if(!localStorage.getItem("userId")){
+      if (!userId) {
         let userData = new URLSearchParams(tg.initData);
         userData = JSON.parse(userData.get("user"));
-        localStorage.setItem("userId", userData.id);
-      }
-      else{
-        console.log(localStorage.getItem("userId"));
+        dispatch(setUserId(userData.id));
+      } else {
+        console.log(userId);
       }
     }
-  }, []);
+  }, [dispatch, userId]);
 
   return (
     <RegistrationProvider>

@@ -125,24 +125,28 @@ function Meet() {
         <div className="w-[343px] flex flex-row ">
           <img
             src="/icons/Button-menu.svg"
+            alt="Меню"
             className="mt-3 w-[44px] h-[44px]"
             onClick={() => navigate("/profileMenu")}
           />
           <div className="flex flex-row justify-end flex-grow">
             <img
               src="/icons/Button-filters.svg"
+              alt="Фильтры"
               className="mt-3 ml-3 w-[119px] h-[44px]"
               onClick={() => {navigate('/filters')}}
             />
 
             <img
               src="/icons/Button-instruction.svg"
+              alt="Инструкция"
               className="mt-3 ml-3 w-[44px] h-[44px]"
               onClick={()=> {setShowInstruction(true)}}
             />
 
             <img
               src="/icons/Button-notifications.svg"
+              alt="Уведомления"
               className="mt-3 ml-3 w-[44px] h-[44px]"
               onClick={() => {navigate('/notifications')}}
             />
@@ -214,6 +218,7 @@ function Meet() {
                 >
                   <img
                       src="/icons/photo_overlay_button_1.svg"
+                      alt="Кнопка 1"
                       className="w-[48px] h-[48px]"
                   />
                 </div>
@@ -222,6 +227,7 @@ function Meet() {
                 >
                   <img
                       src="/icons/photo_overlay_button_2.svg"
+                      alt="Кнопка 2"
                       className=" w-[58px] h-[58px]"
                   />
                 </div>
@@ -230,6 +236,7 @@ function Meet() {
                 >
                   <img
                       src="/icons/photo_overlay_button_3.svg"
+                      alt="Кнопка 3"
                       className=" w-[64px] h-[64px]"
                   />
                 </div>
@@ -239,6 +246,7 @@ function Meet() {
                 >
                   <img
                       src="/icons/photo_overlay_button_4.svg"
+                      alt="Кнопка 4"
                       className="w-[58px] h-[58px]"
                   />
                 </div>
@@ -246,7 +254,11 @@ function Meet() {
                     className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
                     onClick = {() => {setPresentsShop(true)}}
                 >
-                  <img src="/icons/photo_overlay_button_5.svg" className="w-[48px] h-[48px]" />
+                  <img 
+                    src="/icons/photo_overlay_button_5.svg" 
+                    alt="Кнопка 5"
+                    className="w-[48px] h-[48px]" 
+                  />
                 </div>
               </div>
             </div>

@@ -6,7 +6,6 @@ export const ChatCard = ({id, img, name, age, lMsg, time, count, onDelete})  => 
     const [isSwiped, setIsSwiped] = useState(false);
     const startX = useRef(0);
     const currentX = useRef(0);
-    const chatRef = useRef(null);
 
     const handleTouchStart = (e) => {
         startX.current = e.touches[0].clientX;
@@ -35,7 +34,7 @@ export const ChatCard = ({id, img, name, age, lMsg, time, count, onDelete})  => 
                 onTouchEnd={handleTouchEnd}
             >
                 <div className="text-white w-[343px] flex flex-row h-[84px] items-center font-raleway">
-                    <img src={img} alt="user avatar" className='w-[48px] h-[48px] rounded-[50%] mr-[16px]'
+                    <img src={img} alt="Аватар пользователя" className='w-[48px] h-[48px] rounded-[50%] mr-[16px]'
                          onClick={() => {
                              navigate(`/${id}/profile`)
                          }}/>
@@ -53,7 +52,7 @@ export const ChatCard = ({id, img, name, age, lMsg, time, count, onDelete})  => 
                 </div>
             </div>
             {isSwiped && (
-                <img src = "/icons/delete_chat.svg" className='w-[84px] h-[84px] absolute top-0 right-0 z-0'/>
+                <img src = "/icons/delete_chat.svg" alt="Удалить чат" className='w-[84px] h-[84px] absolute top-0 right-0 z-0'/>
              )
              }
             {/*<img src="/icons/delete_chat.svg" className='w-[84px] h-[84px] absolute right-0 z-0' />*/}

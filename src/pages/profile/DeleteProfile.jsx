@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import React, {useRef, useState} from "react";
+import React from "react";
 import {Button} from "../../components/Button";
 
 function DeleteProfile() {
@@ -9,7 +9,7 @@ function DeleteProfile() {
         <div className='w-[100vw] h-[100%] flex flex-col items-center justify-start font-raleway overflow-scroll'>
             <div className='flex items-center justify-center relative text-white text-[24px] w-full
             border-b border-[#233636] relative pb-[10px] pt-[90px]'>
-                <img src='/icons/Button-back.svg' onClick={() => {navigate(-1)}} className='absolute top-[105px] left-[16px] w-[44px] h-[44px]'/>
+                <img alt="Назад" src='/icons/Button-back.svg' onClick={() => {navigate(-1)}} className='absolute top-[105px] left-[16px] w-[44px] h-[44px]'/>
                 <p className='mt-5'>Удаление аккаунта</p>
             </div>
             <div className='w-[343px] text-[20px] text-white'>

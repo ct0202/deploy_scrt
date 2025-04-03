@@ -21,6 +21,7 @@ export const Navigation = ({tab}) => {
               <img
                 src="/icons/bottom_bar_button_1.svg"
                 className="w-[24px] h-[24px]"
+                alt="Главная страница"
               />
             </div>
             <div
@@ -35,6 +36,7 @@ export const Navigation = ({tab}) => {
               <img
                 src="/icons/bottom_bar_button_2.svg"
                 className=" w-[24px] h-[24px]"
+                alt="Чаты"
               />
             </div>
             <div
@@ -49,6 +51,7 @@ export const Navigation = ({tab}) => {
               <img
                 src="/icons/bottom_bar_button_3.svg"
                 className=" w-[24px] h-[24px]"
+                alt="Знакомства"
               />
             </div>
             <div
@@ -63,6 +66,7 @@ export const Navigation = ({tab}) => {
               <img
                 src="/icons/bottom_bar_button_4.svg"
                 className="w-[24px] h-[24px]"
+                alt="Профиль"
               />
             </div>
             <div
@@ -74,7 +78,7 @@ export const Navigation = ({tab}) => {
                   navigate("/mytaidea");
               }}
             >
-              <img src="/icons/myta-coin.svg" className="w-[24px] h-[24px]" />
+              <img src="/icons/myta-coin.svg" className="w-[24px] h-[24px]" alt="Монета MYTA" />
             </div>
           </div>
     );

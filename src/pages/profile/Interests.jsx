@@ -26,15 +26,6 @@ function Interests() {
         );
     };
 
-    const saveDataAndNext = () => {
-        if (selectedOptions.length >= 5) {
-            localStorage.setItem("step4Data", JSON.stringify(selectedOptions));
-            navigate("/meet");
-        } else {
-            alert("Выберите минимум 5 интересов!");
-        }
-    };
-
     return (
         <div className="w-[100vw] flex items-center justify-center flex-col">
             <div className='mt-[80px] mb-[30px] w-full pr-[16px] pl-[16px] flex-row text-[18px] flex justify-between'>

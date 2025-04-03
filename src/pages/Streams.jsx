@@ -1,20 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import {Navigation} from "../components/shared/Navigation";
 
 function Streams() {
   const navigate = useNavigate();
-  const [menuAction, setMenuAction] = useState(3);
-
 
   return (
     <div className="flex flex-col justify-center items-center pt-[90px] w-[100%] h-[auto] relative">
       <div className="flex justify-between items-center w-[343px] h-[44px] mt-[21px]">
-        <img src="/icons/Button-menu.svg" alt="" onClick={() => navigate("/profileMenu")}
+        <img alt='menu' src="/icons/Button-menu.svg" onClick={() => navigate("/profileMenu")}
         />
         <div className="flex gap-[8px]">
-          <img src="/icons/Button-filters.svg" alt="" onClick={() => navigate("/StreamFilters")} />
-          <img src="/icons/Button-notifications.svg" alt=""
+          <img alt='filters' src="/icons/Button-filters.svg" onClick={() => navigate("/StreamFilters")} />
+          <img alt='notifications' src="/icons/Button-notifications.svg"
                onClick={() => {navigate('/notifications')}}
           />
         </div>

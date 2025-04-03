@@ -1,13 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "../components/Button";
-import ListenVoice from "../components/ui/ListenVoice";
 import VoiceProgress from "../components/ui/VoiceProgress";
+import { useDispatch } from 'react-redux';
+import { setAudioMessage } from '../store/userSlice';
 
 function Step3({ setStep }) {
-  console.log("step3");
-
+  const dispatch = useDispatch();
   const [isRecording, setIsRecording] = useState(false);
   const [RecordingComplete, setRecordingComplete] = useState(false);
+
+  const handleRecordingComplete = (audioBlob) => {
+    if (audioBlob) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        dispatch(setAudioMessage(reader.result));
+        setRecordingComplete(true);
+      };
+      reader.readAsDataURL(audioBlob);
+    } else {
+      setRecordingComplete(true);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center w-[343px] h-[750px] overflow-y-auto overflow-x-hidden ">
@@ -19,32 +32,32 @@ function Step3({ setStep }) {
         визитку можно будет перезаписать или удалить
       </h1>
 
-      {/* <img
-        src="/icons/Recorder.svg"
-        className="w-[220px] h-[220px] mt-10"
-        alt="recorder icon"
-      /> */}
-
-      <VoiceProgress onRecordingStateChange={setIsRecording} onRecordingComplete={() => setRecordingComplete(true)} />
+      <VoiceProgress 
+        onRecordingStateChange={setIsRecording} 
+        onRecordingComplete={handleRecordingComplete} 
+      />
 
       {!RecordingComplete && (
         <>
-      <p className="font-raleway font-medium mt-4 text-white text-center text-[16px] pl-1">
-        {isRecording ? "ИДЁТ ЗАПИСЬ..." : (
-          <>
-            НАЖМИТЕ И УДЕРЖИВАЙТЕ
-            <br /> ДЛЯ ЗАПИСИ
-          </>
-        )}
-      </p>
-      <button
-        className={`border-none text-white text-[18px] opacity-50 mt-[150px] mb-6`}
-        onClick={() => setStep(4)}
-      >
-        Пропустить
-      </button>
-      </>
+          <p className="font-raleway font-medium mt-4 text-white text-center text-[16px] pl-1">
+            {isRecording ? "ИДЁТ ЗАПИСЬ..." : (
+              <>
+                НАЖМИТЕ И УДЕРЖИВАЙТЕ
+                <br /> ДЛЯ ЗАПИСИ
+              </>
+            )}
+          </p>
+          <button
+            className={`border-none text-white text-[18px] opacity-50 mt-[150px] mb-6`}
+            onClick={() => setStep(4)}
+          >
+            Пропустить
+          </button>
+        </>
       )}
+      {RecordingComplete && 
+          <Button onclick={() => setStep(4)}>Далее</Button>
+      }
     </div>
   );
 }
