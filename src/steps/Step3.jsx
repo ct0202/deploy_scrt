@@ -56,7 +56,9 @@ function Step3({ setStep }) {
         </>
       )}
       {RecordingComplete && 
+        <div className="fixed bottom-[130px]">
           <Button onclick={() => setStep(4)}>Далее</Button>
+        </div>
       }
     </div>
   );
