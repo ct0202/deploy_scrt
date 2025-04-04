@@ -9,10 +9,6 @@ function Step2({ setStep }) {
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [disabled, setDisabled] = useState(true);
 
-  useEffect(() => {
-    checkPhotos();
-  }, [checkPhotos]);
-
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
   const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
 
@@ -44,6 +40,10 @@ function Step2({ setStep }) {
     const hasMainPhoto = registrationData.photos[0] !== null;
     setDisabled(!hasMainPhoto);
   };
+
+  useEffect(() => {
+    checkPhotos();
+  }, [checkPhotos]);
 
   const handleDragStart = (index) => {
     setDraggedIndex(index);

@@ -46,9 +46,8 @@ function App() {
   const userId = useSelector((state) => state.user.userId);
 
   useEffect(() => {
-    if (1) {
+    if (0) {
       const tg = window.Telegram.WebApp;
-
       tg.disableVerticalSwipes();
       tg.requestFullscreen();
       tg.ready();
@@ -59,8 +58,14 @@ function App() {
         let userData = new URLSearchParams(tg.initData);
         userData = JSON.parse(userData.get("user"));
         dispatch(setUserId(userData.id));
-      } else {
+      } 
+      else {
         console.log(userId);
+      }
+    } else {
+      // Для разработки устанавливаем фиксированный telegramId
+      if (!userId) {
+        dispatch(setUserId(704775215));
       }
     }
   }, [dispatch, userId]);

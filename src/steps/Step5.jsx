@@ -11,6 +11,7 @@ function Step5({ setStep }) {
     const dispatch = useDispatch();
     const registrationData = useSelector((state) => state.user.registrationData);
     const interests = useSelector((state) => state.user.registrationData.interests);
+    const userId = useSelector((state) => state.user.userId);
     const [disabled, setDisabled] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -54,6 +55,9 @@ function Step5({ setStep }) {
                 formData.append('city', registrationData.city);
                 formData.append('purpose', registrationData.purpose);
                 
+                // Add telegramId from Redux store
+                formData.append('telegramId', userId);
+                
                 // Add interests as JSON string
                 formData.append('interests', JSON.stringify(registrationData.interests));
 
@@ -73,7 +77,7 @@ function Step5({ setStep }) {
                 }
 
                 // Submit the form data
-                const response = await axios.post('/register', formData, {
+                const response = await axios.post('/users/register', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
