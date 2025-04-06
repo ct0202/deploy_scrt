@@ -53,6 +53,8 @@ function Step5({ setStep }) {
                 formData.append('birthDay', registrationData.birthDay);
                 formData.append('country', registrationData.country);
                 formData.append('city', registrationData.city);
+                formData.append('latitude', registrationData.coordinates.latitude);
+                formData.append('longitude', registrationData.coordinates.longitude);
                 formData.append('purpose', registrationData.purpose);
                 
                 // Add telegramId from Redux store

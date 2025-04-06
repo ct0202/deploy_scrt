@@ -46,7 +46,7 @@ function App() {
   const userId = useSelector((state) => state.user.userId);
 
   useEffect(() => {
-    if (1) {
+    if (0) {
       const tg = window.Telegram.WebApp;
       tg.disableVerticalSwipes();
       tg.requestFullscreen();
