@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "../components/Button";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRegistrationData } from '../store/userSlice';
+import LocationSelect from '../components/LocationSelect';
 
 function Step1({ setStep }) {
   const dispatch = useDispatch();
@@ -19,17 +20,6 @@ function Step1({ setStep }) {
     { id: "all", label: "Всех", emoji: "💕" },
   ];
 
-  const countries = [
-    "Россия",
-    "США",
-    "Канада",
-    "Германия",
-    "Франция",
-    "Великобритания",
-    "Япония",
-    "Китай"
-  ];
-
   useEffect(() => {
     if (
       registrationData.name.trim() &&
@@ -37,7 +27,9 @@ function Step1({ setStep }) {
       registrationData.wantToFind &&
       registrationData.birthDay &&
       registrationData.country &&
-      registrationData.city.trim()
+      registrationData.city.trim() &&
+      registrationData.coordinates.latitude &&
+      registrationData.coordinates.longitude
     ) {
       setDisabled(false);
     } else {
@@ -48,6 +40,12 @@ function Step1({ setStep }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     dispatch(updateRegistrationData({ field: name, value }));
+  };
+
+  const handleLocationSelect = (locationData) => {
+    dispatch(updateRegistrationData({ field: 'country', value: locationData.country }));
+    dispatch(updateRegistrationData({ field: 'city', value: locationData.city }));
+    dispatch(updateRegistrationData({ field: 'coordinates', value: locationData.coordinates }));
   };
 
   return (
@@ -116,33 +114,12 @@ function Step1({ setStep }) {
         onChange={handleChange}
         className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 text-white outline-none focus:border-[#a1f69e]"
       />
+
       <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
-        Ваша страна
+        Ваше местоположение
       </h1>
-      <select
-        name="country"
-        onChange={handleChange}
-        value={registrationData.country}
-        className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
-      >
-        <option value="" disabled>— выберите страну —</option>
-        {countries.map((country, index) => (
-          <option key={index} value={country}>
-            {country}
-          </option>
-        ))}
-      </select>
-      <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
-        Населенный пункт (город, деревня)
-      </h1>
-      <input
-        type="text"
-        name="city"
-        placeholder="Введите название"
-        value={registrationData.city}
-        onChange={handleChange}
-        className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
-      />
+      <LocationSelect onLocationSelect={handleLocationSelect} />
+
       <Button
         className={"mt-[37px] mb-[20px]"}
         onclick={() => setStep(2)}

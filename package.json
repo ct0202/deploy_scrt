@@ -6,7 +6,9 @@
     "@reduxjs/toolkit": "^2.6.1",
     "agora-rtc-sdk-ng": "^4.23.2",
     "axios": "^1.7.9",
+    "cities-list": "^1.0.3",
     "classnames": "^2.5.1",
+    "countries-list": "^3.1.1",
     "cra-template": "1.2.0",
     "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
@@ -24,6 +26,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.1",
     "react-scripts": "5.0.1",
+    "react-select": "^5.10.1",
     "swiper": "^11.2.4"
   },
   "scripts": {

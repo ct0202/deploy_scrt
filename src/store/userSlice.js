@@ -10,6 +10,10 @@ const initialState = {
     birthDay: '',
     country: '',
     city: '',
+    coordinates: {
+      latitude: null,
+      longitude: null
+    },
     
     // Step 2 data
     photos: [null, null, null, null],
