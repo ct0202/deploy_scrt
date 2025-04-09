@@ -2,9 +2,27 @@ import {useNavigate} from "react-router-dom";
 import PresentsShop from "../components/shared/PresentsShop";
 import React, {useRef, useState} from "react";
 import Policy from "../components/shared/Policy";
+import { useSelector } from 'react-redux';
 
 function ProfileMenu() {
     const navigate = useNavigate();
+    const registrationData = useSelector((state) => state.user.registrationData);
+
+    console.log(registrationData);
+    // Функция для вычисления возраста
+    const calculateAge = (birthDate) => {
+        if (!birthDate) return '';
+        const today = new Date();
+        const birth = new Date(birthDate);
+        let age = today.getFullYear() - birth.getFullYear();
+        const monthDiff = today.getMonth() - birth.getMonth();
+        
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+            age--;
+        }
+        
+        return age;
+    };
 
     const [swipeStart, setSwipeStart] = useState(0);
     const [swipeDiff, setSwipeDiff] = useState(0);
@@ -72,17 +90,27 @@ function ProfileMenu() {
             </div>
             <img alt="Баннер премиум" src='/icons/premium-connect-banner.png' className='w-[343px] mt-[20px]' onClick={() => {navigate('/premium')}}/>
             <div className='flex flex-row text-white w-[343px] mt-[30px]'>
-                <img alt="Аватар" src='/mock/user_5/user_5_avatar_2.svg' className='w-[64px] h-[64px] mr-[20px]'/>
+                <img 
+                    alt="Аватар" 
+                    src={registrationData.photos[0] || '/mock/user_5/user_5_avatar_2.svg'} 
+                    className='w-[64px] h-[64px] mr-[20px] rounded-full object-cover'
+                />
                 <div className='flex flex-col'>
-                    <p className='text-[18px] font-medium'>Андрей, 35 лет</p>
+                    <p className='text-[18px] font-medium'>
+                        {registrationData.name}, {calculateAge(registrationData.birthDay)} лет
+                    </p>
                     <div className='flex flex-row mt-[2px] gap-[30px]'>
                         <div className='flex flex-col'>
                             <p className='opacity-50'>Монеты:</p>
-                            <div className='flex flex-row text-[20px] items-center'><img alt="Монета" src='/icons/coin.svg' className='mr-[4px] w-[20px] h-[20px]'/> 100</div>
+                            <div className='flex flex-row text-[20px] items-center'>
+                                <img alt="Монета" src='/icons/coin.svg' className='mr-[4px] w-[20px] h-[20px]'/> 100
+                            </div>
                         </div>
                         <div className='flex flex-col '>
                             <p className='opacity-50'>Монеты MYTA:</p>
-                            <div className='flex flex-row text-[20px] items-center'><img alt="Монета MYTA" src='/icons/myta-coin.svg' className='mr-[4px] w-[20px] h-[20px]'/> 20</div>
+                            <div className='flex flex-row text-[20px] items-center'>
+                                <img alt="Монета MYTA" src='/icons/myta-coin.svg' className='mr-[4px] w-[20px] h-[20px]'/> 20
+                            </div>
                         </div>
                     </div>
                 </div>

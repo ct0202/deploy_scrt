@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Select from 'react-select';
 import { countries } from 'countries-list';
 import axios from 'axios';
@@ -224,10 +224,13 @@ const countryTranslations = {
   'Svalbard and Jan Mayen': 'Шпицберген и Ян-Майен'
 };
 
+// Кэш для хранения списков городов
+const cityCache = new Map();
+
 const LocationSelect = ({ onLocationSelect }) => {
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const [cityInput, setCityInput] = useState('');
-  const [citySuggestions, setCitySuggestions] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [cityOptions, setCityOptions] = useState([]);
   const [coordinates, setCoordinates] = useState(null);
 
   // Преобразуем объект стран в массив для react-select с русскими названиями
@@ -239,42 +242,100 @@ const LocationSelect = ({ onLocationSelect }) => {
     }))
     .sort((a, b) => a.label.localeCompare(b.label, 'ru'));
 
-  // Функция для поиска городов через Nominatim API
-  const searchCities = async (query) => {
-    if (!query || !selectedCountry) return;
+  // Функция для загрузки городов страны
+
+  // const loadCities = useCallback(async (country) => {
+  //   if (!country) return;
     
+  //   const cacheKey = country.originalName;
+    
+  //   // Проверяем кэш
+  //   if (cityCache.has(cacheKey)) {
+  //     setCityOptions(cityCache.get(cacheKey));
+  //     return;
+  //   }
+    
+  //   try {
+  //     const response = await axios.get(
+  //       `https://nominatim.openstreetmap.org/search?format=json&q=${country.originalName}&limit=100&accept-language=ru&featuretype=city&countrycodes=${country.value}`
+  //     );
+      
+  //     const cities = response.data
+  //       .map(item => ({
+  //         value: item.display_name,
+  //         label: item.display_name.split(',')[0],
+  //         lat: item.lat,
+  //         lon: item.lon
+  //       }))
+  //       .sort((a, b) => a.label.localeCompare(b.label, 'ru'));
+      
+  //     // Сохраняем в кэш
+  //     cityCache.set(cacheKey, cities);
+  //     setCityOptions(cities);
+  //   } catch (error) {
+  //     console.error('Error fetching cities:', error);
+  //   }
+  // }, []);
+
+  const loadCities = useCallback(async (country) => {
+    if (!country) return;
+  
+    const cacheKey = country.originalName;
+  
+    if (cityCache.has(cacheKey)) {
+      setCityOptions(cityCache.get(cacheKey));
+      return;
+    }
+  
     try {
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${query},${selectedCountry.originalName}&limit=5&accept-language=ru`
+      const query = `
+        [out:json][timeout:25];
+        area["ISO3166-1"="${country.value}"][admin_level=2];
+        (
+          node["place"="city"](area);
+          node["place"="town"](area);
+        );
+        out body;
+      `;
+  
+      const response = await axios.post(
+        'https://overpass-api.de/api/interpreter',
+        query,
+        {
+          headers: {
+            'Content-Type': 'text/plain'
+          }
+        }
       );
-      
-      const suggestions = response.data.map(item => ({
-        value: item.display_name,
-        label: item.display_name,
-        lat: item.lat,
-        lon: item.lon
-      }));
-      
-      setCitySuggestions(suggestions);
+  
+      const cities = response.data.elements
+        .map(item => ({
+          value: item.tags.name,
+          label: item.tags.name,
+          lat: item.lat,
+          lon: item.lon
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label, 'ru'));
+  
+      cityCache.set(cacheKey, cities);
+      setCityOptions(cities);
     } catch (error) {
       console.error('Error fetching cities:', error);
     }
-  };
+  }, []);
+  
 
+  // Загружаем города при выборе страны
   useEffect(() => {
-    if (cityInput.length > 2) {
-      const debounceTimer = setTimeout(() => {
-        searchCities(cityInput);
-      }, 500);
-      
-      return () => clearTimeout(debounceTimer);
+    if (selectedCountry) {
+      loadCities(selectedCountry);
     }
-  }, [cityInput, selectedCountry]);
+  }, [selectedCountry, loadCities]);
 
   const handleCountryChange = (selectedOption) => {
     setSelectedCountry(selectedOption);
-    setCityInput('');
-    setCitySuggestions([]);
+    setSelectedCity(null);
+    setCityOptions([]);
     setCoordinates(null);
     onLocationSelect({
       country: selectedOption.label,
@@ -285,6 +346,7 @@ const LocationSelect = ({ onLocationSelect }) => {
 
   const handleCitySelect = (selectedOption) => {
     if (selectedOption) {
+      setSelectedCity(selectedOption);
       setCoordinates({
         latitude: selectedOption.lat,
         longitude: selectedOption.lon
@@ -296,6 +358,14 @@ const LocationSelect = ({ onLocationSelect }) => {
           latitude: selectedOption.lat,
           longitude: selectedOption.lon
         }
+      });
+    } else {
+      setSelectedCity(null);
+      setCoordinates(null);
+      onLocationSelect({
+        country: selectedCountry.label,
+        city: '',
+        coordinates: { latitude: null, longitude: null }
       });
     }
   };
@@ -322,7 +392,8 @@ const LocationSelect = ({ onLocationSelect }) => {
     menu: (base) => ({
       ...base,
       backgroundColor: '#022424',
-      borderColor: '#233636'
+      borderColor: '#233636',
+      zIndex: 9999
     }),
     option: (base, state) => ({
       ...base,
@@ -351,24 +422,17 @@ const LocationSelect = ({ onLocationSelect }) => {
       <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
         Населенный пункт (город, деревня)
       </h1>
-      <input
-        type="text"
-        value={cityInput}
-        onChange={(e) => setCityInput(e.target.value)}
-        placeholder="Введите название"
-        className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
+      <Select
+        options={cityOptions}
+        value={selectedCity}
+        onChange={handleCitySelect}
+        placeholder="Выберите город"
+        className="mt-4"
+        styles={customStyles}
+        isClearable
+        isSearchable={false}
+        isLoading={selectedCountry && cityOptions.length === 0}
       />
-      
-      {citySuggestions.length > 0 && (
-        <div className="mt-2">
-          <Select
-            options={citySuggestions}
-            onChange={handleCitySelect}
-            placeholder="Выберите город из списка"
-            styles={customStyles}
-          />
-        </div>
-      )}
     </div>
   );
 };

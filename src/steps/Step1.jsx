@@ -115,9 +115,6 @@ function Step1({ setStep }) {
         className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 text-white outline-none focus:border-[#a1f69e]"
       />
 
-      <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
-        Ваше местоположение
-      </h1>
       <LocationSelect onLocationSelect={handleLocationSelect} />
 
       <Button

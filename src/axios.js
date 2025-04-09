@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-    // baseURL: "http://localhost:3001/app"
-    baseURL: "https://scrt-back.vercel.app/app"
+    baseURL: "http://localhost:3001/app"
+    // baseURL: "https://scrt-back.vercel.app/app"
     // baseURL: "https://jog-joy-back2-production.up.railway.app"
 });
 

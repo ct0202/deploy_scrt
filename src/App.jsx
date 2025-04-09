@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { RegistrationProvider } from './context/RegistrationContext';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserId } from './store/userSlice';
+import { setUserId, updateRegistrationData, updatePhoto, setAudioMessage } from './store/userSlice';
 import Layout from "./pages/Layout";
 import { HomePage } from "./pages/HomePage";
 import Menu from "./pages/Menu";
@@ -40,34 +40,130 @@ import Premium from "./pages/Premium";
 import MytaIdea from "./pages/profile/MytaIdea";
 import MakePayment from "./pages/MakePayment";
 import Streamer from "./pages/Streamer";
+import axios from './axios';
+
+import { useNavigate } from 'react-router-dom';
+
 
 function App() {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user.userId);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (0) {
-      const tg = window.Telegram.WebApp;
-      tg.disableVerticalSwipes();
-      tg.requestFullscreen();
-      tg.ready();
-      tg.expand();
+    const init = async () => {
+      if (1) {
+        const tg = window.Telegram.WebApp;
+        tg.disableVerticalSwipes();
+        tg.requestFullscreen();
+        tg.ready();
+        tg.expand();
 
-      console.log('update 5');
-      if (!userId) {
-        let userData = new URLSearchParams(tg.initData);
-        userData = JSON.parse(userData.get("user"));
-        dispatch(setUserId(userData.id));
-      } 
-      else {
-        console.log(userId);
+        console.log('update 5');
+        if (!userId) {
+          let userData = new URLSearchParams(tg.initData);
+          userData = JSON.parse(userData.get("user"));
+          dispatch(setUserId(userData.id));
+          
+          // Отправляем ID на сервер для логина
+          try {
+            const response = await axios.post('/users/login', {
+              telegramId: userData.id
+            });
+            
+            if (response.data) {
+              // Сохраняем токен
+              if (response.data.token) {
+                localStorage.setItem('token', response.data.token);
+              }
+              
+              // Если есть данные пользователя, загружаем их в Redux
+              if (response.data.user) {
+                dispatch(updateRegistrationData({ field: 'name', value: response.data.user.name }));
+                dispatch(updateRegistrationData({ field: 'gender', value: response.data.user.gender }));
+                dispatch(updateRegistrationData({ field: 'wantToFind', value: response.data.user.wantToFind }));
+                dispatch(updateRegistrationData({ field: 'birthDay', value: response.data.user.birthDay }));
+                dispatch(updateRegistrationData({ field: 'country', value: response.data.user.country }));
+                dispatch(updateRegistrationData({ field: 'city', value: response.data.user.city }));
+                dispatch(updateRegistrationData({ field: 'coordinates', value: response.data.user.coordinates }));
+                dispatch(updateRegistrationData({ field: 'purpose', value: response.data.user.purpose }));
+                dispatch(updateRegistrationData({ field: 'interests', value: response.data.user.interests }));
+                
+                // Загружаем фото
+                if (response.data.user.photos) {
+                  response.data.user.photos.forEach((photo, index) => {
+                    if (photo) {
+                      dispatch(updatePhoto({ index, photo }));
+                    }
+                  });
+                }
+                
+                // Загружаем аудио
+                if (response.data.user.audioMessage) {
+                  dispatch(setAudioMessage(response.data.user.audioMessage));
+                }
+              }
+            }
+          } catch (error) {
+            console.error('Login error:', error);
+          }
+        } else {
+          console.log(userId);
+        }
+      } else {
+        // Для разработки устанавливаем фиксированный telegramId
+        if (!userId) {
+          dispatch(setUserId(1009));
+          
+          // Отправляем ID на сервер для логина
+          try {
+            const response = await axios.post('/users/login', {
+              telegramId: 1009
+            });
+            
+            if (response.data) {
+              // Сохраняем токен
+              if (response.data.token) {
+                localStorage.setItem('token', response.data.token);
+              }
+              
+              // Если есть данные пользователя, загружаем их в Redux
+              if (response.data.user) {
+                dispatch(updateRegistrationData({ field: 'name', value: response.data.user.name }));
+                dispatch(updateRegistrationData({ field: 'gender', value: response.data.user.gender }));
+                dispatch(updateRegistrationData({ field: 'wantToFind', value: response.data.user.wantToFind }));
+                dispatch(updateRegistrationData({ field: 'birthDay', value: response.data.user.birthDay }));
+                dispatch(updateRegistrationData({ field: 'country', value: response.data.user.country }));
+                dispatch(updateRegistrationData({ field: 'city', value: response.data.user.city }));
+                // dispatch(updateRegistrationData({ field: 'coordinates', value: response.data.user.coordinates }));
+                dispatch(updateRegistrationData({ field: 'purpose', value: response.data.user.purpose }));
+                dispatch(updateRegistrationData({ field: 'interests', value: response.data.user.interests }));
+                
+                // Загружаем фото
+                if (response.data.user.photos) {
+                  response.data.user.photos.forEach((photo, index) => {
+                    if (photo) {
+                      dispatch(updatePhoto({ index, photo }));
+                    }
+                  });
+                }
+                
+                // Загружаем аудио
+                if (response.data.user.audioMessage) {
+                  dispatch(setAudioMessage(response.data.user.audioMessage));
+                }
+
+                navigate('/meet');
+              }
+            }
+          } catch (error) {
+            console.error('Login error:', error);
+          }
+        }
       }
-    } else {
-      // Для разработки устанавливаем фиксированный telegramId
-      if (!userId) {
-        dispatch(setUserId(704775215));
-      }
-    }
+    };
+
+    init();
   }, [dispatch, userId]);
 
   return (
