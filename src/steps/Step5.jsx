@@ -79,6 +79,13 @@ function Step5({ setStep }) {
                 }
 
                 // Submit the form data
+                console.log('=== Registration Data Debug ===');
+                console.log('FormData contents:');
+                for (let pair of formData.entries()) {
+                    console.log(pair[0] + ': ' + pair[1]);
+                }
+                console.log('=== End Registration Data Debug ===');
+
                 const response = await axios.post('/users/register', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'

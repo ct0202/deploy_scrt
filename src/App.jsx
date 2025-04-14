@@ -52,7 +52,7 @@ function App() {
 
   useEffect(() => {
     const init = async () => {
-      if (1) {
+      if (0) {
         const tg = window.Telegram.WebApp;
         tg.disableVerticalSwipes();
         tg.requestFullscreen();
@@ -113,12 +113,12 @@ function App() {
       } else {
         // Для разработки устанавливаем фиксированный telegramId
         if (!userId) {
-          dispatch(setUserId(1009));
+          dispatch(setUserId(1001));
           
           // Отправляем ID на сервер для логина
           try {
             const response = await axios.post('/users/login', {
-              telegramId: 1009
+              telegramId: 1001
             });
             
             if (response.data) {
@@ -153,7 +153,7 @@ function App() {
                   dispatch(setAudioMessage(response.data.user.audioMessage));
                 }
 
-                navigate('/meet');
+                // navigate('/meet');
               }
             }
           } catch (error) {
@@ -182,15 +182,15 @@ function App() {
               <Route path="/meet" element={<Meet />} />
               <Route path="/streams" element={<Streams />} />
               <Route path="/watchStreams" element={<WatchingStream />} />
-              <Route path="/chat" element={<Chat />} />
+              <Route path="/video-chat/:id" element={<Chat />} />
               <Route path="/match" element={<Match />} />
               <Route path="/filters" element={<Filters />} />
               <Route path="/StreamFilters" element={<StreamFilters />} />
               <Route path="/textChats" element={<TextChats />} />
-              <Route path="/1/profile" element={<Profile />} />
-              <Route path="/1/streamer" element={<Streamer />} />
-              <Route path="/1/reaction" element={<ReactOnUser />} />
-              <Route path="/1/fullchat" element={<FullChat />} />
+              <Route path="/profile/:id" element={<Profile />} />
+              <Route path="/streamer/:id" element={<Streamer />} />
+              <Route path="/reaction/:id" element={<ReactOnUser />} />
+              <Route path="/chat/:id" element={<FullChat />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/profileMenu" element={<ProfileMenu />} />
 
