@@ -39,21 +39,24 @@ function MeetGoal() {
     };
 
     const handleSave = async () => {
+        if (!registrationData.purpose) {
+            alert('Пожалуйста, выберите цель знакомства');
+            return;
+        }
+
         try {
             setIsSubmitting(true);
-            
-            // Отправляем данные на сервер
-            const response = await axios.put('/users/update', {
+            console.log('Sending meet goal update request...');
+            const response = await axios.put('/users/updateMeetGoal', {
                 telegramId: userId,
                 purpose: registrationData.purpose
             });
 
-            if (response.data) {
-                navigate(-1);
-            }
+            console.log('Meet goal update response:', response.data);
+            navigate(-1);
         } catch (error) {
-            console.error('Error updating purpose:', error);
-            alert('Произошла ошибка при сохранении данных. Пожалуйста, попробуйте еще раз.');
+            console.error('Error updating meet goal:', error);
+            alert('Произошла ошибка при сохранении цели знакомства. Пожалуйста, попробуйте еще раз.');
         } finally {
             setIsSubmitting(false);
         }

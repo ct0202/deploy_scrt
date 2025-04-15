@@ -186,11 +186,11 @@ function App() {
               <Route path="/match" element={<Match />} />
               <Route path="/filters" element={<Filters />} />
               <Route path="/StreamFilters" element={<StreamFilters />} />
-              <Route path="/textChats" element={<TextChats />} />
+              <Route path="/chats" element={<TextChats />} />
               <Route path="/profile/:id" element={<Profile />} />
               <Route path="/streamer/:id" element={<Streamer />} />
               <Route path="/reaction/:id" element={<ReactOnUser />} />
-              <Route path="/chat/:id" element={<FullChat />} />
+              <Route path="/chats/:id" element={<FullChat />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/profileMenu" element={<ProfileMenu />} />
 

@@ -1,7 +1,7 @@
 import {useRef, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 
-export const ChatCard = ({id, img, name, age, lMsg, time, count, onDelete})  => {
+export const ChatCard = ({id, img, name, age, lMsg, time, count, link_to_full_chat, onDelete})  => {
     const navigate = useNavigate();
     const [isSwiped, setIsSwiped] = useState(false);
     const startX = useRef(0);
@@ -38,7 +38,7 @@ export const ChatCard = ({id, img, name, age, lMsg, time, count, onDelete})  => 
                          onClick={() => {
                              navigate(`/${id}/profile`)
                          }}/>
-                    <div className="flex flex-col w-[220px] gap-1" onClick={() => navigate(`/1/fullchat`)}>
+                    <div className="flex flex-col w-[220px] gap-1" onClick={() => navigate(link_to_full_chat)}>
                         <p className='text-[16px] font-semibold leading-[24px] '>{name}, {age}</p>
                         <p className='text-[14px] font-normal'>{lMsg}</p>
                     </div>
