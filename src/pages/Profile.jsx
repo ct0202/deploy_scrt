@@ -12,6 +12,8 @@ import { INSTRUCTIONS_MEET } from "../constants/instructions";
 import PresentsShop from "../components/shared/PresentsShop";
 import ReportMenu from "../components/shared/ReportMenu";
 import BlockUser from "../components/shared/BlockUser";
+import { axiosPrivate } from '../axios';
+import config from '../config';
 
 function Profile() {
     const [showInstruction, setShowInstruction] = useState(false);
@@ -54,6 +56,34 @@ function Profile() {
         }
     };
 
+    const fetchUserProfile = async () => {
+        try {
+            const response = await axiosPrivate.get(config.API.USERS.PROFILE);
+            setUserData(response.data);
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
+        }
+    };
+
+    const updateProfile = async (data) => {
+        try {
+            await axiosPrivate.put(config.API.USERS.UPDATE, data);
+            // ... rest of the code
+        } catch (error) {
+            console.error('Error updating profile:', error);
+        }
+    };
+
+    const uploadPhoto = async (file) => {
+        try {
+            const formData = new FormData();
+            formData.append('photo', file);
+            await axiosPrivate.post(config.API.MEDIA.UPLOAD, formData);
+            // ... rest of the code
+        } catch (error) {
+            console.error('Error uploading photo:', error);
+        }
+    };
 
     return (
         <div>

@@ -1,92 +1,166 @@
-import axios from 'axios';
+import { io } from 'socket.io-client';
+import { axiosPrivate } from '../axios';
+import config from '../config';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+let socket = null;
+const messageCallbacks = new Set();
+const typingCallbacks = new Set();
 
-class ChatService {
-  // Get all chats for the current user
-  async getUserChats(page = 1, limit = 20) {
-    try {
-      const response = await axios.get(`${API_URL}/chats`, {
-        params: { 
-          page, 
-          limit,
-          userId: '67fba439cf98acec362a6a2f' // Hardcoded user ID for testing
-        }
-      });
-      console.log(response);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching chats:', error);
-      throw error;
+export const connect = (token) => {
+    if (socket) {
+        disconnect();
     }
-  }
 
-  // Get chat history for a specific chat
-  async getChatHistory(chatId, page = 1, limit = 50) {
-    try {
-      const response = await axios.get(`${API_URL}/chats/${chatId}`, {
-        params: { 
-          page, 
-          limit,
-          userId: "67fba439cf98acec362a6a2f" // Hardcoded user ID for testing
-        }
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching chat history:', error);
-      throw error;
-    }
-  }
+    socket = io(config.WS_URL, {
+        path: '/socket.io',
+        auth: { token },
+        transports: ['websocket', 'polling']
+    });
 
-  // Send a message in a chat
-  async sendMessage(chatId, content) {
-    try {
-      const response = await axios.post(
-        `${API_URL}/chats/${chatId}/messages`,
-        { 
-          content,
-          userId: "67fba439cf98acec362a6a2f" // Hardcoded user ID for testing
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error sending message:', error);
-      throw error;
-    }
-  }
+    socket.on('connect', () => {
+        console.log('Connected to chat server');
+    });
 
-  // Mark messages as read
-  async markAsRead(chatId) {
-    try {
-      const response = await axios.post(
-        `${API_URL}/chats/${chatId}/read`,
-        {
-          userId: "67fba439cf98acec362a6a2f" // Hardcoded user ID for testing
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error marking messages as read:', error);
-      throw error;
-    }
-  }
+    socket.on('disconnect', () => {
+        console.log('Disconnected from chat server');
+    });
 
-  // Update typing status
-  async updateTypingStatus(chatId, isTyping) {
-    try {
-      const response = await axios.post(
-        `${API_URL}/chats/${chatId}/typing`,
-        { 
-          isTyping,
-          userId: "67fba439cf98acec362a6a2f" // Hardcoded user ID for testing
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error updating typing status:', error);
-      throw error;
+    socket.on('new-message', (message) => {
+        messageCallbacks.forEach(callback => callback(message));
+    });
+
+    socket.on('messages-read', (data) => {
+        // Handle read receipts if needed
+    });
+
+    socket.on('error', (error) => {
+        console.error('Socket error:', error);
+    });
+};
+
+export const disconnect = () => {
+    if (socket) {
+        socket.disconnect();
+        socket = null;
     }
-  }
+};
+
+export const joinChat = (chatId) => {
+    if (socket) {
+        socket.emit('join-chat', chatId);
+    }
+};
+
+export const sendMessage = (chatId, content) => {
+    if (socket) {
+        const userId = localStorage.getItem('userId');
+        socket.emit('send-message', {
+            chatId,
+            senderId: userId,
+            content
+        });
+    }
+};
+
+export const markAsRead = (chatId) => {
+    if (socket) {
+        const userId = localStorage.getItem('userId');
+        socket.emit('mark-read', {
+            chatId,
+            userId
+        });
+    }
+};
+
+export const onMessage = (callback) => {
+    messageCallbacks.add(callback);
+    return () => messageCallbacks.delete(callback);
+};
+
+export const onTyping = (callback) => {
+    typingCallbacks.add(callback);
+    return () => typingCallbacks.delete(callback);
+};
+
+async function getUserChats(page = 1, limit = 20) {
+    try {
+        const response = await axiosPrivate.get(config.API.CHATS.BASE, {
+            params: { page, limit },
+            headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+            }
+        });
+
+        if (!response.data || !response.data.data) {
+            throw new Error('Invalid response from server');
+        }
+
+        return {
+            status: 'success',
+            data: {
+                chats: response.data.data
+            }
+        };
+    } catch (error) {
+        console.error('Error fetching user chats:', error);
+        throw error;
+    }
 }
 
-export default new ChatService(); 
+async function getChatHistory(chatId, page = 1, limit = 50) {
+    try {
+        console.log('Fetching chat history for chatId:', chatId);
+        const response = await axiosPrivate.get(config.API.CHATS.HISTORY(chatId), {
+            params: { page, limit },
+            headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+            }
+        });
+
+        if (!response.data) {
+            throw new Error('Invalid response from server');
+        }
+
+        return {
+            status: 'success',
+            data: {
+                chats: response.data.data
+            }
+        };
+    } catch (error) {
+        console.error('Error fetching chat history:', error);
+        throw error;
+    }
+}
+
+async function updateTypingStatus(chatId, isTyping) {
+    // try {
+    //     const response = await axiosPrivate.post(config.API.CHATS.TYPING(chatId), {
+    //         isTyping
+    //     });
+
+    //     if (!response.data) {
+    //         throw new Error('Invalid response from server');
+    //     }
+
+    //     return response.data;
+    // } catch (error) {
+    //     console.error('Error updating typing status:', error);
+    //     throw error;
+    // }
+}
+
+export default {
+    connect,
+    disconnect,
+    joinChat,
+    sendMessage,
+    markAsRead,
+    onMessage,
+    onTyping,
+    getUserChats,
+    getChatHistory,
+    updateTypingStatus
+}; 

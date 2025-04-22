@@ -1,37 +1,33 @@
 import React, { useState, useEffect } from 'react';
-
-import { Navigation } from "../components/shared/Navigation";
-import {ChatCard} from "../components/chat/chatCard";
+import { useSelector } from 'react-redux';
+import { Navigation } from "../../components/shared/Navigation";
+import {ChatCard} from "../../components/chat/chatCard";
 import {useNavigate} from "react-router-dom";
-import chatService from '../services/chat.service';
+import chatService from '../../services/chat.service';
 
-const TextChats = () => {
+const Chats = () => {
     const navigate = useNavigate();
     const [chats, setChats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    
+    const userId = localStorage.getItem('userId');
 
     useEffect(() => {
         const fetchChats = async () => {
             try {
                 const response = await chatService.getUserChats();
-                console.log('Full response:', response);
+                console.log('Chats response:', response);
                 
-                // Check if response exists and has data
-                if (!response || !response.data) {
-                    throw new Error('Invalid response from server');
+                if (!response || !response.data || !response.data.chats) {
+                    throw new Error('Invalid response format from server');
                 }
 
-                // The chats are directly in response.data
-                const chatsData = response.data.chats || [];
-                console.log('Chats data:', chatsData);
-                
-                setChats(chatsData);
+                setChats(response.data.chats);
                 setLoading(false);
             } catch (err) {
-                console.error('Detailed error:', err);
-                console.error('Error response:', err.response);
-                setError('Failed to load chats');
+                console.error('Error fetching chats:', err);
+                setError('Failed to load chats. Please try again later.');
                 setLoading(false);
             }
         };
@@ -44,9 +40,24 @@ const TextChats = () => {
     };
 
     const getOtherParticipant = (chat) => {
+        if (!userId) {
+            console.error('No userId found in Redux store');
+            return null;
+        }
+
+        console.log('Debug - Current userId:', userId);
+        console.log('Debug - Chat participants:', chat.participants);
+        console.log('Debug - Match participants:', chat.match?.participants);
+
         // First try to get from match participants
         if (chat.match?.participants) {
-            const otherParticipant = chat.match.participants.find(p => p.telegram_id !== '1001');
+            const otherParticipant = chat.match.participants.find(p => {
+                const participantId = p.userId?.toString();
+                const currentUserId = userId.toString();
+                console.log('Debug - Comparing match participants:', { participantId, currentUserId });
+                return participantId !== currentUserId;
+            });
+            
             if (otherParticipant) {
                 console.log('Found participant from match:', otherParticipant);
                 return otherParticipant;
@@ -54,7 +65,13 @@ const TextChats = () => {
         }
         
         // Fallback to chat participants
-        const chatParticipant = chat.participants?.find(p => p.telegram_id !== '1001');
+        const chatParticipant = chat.participants?.find(p => {
+            const participantId = p.userId?.toString();
+            const currentUserId = userId.toString();
+            console.log('Debug - Comparing chat participants:', { participantId, currentUserId });
+            return participantId !== currentUserId;
+        });
+        
         console.log('Found participant from chat:', chatParticipant);
         return chatParticipant;
     };
@@ -98,10 +115,8 @@ const TextChats = () => {
                     </div>
                 ) : chats.length > 0 ? (
                     chats.map((chat) => {
-                        console.log('Rendering chat:', chat);
-                        
+                        console.log('Chat:', chat);
                         const otherParticipant = getOtherParticipant(chat);
-                        console.log('Other participant:', otherParticipant);
                         
                         if (!otherParticipant) {
                             console.warn('No other participant found for chat:', chat);
@@ -139,4 +154,4 @@ const TextChats = () => {
     );
 }
 
-export default TextChats;
+export default Chats;

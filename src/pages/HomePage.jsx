@@ -4,7 +4,7 @@ import background from "../assets/background.svg";
 import { useNavigate } from "react-router-dom";
 import Policy from "../components/shared/Policy";
 
-export const HomePage = () => {
+export default function HomePage() {
   const navigate = useNavigate();
   const [showPolicy, setShowPolicy] = useState(false);
   const [agree, setAgree] = useState(false);

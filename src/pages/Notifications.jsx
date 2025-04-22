@@ -5,6 +5,8 @@ import {NotificationCard} from "../components/notifications/notificationCard";
 import {SystemCard} from "../components/notifications/systemCard";
 import {useNavigate} from "react-router-dom";
 import {Button} from "../components/Button";
+import { axiosPrivate } from '../axios';
+import config from '../config';
 
 const Notifications = () => {
 
@@ -26,6 +28,24 @@ const Notifications = () => {
         { id: 1, title: 'Заголовок сообщения', desc: 'Lorem ipsum dolor sit amet consectetur. Proin sodales elit faucibus at enim aliquam feugiat tempor. Mauris porta eu tristique orci quam condimentum fermentum cras ornare.', status: 'new' },
         { id: 2, title: 'Заголовок сообщения', desc: 'Lorem ipsum dolor sit amet consectetur. Proin sodales elit faucibus at enim aliquam feugiat tempor. Mauris porta eu tristique orci quam condimentum fermentum cras ornare.', status: 'old' },
     ]);
+
+    const fetchNotifications = async () => {
+        try {
+            const response = await axiosPrivate.get(config.API.NOTIFICATIONS.LIST);
+            setChats(response.data);
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+        }
+    };
+
+    const markAsRead = async (notificationId) => {
+        try {
+            await axiosPrivate.put(config.API.NOTIFICATIONS.MARK_READ(notificationId));
+            // ... rest of the code
+        } catch (error) {
+            console.error('Error marking notification as read:', error);
+        }
+    };
 
     return(
         <div className='w-full pt-[100px] pb-[80px] flex flex-col items-center overflow-hidden'>

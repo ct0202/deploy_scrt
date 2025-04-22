@@ -1,6 +1,8 @@
 import React from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
+import { axiosPrivate } from '../axios';
+import config from '../config';
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -11,6 +13,32 @@ import background from "../assets/background.svg";
 function Chat() {
     const navigate = useNavigate();
 
+    // const fetchMatches = async () => {
+    //     try {
+    //         const response = await axiosPrivate.get(config.API.MATCHES.LIST);
+    //         setMatches(response.data);
+    //     } catch (error) {
+    //         console.error('Error fetching matches:', error);
+    //     }
+    // };
+
+    const acceptMatch = async (matchId) => {
+        try {
+            await axiosPrivate.post(config.API.MATCHES.ACCEPT(matchId));
+            // ... rest of the code
+        } catch (error) {
+            console.error('Error accepting match:', error);
+        }
+    };
+
+    const rejectMatch = async (matchId) => {
+        try {
+            await axiosPrivate.post(config.API.MATCHES.REJECT(matchId));
+            // ... rest of the code
+        } catch (error) {
+            console.error('Error rejecting match:', error);
+        }
+    };
 
     return (
         <div className="w-[100%] h-[100%] pt-[70px] flex flex-col font-raleway !items-center overflow-x-hidden">

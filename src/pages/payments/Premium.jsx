@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {Button} from "../components/Button";
+import {Button} from "../../components/Button";
 
 function Premium() {
     const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import React, {useState, useRef} from "react";
-import { Button } from "../components/Button";
+import { Button } from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,9 +8,9 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "./styles/SwiperCustomPagination.css";
 
-import { INSTRUCTIONS_MEET } from "../constants/instructions";
-import PresentsShop from "../components/shared/PresentsShop";
-import DayLimit from "../components/shared/DayLimit";
+import { INSTRUCTIONS_MEET } from "../../constants/instructions";
+import PresentsShop from "../../components/shared/PresentsShop";
+import DayLimit from "../../components/shared/DayLimit";
 
 function Streamer() {
     const [presentsShop, setPresentsShop] = useState(false);
