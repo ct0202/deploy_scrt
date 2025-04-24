@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRegistrationData } from '../../store/userSlice';
-import axios from '../../axios';
+import { axiosPrivate } from '../../axios';
 
 function MeetGoal() {
     const navigate = useNavigate();
@@ -47,7 +47,7 @@ function MeetGoal() {
         try {
             setIsSubmitting(true);
             console.log('Sending meet goal update request...');
-            const response = await axios.put('/users/updateMeetGoal', {
+            const response = await axiosPrivate.put('/users/updateMeetGoal', {
                 telegramId: userId,
                 purpose: registrationData.purpose
             });

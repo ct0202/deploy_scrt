@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import React, {useState} from "react";
-import {Button} from "../../components/Button";
+import {Button} from "../components/Button";
 
 function Support() {
     const navigate = useNavigate();

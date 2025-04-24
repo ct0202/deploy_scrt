@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRegistrationData } from '../../store/userSlice';
-import axios from '../../axios';
+import { axiosPrivate } from '../../axios';
+
 import LocationSelect from '../../components/LocationSelect';
 
 function Main() {
@@ -82,7 +83,7 @@ function Main() {
             console.log('Sending update request with data:', requestData);
 
             // Send the request
-            const response = await axios.put('/users/mainInfoUpdate', requestData);
+            const response = await axiosPrivate.put('/users/mainInfoUpdate', requestData);
             
             // Log the response
             console.log('Update response:', response.data);

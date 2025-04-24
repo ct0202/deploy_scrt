@@ -20,6 +20,7 @@ function Profile() {
     const [openToast, setOpenToast] = useState(false);
     const [reportMenu, setReportMenu] = useState(false);
     const [blockUser, setBlockUser] = useState(false);
+    const [userData, setUserData] = useState();    
     const navigate = useNavigate();
 
     const [openReport, setOpenReport] = useState(false);

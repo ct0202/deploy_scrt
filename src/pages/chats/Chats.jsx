@@ -47,33 +47,21 @@ const Chats = () => {
 
         console.log('Debug - Current userId:', userId);
         console.log('Debug - Chat participants:', chat.participants);
-        console.log('Debug - Match participants:', chat.match?.participants);
+        let otherParticipant = chat?.participants[0];
 
-        // First try to get from match participants
-        if (chat.match?.participants) {
-            const otherParticipant = chat.match.participants.find(p => {
-                const participantId = p.userId?.toString();
-                const currentUserId = userId.toString();
-                console.log('Debug - Comparing match participants:', { participantId, currentUserId });
-                return participantId !== currentUserId;
-            });
-            
+
+        // Fallback to chat participants
+        if (chat.participants) {
+            otherParticipant = chat.participants.find(p => p.userId._id !== userId);
             if (otherParticipant) {
-                console.log('Found participant from match:', otherParticipant);
                 return otherParticipant;
             }
         }
         
-        // Fallback to chat participants
-        const chatParticipant = chat.participants?.find(p => {
-            const participantId = p.userId?.toString();
-            const currentUserId = userId.toString();
-            console.log('Debug - Comparing chat participants:', { participantId, currentUserId });
-            return participantId !== currentUserId;
-        });
-        
-        console.log('Found participant from chat:', chatParticipant);
-        return chatParticipant;
+        console.log('Found participant from chat:', otherParticipant);
+        console.log('Debug - Chat other:', otherParticipant);
+
+        return otherParticipant;
     };
 
     return(

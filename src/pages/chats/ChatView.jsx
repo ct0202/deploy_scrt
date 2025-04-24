@@ -43,7 +43,7 @@ function ChatView () {
 
         // Set up message listener
         const unsubscribeMessage = chatService.onMessage((newMessage) => {
-            console.log('New message received:', newMessage);
+            // console.log('New message received:', newMessage);
             if (newMessage.type === 'history') {
                 // Update entire chat history
                 const sortedMessages = (newMessage.data.messages || []).sort((a, b) => 
