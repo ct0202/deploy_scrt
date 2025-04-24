@@ -25,8 +25,22 @@ export const connect = (token) => {
         console.log('Disconnected from chat server');
     });
 
-    socket.on('new-message', (message) => {
-        messageCallbacks.forEach(callback => callback(message));
+    socket.on('new-message', (data) => {
+        console.log('New message received:', data);
+        if (data.chatHistory) {
+            // Update chat history
+            messageCallbacks.forEach(callback => callback({
+                type: 'history',
+                data: data.chatHistory
+            }));
+        }
+        if (data.message) {
+            // Handle individual message
+            messageCallbacks.forEach(callback => callback({
+                type: 'message',
+                data: data.message
+            }));
+        }
     });
 
     socket.on('messages-read', (data) => {

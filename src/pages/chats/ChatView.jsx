@@ -19,6 +19,17 @@ function ChatView () {
     const messagesEndRef = useRef(null);
     const currentUserId = localStorage.getItem('userId');
     const typingTimeoutRef = useRef(null);
+    const messagesContainerRef = useRef(null);
+
+    const scrollToBottom = () => {
+        if (messagesContainerRef.current) {
+            messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+        }
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     useEffect(() => {
         const token = localStorage.getItem('userId');
@@ -33,14 +44,17 @@ function ChatView () {
         // Set up message listener
         const unsubscribeMessage = chatService.onMessage((newMessage) => {
             console.log('New message received:', newMessage);
-            if (newMessage.type === 'status') {
+            if (newMessage.type === 'history') {
+                // Update entire chat history
+                const sortedMessages = (newMessage.data.messages || []).sort((a, b) => 
+                    new Date(a.createdAt) - new Date(b.createdAt)
+                );
+                setMessages(sortedMessages);
+            } else if (newMessage.type === 'status') {
                 // Update message status
                 setMessages(prev => prev.map(msg => 
                     msg._id === newMessage._id ? { ...msg, readBy: newMessage.readBy } : msg
                 ));
-            } else {
-                // Add new message to the end of the list
-                setMessages(prev => [...prev, newMessage]);
             }
         });
 
@@ -58,16 +72,13 @@ function ChatView () {
             try {
                 const chatData = await chatService.getChatHistory(chat_id);
                 setChat(chatData.data.chats);
-                console.log("chat data", chatData.data.chats, "chat data");
                 const other = chatData.data.chats.participants?.find(p => p.userId !== currentUserId);
-                console.log(other);
                 setOtherParticipant(other);
                 
                 // Sort messages by createdAt in ascending order (oldest first)
                 const sortedMessages = (chatData.data.chats.messages || []).sort((a, b) => 
                     new Date(a.createdAt) - new Date(b.createdAt)
                 );
-                console.log(sortedMessages);
                 setMessages(sortedMessages);
             } catch (error) {
                 console.error('Error fetching chat data:', error);
@@ -75,7 +86,9 @@ function ChatView () {
         };
 
         fetchChatData();
+        scrollToBottom();
 
+        
         return () => {
             unsubscribeMessage();
             unsubscribeTyping();
@@ -179,7 +192,10 @@ function ChatView () {
                     </div>
                 </div>
             </div>
-            <div className='w-[343px] h-[60vh] flex justify-start items-center flex-col text-white font-raleway overflow-y-auto'>
+            <div 
+                ref={messagesContainerRef}
+                className='w-[343px] h-[60vh] flex justify-start items-center flex-col text-white font-raleway overflow-y-auto'
+            >
                 {messages?.map((message, index) => {
                     const isCurrentUser = message.sender?._id === currentUserId;
                     return (
@@ -202,6 +218,7 @@ function ChatView () {
                         </div>
                     );
                 })}
+                <div ref={messagesEndRef} />
             </div>
             <div className='font-raleway mb-[10px] w-full flex items-center justify-center text-white text-[14px] opacity-80'>
                 <div className='w-[343px] flex justify-start'>
