@@ -3,13 +3,27 @@ import { Button } from "../components/Button";
 import background from "../assets/background.svg";
 import { useNavigate } from "react-router-dom";
 import Policy from "../components/shared/Policy";
+import config from "../config";
 
 export default function HomePage() {
   const navigate = useNavigate();
   const [showPolicy, setShowPolicy] = useState(false);
   const [agree, setAgree] = useState(false);
 
+  const status = localStorage.getItem("auth_status");
+  
+
   useEffect(() => {
+    if(status === "registering") {
+      // Redirect to calculate page if user not found
+      window.location.href = config.ROUTES.CALCULATE;
+      return;
+    }
+    if(status === "authorized") {
+      // Redirect to calculate page if user not found
+      window.location.href = config.ROUTES.MEET;
+      return;
+    }
     const checkUser = async () => {
       // if(localStorage.getItem("userId")){
       //   const res = await axios.get(`/getUserInfo/${localStorage.getItem("userId")}`);
@@ -20,6 +34,9 @@ export default function HomePage() {
     };
     checkUser();
   }, []);
+
+
+  
 
   const handlePolicyClick = () => {
     setShowPolicy(true);

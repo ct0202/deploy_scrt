@@ -12,7 +12,7 @@ function Step5({ setStep }) {
     const dispatch = useDispatch();
     const registrationData = useSelector((state) => state.user.registrationData);
     const interests = useSelector((state) => state.user.registrationData.interests);
-    const userId = useSelector((state) => state.user.userId);
+    const telegram_id = localStorage.getItem('telegram_id');
     const [disabled, setDisabled] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -59,7 +59,7 @@ function Step5({ setStep }) {
                 formData.append('purpose', registrationData.purpose);
                 
                 // Add telegramId from Redux store
-                formData.append('telegramId', userId);
+                formData.append('telegramId', telegram_id);
                 
                 // Add interests as JSON string
                 formData.append('interests', JSON.stringify(registrationData.interests));
