@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import axios from '../../axios';
+import { axiosPrivate } from '../../axios';
 import VoiceProgress from '../../components/ui/VoiceProgress';
 
 function Audio() {
@@ -22,7 +22,7 @@ function Audio() {
             formData.append('audioMessage', audioBlob);
 
             console.log('Sending audio update request...');
-            const response = await axios.put('/users/updateAudio', formData, {
+            const response = await axiosPrivate.put('/users/updateAudio', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

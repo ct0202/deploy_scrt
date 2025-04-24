@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
-
+import config from "../../config";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
@@ -93,12 +93,12 @@ function ProfileEdit() {
                                     ))}
                                 </Swiper>
 
-                                <img src='/icons/redactirovat_photo.svg' alt="Редактировать фото" className='absolute z-[10] left-[30px] top-[500px]' onClick={()=>navigate('/photo')}/>
-                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[565px] left-[230px]' onClick={()=>navigate('/main')} />
-                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[607px] left-[180px]' onClick={()=>navigate('/main')}/>
-                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[680px] left-[200px]' onClick={()=>navigate('/meetGoal')} />
-                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[765px] left-[180px]' onClick={()=>navigate('/audio')}/>
-                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[890px] left-[130px]' onClick={()=>navigate('/interests')}/>
+                                <img src='/icons/redactirovat_photo.svg' alt="Редактировать фото" className='absolute z-[10] left-[30px] top-[500px]' onClick={()=>navigate(config.ROUTES.PROFILE.PHOTO)}/>
+                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[565px] left-[230px]' onClick={()=>navigate(config.ROUTES.PROFILE.MAIN)} />
+                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[607px] left-[180px]' onClick={()=>navigate(config.ROUTES.PROFILE.MAIN)}/>
+                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[680px] left-[200px]' onClick={()=>navigate(config.ROUTES.PROFILE.MEET_GOAL)} />
+                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[765px] left-[180px]' onClick={()=>navigate(config.ROUTES.PROFILE.AUDIO)}/>
+                                <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[890px] left-[130px]' onClick={()=>navigate(config.ROUTES.PROFILE.INTERESTS)}/>
                                 <div className="shadow-[0_-25px_30px_rgba(0,0,0,0.9)] rounded-[16px] rounded-t-none relative z-[5] flex flex-col pl-[24px] pr-[24px] bg-[#010D0D] translate-y-[-27px] drop-shadow-[0_0_30px_0_rgb(0,0,0)]">
                                     <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
                                         {registrationData.name}, {calculateAge(registrationData.birthDay)} лет

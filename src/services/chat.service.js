@@ -150,20 +150,20 @@ async function getChatHistory(chatId, page = 1, limit = 50) {
 }
 
 async function updateTypingStatus(chatId, isTyping) {
-    // try {
-    //     const response = await axiosPrivate.post(config.API.CHATS.TYPING(chatId), {
-    //         isTyping
-    //     });
+    try {
+        const response = await axiosPrivate.post(config.API.CHATS.TYPING(chatId), {
+            isTyping
+        });
 
-    //     if (!response.data) {
-    //         throw new Error('Invalid response from server');
-    //     }
+        if (!response.data) {
+            throw new Error('Invalid response from server');
+        }
 
-    //     return response.data;
-    // } catch (error) {
-    //     console.error('Error updating typing status:', error);
-    //     throw error;
-    // }
+        return response.data;
+    } catch (error) {
+        console.error('Error updating typing status:', error);
+        throw error;
+    }
 }
 
 export default {

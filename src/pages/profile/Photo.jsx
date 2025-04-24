@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import axios from '../../axios';
+import { axiosPrivate } from '../../axios';
 
 function Photo() {
     const navigate = useNavigate();
@@ -37,7 +37,7 @@ function Photo() {
             });
 
             console.log('Sending photos update request...');
-            const response = await axios.put('/users/updatePhotos', formData, {
+            const response = await axiosPrivate.put('/users/updatePhotos', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

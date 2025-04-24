@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { INTEREST } from "../../constants/interests";
-import axios from '../../axios';
+import { axiosPrivate } from '../../axios';
+
 
 function Interests() {
     const navigate = useNavigate();
@@ -39,7 +40,7 @@ function Interests() {
         try {
             setIsSubmitting(true);
             console.log('Sending interests update request...');
-            const response = await axios.put('/users/updateInterests', {
+            const response = await axiosPrivate.put('/users/updateInterests', {
                 telegramId: userId,
                 interests: selectedOptions
             });
