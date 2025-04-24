@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { addInterest, removeInterest } from '../store/userSlice';
 import { INTEREST } from "../constants/interests";
-import axios from '../axios';
+import { axiosPublic } from '../axios';
+import config from '../config';
 
 function Step5({ setStep }) {
     const navigate = useNavigate();
@@ -86,7 +87,7 @@ function Step5({ setStep }) {
                 }
                 console.log('=== End Registration Data Debug ===');
 
-                const response = await axios.post('/users/register', formData, {
+                const response = await axiosPublic.post(config.API.USERS.REGISTER, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

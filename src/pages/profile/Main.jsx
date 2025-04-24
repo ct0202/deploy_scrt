@@ -67,16 +67,8 @@ function Main() {
         try {
             setIsSubmitting(true);
             
-            // Обновляем данные в Redux
-            dispatch(updateRegistrationData({ field: 'name', value: formData.name }));
-            dispatch(updateRegistrationData({ field: 'gender', value: formData.gender }));
-            dispatch(updateRegistrationData({ field: 'wantToFind', value: formData.targetGender }));
-            dispatch(updateRegistrationData({ field: 'birthDay', value: formData.birthDate }));
-            dispatch(updateRegistrationData({ field: 'country', value: formData.country }));
-            dispatch(updateRegistrationData({ field: 'city', value: formData.city }));
-
-            // Отправляем данные на сервер
-            const response = await axios.put('/users/mainInfoUpdate', {
+            // Prepare the request data
+            const requestData = {
                 telegramId: userId,
                 name: formData.name,
                 gender: formData.gender,
@@ -84,13 +76,33 @@ function Main() {
                 birthDay: formData.birthDate,
                 country: formData.country,
                 city: formData.city
-            });
+            };
+
+            // Log the request data
+            console.log('Sending update request with data:', requestData);
+
+            // Send the request
+            const response = await axios.put('/users/mainInfoUpdate', requestData);
+            
+            // Log the response
+            console.log('Update response:', response.data);
 
             if (response.data) {
+                // Update Redux store with the new data
+                dispatch(updateRegistrationData({ field: 'name', value: formData.name }));
+                dispatch(updateRegistrationData({ field: 'gender', value: formData.gender }));
+                dispatch(updateRegistrationData({ field: 'wantToFind', value: formData.targetGender }));
+                dispatch(updateRegistrationData({ field: 'birthDay', value: formData.birthDate }));
+                dispatch(updateRegistrationData({ field: 'country', value: formData.country }));
+                dispatch(updateRegistrationData({ field: 'city', value: formData.city }));
+
                 navigate(-1);
             }
         } catch (error) {
             console.error('Error updating profile:', error);
+            if (error.response) {
+                console.error('Error response:', error.response.data);
+            }
             alert('Произошла ошибка при сохранении данных. Пожалуйста, попробуйте еще раз.');
         } finally {
             setIsSubmitting(false);

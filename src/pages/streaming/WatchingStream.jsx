@@ -1,6 +1,6 @@
 import React, {useRef, useState} from "react";
 import { useNavigate } from "react-router-dom";
-import PresentsShop from "../components/shared/PresentsShop";
+import PresentsShop from "../../components/shared/PresentsShop";
 
 function WatchingStream() {
     const navigate = useNavigate();

@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useRef} from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
-import axios from '../axios';
+import { axiosPrivate } from '../axios';
+import config from '../config';
 
 import { Navigation } from "../components/shared/Navigation";
 
@@ -34,19 +35,24 @@ function Meet() {
 
   const navigate = useNavigate();
 
-  const handleDislike = () => {
-    if (currentMatchIndex < potentialMatches.length - 1) {
-      setCurrentMatchIndex(prevIndex => prevIndex + 1);
-    } else {
-      // If we've reached the end of potential matches, fetch more
-      fetchPotentialMatches();
+  const handleDislike = async (userId) => {
+    try {
+      await axiosPrivate.post(config.API.MATCHES.REJECT(userId));
+      if (currentMatchIndex < potentialMatches.length - 1) {
+        setCurrentMatchIndex(prevIndex => prevIndex + 1);
+      } else {
+        // If we've reached the end of potential matches, fetch more
+        fetchPotentialMatches();
+      }
+    } catch (error) {
+      console.error('Error rejecting match:', error);
     }
   };
 
   const fetchPotentialMatches = async () => {
     try {
       console.log('Fetching potential matches...');
-      const response = await axios.get('/matches/potential');
+      const response = await axiosPrivate.get(config.API.MATCHES.POTENTIAL);
       console.log('Potential matches response:', response.data);
       
       if (response.data && response.data.data && response.data.data.users) {
@@ -256,7 +262,7 @@ function Meet() {
                   <div className="w-[338px] h-[70px] mb-4 flex flex-row justify-evenly items-center">
                     <div 
                       className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
-                      onClick={handleDislike}
+                      onClick={() => handleDislike(currentMatch._id)}
                     >
                       <img
                         src="/icons/photo_overlay_button_1.svg"

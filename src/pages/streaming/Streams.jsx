@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import {Navigation} from "../components/shared/Navigation";
+import {Navigation} from "../../components/shared/Navigation";
 
 function Streams() {
   const navigate = useNavigate();

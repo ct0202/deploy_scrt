@@ -1,6 +1,8 @@
 import React, {useCallback, useState} from "react";
 import {Button} from "../components/Button";
 import { useNavigate } from "react-router-dom";
+import { axiosPrivate } from '../axios';
+import config from '../config';
 
 import DoubleRangeSlider from "../components/ui/DoubleRangeSlider";
 import {INTEREST} from "../constants/interests";
@@ -75,6 +77,24 @@ function Filters() {
             emoji: "🥂",
         },
     ];
+
+    const saveFilters = async (filters) => {
+        try {
+            await axiosPrivate.post(config.API.USERS.UPDATE, { filters });
+            // ... rest of the code
+        } catch (error) {
+            console.error('Error saving filters:', error);
+        }
+    };
+
+    // const fetchFilters = async () => {
+    //     try {
+    //         const response = await axiosPrivate.get(config.API.USERS.PROFILE);
+    //         setFilters(response.data.filters);
+    //     } catch (error) {
+    //         console.error('Error fetching filters:', error);
+    //     }
+    // };
 
     return (
         <div className="w-[100%] h-[auto] pt-[100px] flex justify-center">

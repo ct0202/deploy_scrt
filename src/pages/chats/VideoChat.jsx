@@ -1,25 +1,25 @@
 import React, {useState, useEffect, useRef, useMemo} from "react";
-import { Button } from "../components/Button";
+import { Button } from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import "./styles/SwiperCustomPagination.css";
+// import "./styles/SwiperCustomPagination.css";
 
-import DayLimit from "../components/shared/DayLimit";
-import PresentsShop from "../components/shared/PresentsShop";
-import ChatProgressBar from "../components/ui/ChatProgressBar";
+import DayLimit from "../../components/shared/DayLimit";
+import PresentsShop from "../../components/shared/PresentsShop";
+import ChatProgressBar from "../../components/ui/ChatProgressBar";
 
 import AgoraRTC from 'agora-rtc-sdk-ng';
-import {Navigation} from "../components/shared/Navigation";
+import {Navigation} from "../../components/shared/Navigation";
 
 const APP_ID = "12934dd56c904bada036f4e00867a7b3"; // Замените на ваш App ID
 const CHANNEL = "test-channel"; // Имя канала
 const TOKEN = null; // Можно использовать токен, если требуется
 
-function Chat() {
+function VideoChat() {
     const [showToast, setShowToast] = useState(false);
     const [showInstruction, setShowInstruction] = useState(false);
 
@@ -412,4 +412,4 @@ function Chat() {
     );
 }
 
-export default Chat;
+export default VideoChat;
