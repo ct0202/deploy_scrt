@@ -3,55 +3,70 @@ import {AUTH_TOKEN_KEY} from '../config';
 import config from '../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserId, updateRegistrationData, updatePhoto, setAudioMessage } from '../store/userSlice';
+import { useState } from 'react';
 
 export const useAuth = () => {
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user.userId);
+    const telegram_id = localStorage.getItem("telegramId");
     const isTelegram = 0;
 
-    const initAuth = async () => {
-        try {
-            if (isTelegram) {
-                const tg = window.Telegram.WebApp;
-                tg.disableVerticalSwipes();
-                tg.requestFullscreen();
-                tg.ready();
-                tg.expand();
+    const status = localStorage.getItem("auth_status");
 
-                if (!userId) {
-                    let userData = new URLSearchParams(tg.initData);
-                    userData = JSON.parse(userData.get("user"));
-                    const telegramId = userData.id;
-                    dispatch(setUserId(telegramId));
-                    
-                    const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
-                        telegramId: telegramId
-                    });
-                    
-                    handleAuthResponse(response);
-                }
-            } else {
-                if (!userId) {
-                    const telegramId = localStorage.getItem('telegramId');
-                    if (!telegramId) {
-                        console.error('No Telegram ID found in localStorage');
-                        return;
+    const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
+    console.log('authToken check', authToken);
+    console.log('telegramId check', telegram_id);
+
+    const initAuth = async () => {
+        if (status == null)
+        {
+            try {
+                if (isTelegram) {
+                    const tg = window.Telegram.WebApp;
+                    tg.disableVerticalSwipes();
+                    tg.requestFullscreen();
+                    tg.ready();
+                    tg.expand();
+
+                    if (!userId) {
+                        let userData = new URLSearchParams(tg.initData);
+                        userData = JSON.parse(userData.get("user"));
+                        const telegramId = userData.id;
+                        dispatch(setUserId(telegramId));
+                        
+                        const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
+                            telegramId: telegramId
+                        });
+                        
+                        handleAuthResponse(response);
                     }
-                    
-                    dispatch(setUserId(telegramId));
-                    
-                    const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
-                        telegramId: telegramId
-                    });
-                    
-                    handleAuthResponse(response);
+                } else {
+                    if (!userId) {
+                        const telegramId = localStorage.getItem('telegramId');
+                        if (!telegramId) {
+                            console.error('No Telegram ID found in localStorage');
+                            return;
+                        }
+                        
+                        dispatch(setUserId(telegramId));
+                        
+                        const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
+                            telegramId: telegramId
+                        });
+                        
+                        handleAuthResponse(response);
+                    }
                 }
+            } catch (error) {
+                if(error.status === 404) {
+                    localStorage.setItem("auth_status", 'registering');
+                    return;
+                }
+                console.error('Auth initialization error:', error);
+                // Clear invalid state
+                localStorage.removeItem('telegramId');
+                dispatch(setUserId(null));
             }
-        } catch (error) {
-            console.error('Auth initialization error:', error);
-            // Clear invalid state
-            localStorage.removeItem('telegramId');
-            dispatch(setUserId(null));
         }
     };
 
@@ -60,6 +75,8 @@ export const useAuth = () => {
             // Save token
             if (response.data.token) {
                 console.log(response.data.user._id);
+                
+                localStorage.setItem("auth_status", 'authorized');
                 localStorage.setItem(AUTH_TOKEN_KEY, response.data.token);
                 localStorage.setItem("userId", response.data.user._id);
             }
