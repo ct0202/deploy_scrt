@@ -16,7 +16,7 @@ export default function HomePage() {
   useEffect(() => {
     if(status === "registering") {
       // Redirect to calculate page if user not found
-      window.location.href = config.ROUTES.CALCULATE;
+      // window.location.href = config.ROUTES.CALCULATE;
       return;
     }
     if(status === "authorized") {

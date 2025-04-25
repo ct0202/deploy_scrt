@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addInterest, removeInterest } from '../store/userSlice';
 import { INTEREST } from "../constants/interests";
 import { axiosPublic } from '../axios';
+import axios from "axios";
 import config from '../config';
 
 function Step5({ setStep }) {
@@ -12,7 +13,7 @@ function Step5({ setStep }) {
     const dispatch = useDispatch();
     const registrationData = useSelector((state) => state.user.registrationData);
     const interests = useSelector((state) => state.user.registrationData.interests);
-    const telegram_id = localStorage.getItem('telegram_id');
+    const telegramId = localStorage.getItem('telegramId');
     const [disabled, setDisabled] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -48,6 +49,7 @@ function Step5({ setStep }) {
                 const formData = new FormData();
                 
                 // Add basic user information
+                formData.append('telegramId', telegramId);
                 formData.append('name', registrationData.name);
                 formData.append('gender', registrationData.gender);
                 formData.append('wantToFind', registrationData.wantToFind);
@@ -58,18 +60,16 @@ function Step5({ setStep }) {
                 formData.append('longitude', registrationData.coordinates.longitude);
                 formData.append('purpose', registrationData.purpose);
                 
-                // Add telegramId from Redux store
-                formData.append('telegramId', telegram_id);
-                
                 // Add interests as JSON string
                 formData.append('interests', JSON.stringify(registrationData.interests));
 
-                // Add photos
-                for (let i = 0; i < registrationData.photos.length; i++) {
-                    const photo = registrationData.photos[i];
-                    if (photo) {
-                        const photoBlob = await convertBase64ToBlob(photo);
-                        formData.append(`photo${i + 1}`, photoBlob);
+                // Add photos with the same key 'photos'
+                if (registrationData.photos && registrationData.photos.length > 0) {
+                    for (const photo of registrationData.photos) {
+                        if (photo) {
+                            const photoBlob = await convertBase64ToBlob(photo);
+                            formData.append('photos', photoBlob);
+                        }
                     }
                 }
 
@@ -79,19 +79,23 @@ function Step5({ setStep }) {
                     formData.append('audioMessage', audioBlob);
                 }
 
-                // Submit the form data
+                // Debug: Log FormData contents
                 console.log('=== Registration Data Debug ===');
-                console.log('FormData contents:');
                 for (let pair of formData.entries()) {
                     console.log(pair[0] + ': ' + pair[1]);
                 }
                 console.log('=== End Registration Data Debug ===');
 
-                const response = await axiosPublic.post(config.API.USERS.REGISTER, formData, {
+                // Use axiosPublic with proper configuration
+                const response = await axiosPublic.post(config.API.AUTH.REGISTER, formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
+                        'Content-Type': 'multipart/form-data',
+                        'Accept': 'application/json'
+                    },
+                    transformRequest: [(data) => data] // Prevent axios from transforming the FormData
                 });
+
+                console.log('Registration response:', response);
 
                 if (response.data) {
                     // Store the token if returned
@@ -102,6 +106,7 @@ function Step5({ setStep }) {
                 }
             } catch (error) {
                 console.error('Registration error:', error);
+                console.error('Error response:', error.response);
                 alert('Произошла ошибка при регистрации. Пожалуйста, попробуйте еще раз.');
             } finally {
                 setIsSubmitting(false);
