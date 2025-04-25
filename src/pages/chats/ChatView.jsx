@@ -59,10 +59,10 @@ function ChatView () {
         });
 
         // Set up typing status listener
-        const unsubscribeTyping = chatService.onTyping((typingStatus) => {
-            console.log('Typing status:', typingStatus);
-            setIsTyping(typingStatus);
-        });
+        // const unsubscribeTyping = chatService.onTyping((typingStatus) => {
+        //     console.log('Typing status:', typingStatus);
+        //     setIsTyping(typingStatus);
+        // });
 
         // Join chat room
         chatService.joinChat(chat_id);
@@ -91,7 +91,7 @@ function ChatView () {
         
         return () => {
             unsubscribeMessage();
-            unsubscribeTyping();
+            // unsubscribeTyping();
             chatService.disconnect();
         };
     }, [chat_id, currentUserId, navigate]);
