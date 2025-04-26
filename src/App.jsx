@@ -52,7 +52,7 @@ function App() {
   useEffect(() => {
         const checkAuth = async () => {
             // Check if we're in Telegram environment
-            const isTelegramEnv = 0;
+            const isTelegramEnv = 1;
             setIsTelegram(isTelegramEnv ? 1 : 0);
             
             if (!isTelegramEnv) {
