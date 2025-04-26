@@ -127,9 +127,9 @@ function Step5({ setStep }) {
                 Выберите не менее 5 интересов, чтобы поделиться ими с другими пользователями
             </h1>
             <div className="flex flex-wrap gap-[8px] mt-[16px] mb-[100px]">
-                {options.map((option) => (
+                {options.map((option, index) => (
                     <div
-                        key={option.id}
+                        key={index}
                         onClick={() => addOption(option.id)}
                         className={`w-auto ${ option.id === "Права людей с ограниченными возможностями" ? "text-[15px] p-2" :"p-3 text-[18px]"} h-[48px] rounded-[400px] flex justify-center items-center font-light text-white cursor-pointer transition-all
               ${

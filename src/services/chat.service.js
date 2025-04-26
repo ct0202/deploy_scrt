@@ -92,8 +92,8 @@ export const onMessage = (callback) => {
 };
 
 export const onTyping = (callback) => {
-    typingCallbacks.add(callback);
-    return () => typingCallbacks.delete(callback);
+    // typingCallbacks.add(callback);
+    // return () => typingCallbacks.delete(callback);
 };
 
 async function getUserChats(page = 1, limit = 20) {
@@ -150,20 +150,12 @@ async function getChatHistory(chatId, page = 1, limit = 50) {
 }
 
 async function updateTypingStatus(chatId, isTyping) {
-    try {
-        const response = await axiosPrivate.post(config.API.CHATS.TYPING(chatId), {
-            isTyping
-        });
-
-        if (!response.data) {
-            throw new Error('Invalid response from server');
-        }
-
-        return response.data;
-    } catch (error) {
-        console.error('Error updating typing status:', error);
-        throw error;
-    }
+    // try {
+    //     socket.emit("is-typing", isTyping);
+    // } catch (error) {
+    //     console.error('Error updating typing status:', error);
+    //     throw error;
+    // }
 }
 
 export default {

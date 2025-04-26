@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from 'react-redux';
 import config from "../../config";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "../styles/SwiperCustomPagination.css";
+import { axiosPrivate } from "../../axios";
 
 function ProfileEdit() {
     const navigate = useNavigate();
-    const registrationData = useSelector((state) => state.user.registrationData);
+    const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const userId = localStorage.getItem("userId");
+                const response = await axiosPrivate.get(config.API.USERS.BY_ID(userId));
+                setUserData(response.data);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     // Функция для вычисления возраста
     const calculateAge = (birthDate) => {
@@ -42,6 +59,14 @@ function ProfileEdit() {
                 return "Не указано";
         }
     };
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!userData) {
+        return <div>Error loading user data</div>;
+    }
 
     return (
         <div>
@@ -80,7 +105,7 @@ function ProfileEdit() {
                                         el: '.custom-pagination'
                                     }}
                                 >
-                                    {registrationData.photos.map((photo, index) => (
+                                    {userData.photos.map((photo, index) => (
                                         photo && (
                                             <SwiperSlide key={index}>
                                                 <img
@@ -101,22 +126,22 @@ function ProfileEdit() {
                                 <img src='/icons/izmenit.svg' alt="Изменить" className='absolute z-[10] top-[890px] left-[130px]' onClick={()=>navigate(config.ROUTES.PROFILE.INTERESTS)}/>
                                 <div className="shadow-[0_-25px_30px_rgba(0,0,0,0.9)] rounded-[16px] rounded-t-none relative z-[5] flex flex-col pl-[24px] pr-[24px] bg-[#010D0D] translate-y-[-27px] drop-shadow-[0_0_30px_0_rgb(0,0,0)]">
                                     <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
-                                        {registrationData.name}, {calculateAge(registrationData.birthDay)} лет
+                                        {userData.name}, {calculateAge(userData.birthDay)} лет
                                     </h1>
                                     <h1 className="font-raleway font-light mt-2 text-white text-[18px]">
-                                        {registrationData.city}, {registrationData.country}
+                                        {userData.city}, {userData.country}
                                     </h1>
                                     <div className="border-b-2 border-white/30 pt-5" />
                                     <h1 className="font-raleway font-bold mt-6 text-white text-[18px]">
                                         Цель знакомства
                                     </h1>
                                     <h1 className="font-raleway font-light mt-2 text-white text-[18px]">
-                                        {getPurposeText(registrationData.purpose)}
+                                        {getPurposeText(userData.purpose)}
                                     </h1>
                                     <h1 className="font-raleway font-bold mt-6 text-white text-[18px]">
                                         Аудио визитка
                                     </h1>
-                                    {registrationData.audioMessage ? (
+                                    {userData.audioMessage ? (
                                         <img
                                             src="/icons/user_voice_message.svg"
                                             alt="Аудио визитка"
@@ -131,7 +156,7 @@ function ProfileEdit() {
                                         Интересы
                                     </h1>
                                     <h1 className="font-raleway font-light mt-2 text-white text-[18px]">
-                                        {registrationData.interests.join(", ")}
+                                        {userData.interests.join(", ")}
                                     </h1>
                                     <h1 className="font-raleway font-bold mt-6 text-white text-[18px]">
                                         Подарки
