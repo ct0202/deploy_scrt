@@ -1,13 +1,12 @@
-export const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+export const API_URL = process.env.REACT_APP_API_URL || 'https://api.mytadating.site/api';
 
 export const AUTH_TOKEN_KEY = "auth_token";
-
 export const DEFAULT_PAGE_SIZE = 10;
 
-export const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:3001';
+export const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'https://api.mytadating.site:3001';
 
 const config = {
-    API_URL: process.env.REACT_APP_API_URL || 'http://localhost:3001',
+    API_URL: process.env.REACT_APP_API_URL || 'https://api.mytadating.site',
     DEFAULT_USER_ID: '67fba439cf98acec362a6a2f', // Current user's ID
     FALLBACK_AVATAR: '/images/default-avatar.png',
     MESSAGE_STATUS: {
@@ -115,7 +114,7 @@ const config = {
         PAYMENT: '/makepayment',
         PREMIUM: '/premium'
     },
-    WS_URL: 'http://localhost:3001'
+    WS_URL: 'https://api.mytadating.site'
 };
 
 export default config; 
