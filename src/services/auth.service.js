@@ -9,7 +9,7 @@ export const useAuth = () => {
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user.userId);
     const telegram_id = localStorage.getItem("telegramId");
-    const isTelegram = 0;
+    const isTelegram = 1;
 
     const status = localStorage.getItem("auth_status");
 
@@ -22,12 +22,12 @@ export const useAuth = () => {
         {
             try {
                 if (isTelegram) {
-                    console.log('isTelegram');
+                    // console.log('isTelegram');
                     const tg = window.Telegram.WebApp;
-                    tg.disableVerticalSwipes();
-                    tg.requestFullscreen();
-                    tg.ready();
-                    tg.expand();
+                    // tg.requestFullscreen();
+                    // tg.disableVerticalSwipes();
+                    // tg.ready();
+                    // tg.expand();
 
                     if (!userId) {
                         let userData = new URLSearchParams(tg.initData);
