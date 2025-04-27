@@ -49,18 +49,20 @@ function App() {
     const [isTelegram, setIsTelegram] = useState(0);
     const [isInitialized, setIsInitialized] = useState(false);
 
-  useEffect(() => {
+    useEffect(() => {
+      const tg = window.Telegram.WebApp;
+      tg.requestFullscreen();
+      tg.disableVerticalSwipes();
+      const initData = window.Telegram.WebApp.initData;
+      tg.ready();
+  
+      return () => {
+        tg.close(); // Закрытие веб-приложения (при необходимости)
+      };
+    }, []);
 
-       if (1) { // поставь 0, если не в телеграмме
-        const tg = window.Telegram.WebApp;
-        tg.requestFullscreen(); 
-        tg.disableVerticalSwipes();
-        tg.ready();
-        tg.expand();
-        
-       }
 
-
+    useEffect(() => {
         const checkAuth = async () => {
             // Check if we're in Telegram environment
             const isTelegramEnv = 1;
