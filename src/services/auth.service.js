@@ -22,6 +22,7 @@ export const useAuth = () => {
         {
             try {
                 if (isTelegram) {
+                    console.log('isTelegram');
                     const tg = window.Telegram.WebApp;
                     tg.disableVerticalSwipes();
                     tg.requestFullscreen();
