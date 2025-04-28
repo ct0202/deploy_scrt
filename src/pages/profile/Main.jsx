@@ -10,7 +10,7 @@ function Main() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.user.userId);
-    const registrationData = useSelector((state) => state.user.registrationData);
+    const userData = useSelector((state) => state.user.userData);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [formData, setFormData] = useState({
@@ -20,6 +20,8 @@ function Main() {
         birthDate: "",
         country: "",
         city: "",
+        latitude: null,
+        longitude: null
     });
 
     const genders = [
@@ -34,20 +36,22 @@ function Main() {
     ];
 
     useEffect(() => {
-        localStorage.setItem("step1Data", JSON.stringify(formData));
-    }, [formData]);
-
-    useEffect(() => {
-        // Инициализируем formData данными из Redux при монтировании
-        setFormData({
-            name: registrationData.name || "",
-            gender: registrationData.gender || null,
-            targetGender: registrationData.wantToFind || null,
-            birthDate: registrationData.birthDay || "",
-            country: registrationData.country || "",
-            city: registrationData.city || "",
-        });
-    }, [registrationData]);
+        if (userData) {
+            // Format the birthDay date to yyyy-MM-dd
+            const formattedBirthDay = userData.birthDay ? new Date(userData.birthDay).toISOString().split('T')[0] : "";
+            
+            setFormData({
+                name: userData.name || "",
+                gender: userData.gender || null,
+                targetGender: userData.wantToFind || null,
+                birthDate: formattedBirthDay,
+                country: userData.country || "",
+                city: userData.city || "",
+                latitude: userData.coordinates?.latitude || null,
+                longitude: userData.coordinates?.longitude || null
+            });
+        }
+    }, [userData]);
 
     const handleChange = (e) => {
         setFormData((prev) => ({
@@ -60,7 +64,9 @@ function Main() {
         setFormData(prev => ({
             ...prev,
             country: locationData.country,
-            city: locationData.city
+            city: locationData.city,
+            latitude: locationData.coordinates.latitude,
+            longitude: locationData.coordinates.longitude
         }));
     };
 
@@ -68,42 +74,38 @@ function Main() {
         try {
             setIsSubmitting(true);
             
-            // Prepare the request data
             const requestData = {
                 telegramId: userId,
                 name: formData.name,
                 gender: formData.gender,
                 wantToFind: formData.targetGender,
-                birthDay: formData.birthDate,
+                birthDay: formData.birthDate, // This will be in yyyy-MM-dd format
                 country: formData.country,
-                city: formData.city
+                city: formData.city,
+                latitude: formData.latitude,
+                longitude: formData.longitude
             };
 
-            // Log the request data
-            console.log('Sending update request with data:', requestData);
-
-            // Send the request
             const response = await axiosPrivate.put('/users/mainInfoUpdate', requestData);
             
-            // Log the response
-            console.log('Update response:', response.data);
-
             if (response.data) {
-                // Update Redux store with the new data
-                dispatch(updateRegistrationData({ field: 'name', value: formData.name }));
-                dispatch(updateRegistrationData({ field: 'gender', value: formData.gender }));
-                dispatch(updateRegistrationData({ field: 'wantToFind', value: formData.targetGender }));
-                dispatch(updateRegistrationData({ field: 'birthDay', value: formData.birthDate }));
-                dispatch(updateRegistrationData({ field: 'country', value: formData.country }));
-                dispatch(updateRegistrationData({ field: 'city', value: formData.city }));
+                dispatch(updateRegistrationData({
+                    name: formData.name,
+                    gender: formData.gender,
+                    wantToFind: formData.targetGender,
+                    birthDay: formData.birthDate,
+                    country: formData.country,
+                    city: formData.city,
+                    coordinates: {
+                        latitude: formData.latitude,
+                        longitude: formData.longitude
+                    }
+                }));
 
                 navigate(-1);
             }
         } catch (error) {
             console.error('Error updating profile:', error);
-            if (error.response) {
-                console.error('Error response:', error.response.data);
-            }
             alert('Произошла ошибка при сохранении данных. Пожалуйста, попробуйте еще раз.');
         } finally {
             setIsSubmitting(false);

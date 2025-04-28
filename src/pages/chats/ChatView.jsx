@@ -21,6 +21,20 @@ function ChatView () {
     const typingTimeoutRef = useRef(null);
     const messagesContainerRef = useRef(null);
 
+    const calculateAge = (birthDay) => {
+        if (!birthDay) return '';
+        const birthDate = new Date(birthDay);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        
+        return age;
+    };
+
     const scrollToBottom = () => {
         if (messagesContainerRef.current) {
             messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
@@ -71,8 +85,9 @@ function ChatView () {
         const fetchChatData = async () => {
             try {
                 const chatData = await chatService.getChatHistory(chat_id);
+                console.log("chatData", chatData);
                 setChat(chatData.data.chats);
-                const other = chatData.data.chats.participants?.find(p => p.userId !== currentUserId);
+                const other = chatData.data.chats.participants?.find(p => p._id !== currentUserId);
                 setOtherParticipant(other);
                 
                 // Sort messages by createdAt in ascending order (oldest first)
@@ -183,9 +198,9 @@ function ChatView () {
                 <div className='w-[100vw] flex items-center justify-center'>
                     <div className="w-[343px] flex justify-between items-center relative">
                         <img src='/icons/Button-back.svg' onClick={() => {navigate(-1)}} className='w-[44px] h-[44px]'/>
-                        <p>{otherParticipant?.username || 'Loading...'}, {otherParticipant?.age || ''} лет</p>
+                        <p>{otherParticipant?.userInfo?.name || 'Loading...'}, {calculateAge(otherParticipant?.userInfo?.birthDay)} лет</p>
                         <img 
-                            src={otherParticipant?.profilePhotos?.[0] || config.FALLBACK_AVATAR} 
+                            src={otherParticipant?.userInfo?.photos?.[0] || config.FALLBACK_AVATAR} 
                             className='w-[44px] h-[44px] rounded-full' 
                             onClick={() => {navigate(`/profile/${otherParticipant?.userId}`)}} 
                         />
@@ -197,13 +212,18 @@ function ChatView () {
                 className='w-[343px] h-[60vh] flex justify-start items-center flex-col text-white font-raleway overflow-y-auto'
             >
                 {messages?.map((message, index) => {
-                    const isCurrentUser = message.sender?._id === currentUserId;
+                    const isCurrentUser = message.sender?.userId === currentUserId;
+                    console.log("currentUserId", currentUserId);
+                    console.log("message.sender?._id", message.sender?.userId);
+                    console.log("isCurrentUser", isCurrentUser);
                     return (
                         <div key={index} className={`${isCurrentUser ? 
                             'self-end bg-[#0A2438] border border-[#233636] rounded-tr-[16px] rounded-tl-[16px] rounded-bl-[16px]' :
                             'self-start bg-[#032A2A] border border-[#233636] rounded-tr-[16px] rounded-tl-[16px] rounded-br-[16px]'} 
-                            relative flex max-w-[90%] mt-[16px] leading-[1.5] p-[10px] pb-[30px]`}>
-                            <div className="flex-1 break-words">{message.content}</div>
+                            relative flex max-w-[90%] min-w-[70px] mt-[16px] leading-[1.5] p-[10px] pb-[30px]`}>
+                            <div className={`flex-1 break-words ${isCurrentUser ? 'text-right' : 'text-left'}`}>
+                                {message.content}
+                            </div>
                             <span className='absolute flex flex-row bottom-[10px] right-[10px] text-[12px]'>
                                 {formatTime(message.createdAt)}
                                 {isCurrentUser && (

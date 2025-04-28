@@ -24,12 +24,13 @@ const config = {
         USERS: {
             BASE: '/users',
             PROFILE: '/users/profile',
-            UPDATE: '/users/update',
-            SEARCH: '/users/search',
             BY_ID: (id) => `/users/${id}`,
-            INTERESTS: '/users/interests',
-            PHOTOS: '/users/photos',
-            AUDIO: '/users/audio'
+            MAIN_INFO_UPDATE: '/users/mainInfoUpdate',
+            UPDATE_AUDIO: '/users/updateAudio',
+            UPDATE_PHOTOS: '/users/updatePhotos',
+            UPDATE_INTERESTS: '/users/updateInterests',
+            UPDATE_MEET_GOAL: '/users/updateMeetGoal',
+            DELETE_PHOTO: '/users/photo'
         },
         MEDIA: {
             BASE: '/media',
@@ -49,7 +50,8 @@ const config = {
             BALANCE: '/wallet/balance',
             TRANSACTIONS: '/wallet/transactions',
             DEPOSIT: '/wallet/deposit',
-            WITHDRAW: '/wallet/withdraw'
+            WITHDRAW: '/wallet/withdraw',
+            PURCHASE: '/wallet/purchase'
         },
         MATCHES: {
             BASE: '/matches',

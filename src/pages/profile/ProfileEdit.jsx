@@ -7,10 +7,13 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "../styles/SwiperCustomPagination.css";
 import { axiosPrivate } from "../../axios";
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserData } from '../../store/userSlice';
 
 function ProfileEdit() {
     const navigate = useNavigate();
-    const [userData, setUserData] = useState(null);
+    const dispatch = useDispatch();
+    const userData = useSelector((state) => state.user.userData);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -18,7 +21,7 @@ function ProfileEdit() {
             try {
                 const userId = localStorage.getItem("userId");
                 const response = await axiosPrivate.get(config.API.USERS.BY_ID(userId));
-                setUserData(response.data);
+                dispatch(setUserData(response.data));
             } catch (error) {
                 console.error('Error fetching user data:', error);
             } finally {
@@ -27,7 +30,7 @@ function ProfileEdit() {
         };
 
         fetchUserData();
-    }, []);
+    }, [dispatch]);
 
     // Функция для вычисления возраста
     const calculateAge = (birthDate) => {
@@ -62,10 +65,6 @@ function ProfileEdit() {
 
     if (loading) {
         return <div>Loading...</div>;
-    }
-
-    if (!userData) {
-        return <div>Error loading user data</div>;
     }
 
     return (

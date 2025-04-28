@@ -100,7 +100,7 @@ function App() {
                 <Route path={config.ROUTES.CALCULATE} element={<CalculatePage />} />
                 {/* <Route path={config.ROUTES.SUPPORT} element={<Support />} />
                 <Route path={config.ROUTES.MYTA_IDEA} element={<MytaIdea />} /> */}
-            </Route>
+              </Route>
              
             {/* Protected Routes */}
             <Route path={config.ROUTES.HOME} element={
@@ -139,9 +139,9 @@ function App() {
                 <Route path={config.ROUTES.PROFILE.CONFIRM_DELETE} element={<ConfirmDeleteProfile />} />
 
                 {/* Payment Features */}
-                {/* <Route path={config.ROUTES.INVITE} element={<Invite />} />
+                <Route path={config.ROUTES.INVITE} element={<Invite />} />
                 <Route path={config.ROUTES.PAYMENT} element={<MakePayment />} />
-                <Route path={config.ROUTES.PREMIUM} element={<Premium />} /> */}
+                <Route path={config.ROUTES.PREMIUM} element={<Premium />} />
             </Route>
           </Routes>
         </div>
