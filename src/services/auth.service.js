@@ -23,14 +23,15 @@ export const useAuth = () => {
             try {
                 if (isTelegram) {
                     // console.log('isTelegram');
-                    const tg = window.Telegram.WebApp;
+                    // const tg = window.Telegram.WebApp;
                     // tg.requestFullscreen();
                     // tg.disableVerticalSwipes();
                     // tg.ready();
                     // tg.expand();
 
                     if (!userId) {
-                        let userData = new URLSearchParams(tg.initData);
+                        const initData = window.Telegram.WebApp.initData;
+                        let userData = new URLSearchParams(initData);
                         userData = JSON.parse(userData.get("user"));
                         const telegramId = userData.id;
                         dispatch(setUserId(telegramId));
