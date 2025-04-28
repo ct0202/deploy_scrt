@@ -14,12 +14,15 @@ import ChatProgressBar from "../../components/ui/ChatProgressBar";
 
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import {Navigation} from "../../components/shared/Navigation";
-
-const APP_ID = "12934dd56c904bada036f4e00867a7b3"; // Замените на ваш App ID
-const CHANNEL = "test-channel"; // Имя канала
-const TOKEN = null; // Можно использовать токен, если требуется
+import { AGORA_APP_ID } from "../../config";
+import { useParams } from "react-router-dom";
 
 function VideoChat() {
+    // const CHANNEL
+    const { id } = useParams();
+    const TOKEN = null; // Можно использовать токен, если требуется
+    const CHANNEL = `videochat-${id}`; // Имя канала
+
     const [showToast, setShowToast] = useState(false);
     const [showInstruction, setShowInstruction] = useState(false);
 
@@ -91,7 +94,7 @@ function VideoChat() {
         const initAgora = async () => {
             try {
                 // Подключение к каналу (uid = null означает, что Agora выдаст случайный uid)
-                const uid = await client.join(APP_ID, CHANNEL, TOKEN, null);
+                const uid = await client.join(AGORA_APP_ID, CHANNEL, TOKEN, null);
 
                 // Создание локального видеотрека
                 const [localAudioTrack, localVideoTrack] = await AgoraRTC.createMicrophoneAndCameraTracks();

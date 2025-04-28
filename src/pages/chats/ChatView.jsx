@@ -213,9 +213,6 @@ function ChatView () {
             >
                 {messages?.map((message, index) => {
                     const isCurrentUser = message.sender?.userId === currentUserId;
-                    console.log("currentUserId", currentUserId);
-                    console.log("message.sender?._id", message.sender?.userId);
-                    console.log("isCurrentUser", isCurrentUser);
                     return (
                         <div key={index} className={`${isCurrentUser ? 
                             'self-end bg-[#0A2438] border border-[#233636] rounded-tr-[16px] rounded-tl-[16px] rounded-bl-[16px]' :

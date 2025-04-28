@@ -6,6 +6,8 @@ export const DEFAULT_PAGE_SIZE = 10;
 
 export const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:3001';
 
+export const AGORA_APP_ID = "12934dd56c904bada036f4e00867a7b3";
+
 const config = {
     API_URL: process.env.REACT_APP_API_URL || 'http://localhost:3001',
     DEFAULT_USER_ID: '67fba439cf98acec362a6a2f', // Current user's ID
@@ -90,7 +92,8 @@ const config = {
             LIST: '/streams',
             WATCH: '/streams/:stream_id',
             FILTERS: '/streams/filters',
-            STREAMER: '/streamer/:id'
+            STREAMER: '/streamer/:id',
+            BROADCASTER: '/broadcaster/:id'
         },
         CHATS: {
             LIST: '/chats',
