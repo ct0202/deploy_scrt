@@ -26,7 +26,7 @@ export const useAuth = () => {
                     // tg.ready();
                     // tg.expand(); 
 
-                    if (telegram_id) {
+                    if (!telegram_id) {
                         console.log('if telegram_id', telegram_id);
                         const initData = window.Telegram.WebApp.initData;
                         let userData = new URLSearchParams(initData);
@@ -43,7 +43,7 @@ export const useAuth = () => {
                         handleAuthResponse(response);
                     }
                 } else {
-                    if (!userId) {
+                    if (1) {
                         const telegramId = localStorage.getItem('telegramId');
                         if (!telegramId) {
                             console.error('No Telegram ID found in localStorage');
