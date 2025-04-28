@@ -36,6 +36,7 @@ export const useAuth = () => {
                         const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
                             telegramId: telegramId
                         });
+                        console.log('LOGIN response', response);
                         
                         handleAuthResponse(response);
                     }
