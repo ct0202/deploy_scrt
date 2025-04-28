@@ -7,13 +7,15 @@ import { INTEREST } from "../constants/interests";
 import { axiosPublic } from '../axios';
 import axios from "axios";
 import config from '../config';
+import { useAuth } from '../services/auth.service';
 
 function Step5({ setStep }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const registrationData = useSelector((state) => state.user.registrationData);
     const interests = useSelector((state) => state.user.registrationData.interests);
-    const telegramId = localStorage.getItem('telegramId');
+    const userId = useSelector((state) => state.user.userId);
+    const { telegram_id } = useAuth();
     const [disabled, setDisabled] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -49,7 +51,7 @@ function Step5({ setStep }) {
                 const formData = new FormData();
                 
                 // Add basic user information
-                formData.append('telegramId', telegramId);
+                formData.append('telegramId', userId);
                 formData.append('name', registrationData.name);
                 formData.append('gender', registrationData.gender);
                 formData.append('wantToFind', registrationData.wantToFind);
