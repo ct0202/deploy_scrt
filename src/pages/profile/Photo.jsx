@@ -5,7 +5,7 @@ import { axiosPrivate } from '../../axios';
 
 function Photo() {
     const navigate = useNavigate();
-    const userId = useSelector((state) => state.user.userId);
+    const telegramId = localStorage.getItem("telegramId");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [photos, setPhotos] = useState({});
     const fileInputs = useRef({});
@@ -30,7 +30,8 @@ function Photo() {
         try {
             setIsSubmitting(true);
             const formData = new FormData();
-            formData.append('telegramId', userId);
+            formData.append('telegramId', telegramId);
+            console.log(telegramId);
 
             Object.entries(photos).forEach(([photoId, file]) => {
                 formData.append(`photo${photoId}`, file);

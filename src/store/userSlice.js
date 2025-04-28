@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   userId: null,
+  userData: null,
   registrationData: {
     // Step 1 data
     name: '',
@@ -36,10 +37,14 @@ const userSlice = createSlice({
     setUserId: (state, action) => {
       state.userId = action.payload;
     },
-    // Step 1 actions
+    setUserData: (state, action) => {
+      state.userData = action.payload;
+    },
     updateRegistrationData: (state, action) => {
-      const { field, value } = action.payload;
-      state.registrationData[field] = value;
+      state.registrationData = {
+        ...state.registrationData,
+        ...action.payload
+      };
     },
     // Step 2 actions
     updatePhoto: (state, action) => {
@@ -84,6 +89,7 @@ const userSlice = createSlice({
 
 export const { 
   setUserId, 
+  setUserData, 
   updateRegistrationData, 
   updatePhoto, 
   deletePhoto, 

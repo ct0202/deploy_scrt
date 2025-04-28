@@ -49,7 +49,6 @@ const Chats = () => {
         console.log('Debug - Chat participants:', chat.participants);
         let otherParticipant = chat?.participants[0];
 
-
         // Fallback to chat participants
         if (chat.participants) {
             otherParticipant = chat.participants.find(p => p.userId._id !== userId);
@@ -62,6 +61,20 @@ const Chats = () => {
         console.log('Debug - Chat other:', otherParticipant);
 
         return otherParticipant;
+    };
+
+    const calculateAge = (birthDay) => {
+        if (!birthDay) return '';
+        const birthDate = new Date(birthDay);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        
+        return age;
     };
 
     return(
@@ -115,9 +128,9 @@ const Chats = () => {
                             <div key={chat._id} className="border-b border-[#233636] w-[100vw] flex justify-center z-5">
                                 <ChatCard 
                                     id={chat._id}
-                                    img={otherParticipant.profilePhotos?.[0] || '/mock/stream_chat_user_avatar.png'}
-                                    name={otherParticipant.username || 'Unknown User'}
-                                    age={otherParticipant.age || ''}
+                                    img={otherParticipant.userInfo.photos?.[0] || '/mock/stream_chat_user_avatar.png'}
+                                    name={otherParticipant.userInfo.name || 'Unknown User'}
+                                    age={calculateAge(otherParticipant.userInfo.birthDay)}
                                     lMsg={chat.lastMessage?.content || ''}
                                     time={chat.lastMessage?.createdAt ? new Date(chat.lastMessage.createdAt).toLocaleTimeString() : ''}
                                     count={chat.unreadCount || 0}

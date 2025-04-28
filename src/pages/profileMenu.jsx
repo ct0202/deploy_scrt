@@ -1,14 +1,31 @@
 import {useNavigate} from "react-router-dom";
 import PresentsShop from "../components/shared/PresentsShop";
-import React, {useRef, useState} from "react";
+import React, {useRef, useState, useEffect} from "react";
 import Policy from "../components/shared/Policy";
-import { useSelector } from 'react-redux';
+import { axiosPrivate } from "../axios";
+import config from "../config";
 
 function ProfileMenu() {
     const navigate = useNavigate();
-    const registrationData = useSelector((state) => state.user.registrationData);
+    const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    console.log(registrationData);
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const userId = localStorage.getItem("userId");
+                const response = await axiosPrivate.get(config.API.USERS.BY_ID(userId));
+                setUserData(response.data);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+
     // Функция для вычисления возраста
     const calculateAge = (birthDate) => {
         if (!birthDate) return '';
@@ -54,7 +71,6 @@ function ProfileMenu() {
         }
     };
 
-
     const [showPolicy, setShowPolicy] = useState(false);
 
     const closePolicy = () => {
@@ -77,6 +93,14 @@ function ProfileMenu() {
         }
     };
 
+    if (loading) {
+        return <div className="flex items-center justify-center h-screen text-white">Loading...</div>;
+    }
+
+    if (!userData) {
+        return <div className="flex items-center justify-center h-screen text-white">Error loading user data</div>;
+    }
+
     return (
         <div className='w-[100vw] flex flex-col items-center justify-center font-raleway mt-[80px]'>
             <div className='flex items-center justify-center text-white text-[24px] w-full pb-[26px] pt-[26px]
@@ -92,24 +116,24 @@ function ProfileMenu() {
             <div className='flex flex-row text-white w-[343px] mt-[30px]'>
                 <img 
                     alt="Аватар" 
-                    src={registrationData.photos[0] || '/mock/user_5/user_5_avatar_2.svg'} 
+                    src={userData.photos?.[0] || '/mock/user_5/user_5_avatar_2.svg'} 
                     className='w-[64px] h-[64px] mr-[20px] rounded-full object-cover'
                 />
                 <div className='flex flex-col'>
                     <p className='text-[18px] font-medium'>
-                        {registrationData.name}, {calculateAge(registrationData.birthDay)} лет
+                        {userData.name}, {calculateAge(userData.birthDay)} лет
                     </p>
                     <div className='flex flex-row mt-[2px] gap-[30px]'>
                         <div className='flex flex-col'>
                             <p className='opacity-50'>Монеты:</p>
                             <div className='flex flex-row text-[20px] items-center'>
-                                <img alt="Монета" src='/icons/coin.svg' className='mr-[4px] w-[20px] h-[20px]'/> 100
+                                <img alt="Монета" src='/icons/coin.svg' className='mr-[4px] w-[20px] h-[20px]'/> {userData.wallet?.coins || 0}
                             </div>
                         </div>
                         <div className='flex flex-col '>
                             <p className='opacity-50'>Монеты MYTA:</p>
                             <div className='flex flex-row text-[20px] items-center'>
-                                <img alt="Монета MYTA" src='/icons/myta-coin.svg' className='mr-[4px] w-[20px] h-[20px]'/> 20
+                                <img alt="Монета MYTA" src='/icons/myta-coin.svg' className='mr-[4px] w-[20px] h-[20px]'/> {userData.wallet?.mytaCoins || 0}
                             </div>
                         </div>
                     </div>
@@ -155,7 +179,7 @@ function ProfileMenu() {
                         style={{
                             transform: `translateY(${swipeDiff}px)`,
                             transition: swipeDiff ? "none" : "transform 0.3s ease-out",
-                            pointerEvents: "auto", // Включаем взаимодействие только с контентом
+                            pointerEvents: "auto",
                         }}
                         onClick={(e) => e.stopPropagation()}
                         ref={presentsRef}
@@ -163,7 +187,6 @@ function ProfileMenu() {
                         onTouchMove={handleTouchMove}
                         onTouchEnd={handleTouchEnd}
                     >
-                        {/* Хендл для удобного захвата */}
                         <div
                             className="w-16 h-2 bg-gray-400 rounded-full mx-auto my-3 cursor-pointer"
                             onTouchStart={handleTouchStart}
