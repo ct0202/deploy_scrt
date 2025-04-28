@@ -10,12 +10,8 @@ export const useAuth = () => {
     const userId = useSelector(state => state.user.userId);
     const telegram_id = localStorage.getItem("telegramId");
     const isTelegram = 1;
-
     const status = localStorage.getItem("auth_status");
-
     const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
-    console.log('authToken check', authToken);
-    console.log('telegramId check', telegram_id);
 
     const initAuth = async () => {
         if (status == null)
@@ -34,6 +30,7 @@ export const useAuth = () => {
                         let userData = new URLSearchParams(initData);
                         userData = JSON.parse(userData.get("user"));
                         const telegramId = userData.id;
+                        localStorage.setItem('telegramId', telegramId);
                         dispatch(setUserId(telegramId));
                         
                         const response = await axiosPublic.post(config.API.AUTH.LOGIN, {

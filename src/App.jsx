@@ -49,17 +49,16 @@ function App() {
     const [isTelegram, setIsTelegram] = useState(0);
     const [isInitialized, setIsInitialized] = useState(false);
 
-    useEffect(() => {
-      const tg = window.Telegram.WebApp;
-      tg.requestFullscreen();
-      tg.disableVerticalSwipes();
-      
-      tg.ready();
+    // useEffect(() => {
+    //   const tg = window.Telegram.WebApp;
+    //   tg.requestFullscreen();
+    //   tg.disableVerticalSwipes();
+    //   tg.ready();
   
-      return () => {
-        tg.close(); // Закрытие веб-приложения (при необходимости)
-      };
-    }, []);
+    //   return () => {
+    //     tg.close(); // Закрытие веб-приложения (при необходимости)
+    //   };
+    // }, []);
 
 
     useEffect(() => {

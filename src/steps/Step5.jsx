@@ -14,7 +14,7 @@ function Step5({ setStep }) {
     const dispatch = useDispatch();
     const registrationData = useSelector((state) => state.user.registrationData);
     const interests = useSelector((state) => state.user.registrationData.interests);
-    const userId = useSelector((state) => state.user.userId);
+    const telegramId = localStorage.getItem('telegramId');
     const { telegram_id } = useAuth();
     const [disabled, setDisabled] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,9 +49,9 @@ function Step5({ setStep }) {
                 
                 // Create FormData object
                 const formData = new FormData();
-                
+               
                 // Add basic user information
-                formData.append('telegramId', userId);
+                formData.append('telegramId', telegramId);
                 formData.append('name', registrationData.name);
                 formData.append('gender', registrationData.gender);
                 formData.append('wantToFind', registrationData.wantToFind);
