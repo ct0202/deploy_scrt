@@ -15,7 +15,7 @@ export const useAuth = () => {
     const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
 
     const initAuth = async () => {
-        if (status == null)
+        if (status == null || status == 'registering')
         {
             try {
                 if (isTelegram) {
