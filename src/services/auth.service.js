@@ -109,6 +109,7 @@ export const useAuth = () => {
                     dispatch(setAudioMessage(user.audioMessage));
                 }
             }
+            navigate('/meet');
         }
     };
 
