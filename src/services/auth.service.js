@@ -26,7 +26,7 @@ export const useAuth = () => {
                     // tg.ready();
                     // tg.expand();
 
-                    if (!userId) {
+                    if (telegram_id) {
                         const initData = window.Telegram.WebApp.initData;
                         let userData = new URLSearchParams(initData);
                         userData = JSON.parse(userData.get("user"));
@@ -37,7 +37,6 @@ export const useAuth = () => {
                         const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
                             telegramId: telegramId
                         });
-                        console.log('LOGIN response', response);
                         
                         handleAuthResponse(response);
                     }
