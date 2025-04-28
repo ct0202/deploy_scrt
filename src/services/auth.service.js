@@ -24,9 +24,10 @@ export const useAuth = () => {
                     // tg.requestFullscreen();
                     // tg.disableVerticalSwipes();
                     // tg.ready();
-                    // tg.expand();
+                    // tg.expand(); 
 
                     if (telegram_id) {
+                        console.log('if telegram_id', telegram_id);
                         const initData = window.Telegram.WebApp.initData;
                         let userData = new URLSearchParams(initData);
                         userData = JSON.parse(userData.get("user"));
@@ -34,10 +35,11 @@ export const useAuth = () => {
                         localStorage.setItem('telegramId', telegramId);
                         dispatch(setUserId(telegramId));
                         
+                        console.log('login with telegramId', telegramId);
                         const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
                             telegramId: telegramId
                         });
-                        
+                        console.log('login response', response);
                         handleAuthResponse(response);
                     }
                 } else {
