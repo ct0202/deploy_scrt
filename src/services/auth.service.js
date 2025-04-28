@@ -4,9 +4,8 @@ import config from '../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserId, updateRegistrationData, updatePhoto, setAudioMessage } from '../store/userSlice';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 export const useAuth = () => {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user.userId);
     const telegram_id = localStorage.getItem("telegramId");
@@ -20,14 +19,7 @@ export const useAuth = () => {
         {
             try {
                 if (isTelegram) {
-                    // console.log('isTelegram');
-                    // const tg = window.Telegram.WebApp;
-                    // tg.requestFullscreen();
-                    // tg.disableVerticalSwipes();
-                    // tg.ready();
-                    // tg.expand(); 
-
-                    if (!telegram_id) {
+                    // if (!userId) {
                         console.log('if telegram_id', telegram_id);
                         const initData = window.Telegram.WebApp.initData;
                         let userData = new URLSearchParams(initData);
@@ -42,9 +34,9 @@ export const useAuth = () => {
                         });
                         console.log('login response', response);
                         handleAuthResponse(response);
-                    }
+                    // }
                 } else {
-                    if (1) {
+                    if (!userId) {
                         const telegramId = localStorage.getItem('telegramId');
                         if (!telegramId) {
                             console.error('No Telegram ID found in localStorage');
@@ -110,7 +102,6 @@ export const useAuth = () => {
                     dispatch(setAudioMessage(user.audioMessage));
                 }
             }
-            navigate('/meet');
         }
     };
 
