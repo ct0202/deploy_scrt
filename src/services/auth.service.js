@@ -4,8 +4,9 @@ import config from '../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserId, updateRegistrationData, updatePhoto, setAudioMessage } from '../store/userSlice';
 import { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 export const useAuth = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user.userId);
     const telegram_id = localStorage.getItem("telegramId");
