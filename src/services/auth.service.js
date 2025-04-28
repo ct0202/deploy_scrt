@@ -8,8 +8,8 @@ import { useState } from 'react';
 export const useAuth = () => {
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user.userId);
-    console.log('userId', userId);
     const telegram_id = localStorage.getItem("telegramId");
+    console.log('telegram_id', telegram_id);
     const isTelegram = 1;
     const status = localStorage.getItem("auth_status");
     const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
