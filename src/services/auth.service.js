@@ -1,6 +1,7 @@
 import { axiosPublic, axiosPrivate } from '../axios';
 import {AUTH_TOKEN_KEY} from '../config';
 import config from '../config';
+import { isTelegram } from '../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserId, updateRegistrationData, updatePhoto, setAudioMessage } from '../store/userSlice';
 import { useState } from 'react';
@@ -10,7 +11,6 @@ export const useAuth = () => {
     const userId = useSelector(state => state.user.userId);
     const telegram_id = localStorage.getItem("telegramId");
     console.log('telegram_id', telegram_id);
-    const isTelegram = 1;
     const status = localStorage.getItem("auth_status");
 
     // const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
