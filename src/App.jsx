@@ -70,16 +70,16 @@ function App() {
     }
   }, []);
 
-    useEffect(() => {
-      const tg = window.Telegram.WebApp;
-      tg.requestFullscreen();
-      tg.disableVerticalSwipes();
-      tg.ready();
+    // useEffect(() => {
+    //   const tg = window.Telegram.WebApp;
+    //   tg.requestFullscreen();
+    //   tg.disableVerticalSwipes();
+    //   tg.ready();
   
-      return () => {
-        tg.close(); // Закрытие веб-приложения (при необходимости)
-      };
-    }, []);
+    //   return () => {
+    //     tg.close(); // Закрытие веб-приложения (при необходимости)
+    //   };
+    // }, []);
 
 
     useEffect(() => {
