@@ -12,10 +12,13 @@ export const useAuth = () => {
     console.log('telegram_id', telegram_id);
     const isTelegram = 1;
     const status = localStorage.getItem("auth_status");
-    const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
+
+    // const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
+    console.log("status", status);
+    console.log('telegramId check', telegram_id);
 
     const initAuth = async () => {
-        if (status == null || status == 'registering')
+        if (status !== "authorized")
         {
             try {
                 if (isTelegram) {

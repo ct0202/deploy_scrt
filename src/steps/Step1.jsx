@@ -21,13 +21,14 @@ function Step1({ setStep }) {
   ];
 
   useEffect(() => {
+    // localStorage.setItem("auth_status", null);
     if (
-      registrationData.name.trim() &&
+      registrationData.name?.trim() &&
       registrationData.gender &&
       registrationData.wantToFind &&
       registrationData.birthDay &&
       registrationData.country &&
-      registrationData.city.trim() &&
+      registrationData.city?.trim() &&
       registrationData.coordinates.latitude &&
       registrationData.coordinates.longitude
     ) {
@@ -39,13 +40,15 @@ function Step1({ setStep }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    dispatch(updateRegistrationData({ field: name, value }));
+    dispatch(updateRegistrationData({ [name]: value }));
   };
 
   const handleLocationSelect = (locationData) => {
-    dispatch(updateRegistrationData({ field: 'country', value: locationData.country }));
-    dispatch(updateRegistrationData({ field: 'city', value: locationData.city }));
-    dispatch(updateRegistrationData({ field: 'coordinates', value: locationData.coordinates }));
+    dispatch(updateRegistrationData({
+      country: locationData.country,
+      city: locationData.city,
+      coordinates: locationData.coordinates
+    }));
   };
 
   return (
@@ -58,7 +61,7 @@ function Step1({ setStep }) {
         name="name"
         placeholder="Ваше имя"
         className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
-        value={registrationData.name}
+        value={registrationData.name || ''}
         onChange={handleChange}
       />
       <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
@@ -68,7 +71,7 @@ function Step1({ setStep }) {
         {genders.map((gender) => (
           <div
             key={gender.id}
-            onClick={() => dispatch(updateRegistrationData({ field: "gender", value: gender.id }))}
+            onClick={() => dispatch(updateRegistrationData({ gender: gender.id }))}
             className={`w-[145px] h-[48px] rounded-[400px] flex justify-center items-center text-[18px] text-white gap-[8px] cursor-pointer transition-all 
               ${
                 registrationData.gender === gender.id
@@ -89,7 +92,7 @@ function Step1({ setStep }) {
         {targetGenders.map((gender) => (
           <div
             key={gender.id}
-            onClick={() => dispatch(updateRegistrationData({ field: "wantToFind", value: gender.id }))}
+            onClick={() => dispatch(updateRegistrationData({ wantToFind: gender.id }))}
             className={`w-[145px] h-[48px] rounded-[400px] flex justify-center items-center text-[18px] text-white gap-[8px] cursor-pointer transition-all 
               ${
                 registrationData.wantToFind === gender.id
@@ -110,7 +113,7 @@ function Step1({ setStep }) {
         type="date"
         name="birthDay"
         placeholder="Выбрать дату"
-        value={registrationData.birthDay}
+        value={registrationData.birthDay || ''}
         onChange={handleChange}
         className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 text-white outline-none focus:border-[#a1f69e]"
       />
