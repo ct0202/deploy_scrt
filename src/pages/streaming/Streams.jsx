@@ -19,32 +19,32 @@ function Streams() {
       </div>
       <div className="flex flex-wrap relative w-[343px] h-[auto] gap-[11px] mt-[12px] mb-[120px]">
         <img
-          onClick={() => navigate("/watchStreams")}
+          onClick={() => navigate(":id")}
           src="/images/Card.svg"
           alt=""
         />
         <img
-          onClick={() => navigate("/watchStreams")}
+          onClick={() => navigate(":id")}
           src="/images/Card1.svg"
           alt=""
         />
         <img
-          onClick={() => navigate("/watchStreams")}
+          onClick={() => navigate(":id")}
           src="/images/Card.svg"
           alt=""
         />
         <img
-          onClick={() => navigate("/watchStreams")}
+          onClick={() => navigate(":id")}
           src="/images/Card1.svg"
           alt=""
         />
         <img
-          onClick={() => navigate("/watchStreams")}
+          onClick={() => navigate(":id")}
           src="/images/Card.svg"
           alt=""
         />
         <img
-          onClick={() => navigate("/watchStreams")}
+          onClick={() => navigate(":id")}
           src="/images/Card1.svg"
           alt=""
         />

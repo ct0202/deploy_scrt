@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.1",
+    "agora-rtc-react": "^2.4.0",
     "agora-rtc-sdk-ng": "^4.23.2",
     "axios": "^1.7.9",
     "cities-list": "^1.0.3",
@@ -27,6 +28,7 @@
     "react-router-dom": "^7.1.1",
     "react-scripts": "5.0.1",
     "react-select": "^5.10.1",
+    "react-toastify": "^11.0.5",
     "socket.io-client": "^4.8.1",
     "swiper": "^11.2.4"
   },

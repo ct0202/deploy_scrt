@@ -41,6 +41,14 @@ import MytaIdea from './pages/MytaIdea';
 import MakePayment from './pages/payments/MakePayment';
 import Premium from './pages/payments/Premium';
 
+import Streams from './pages/streaming/Streams';
+import WatchingStream from './pages/streaming/WatchingStream';
+import StreamFilters from './pages/streaming/StreamFilters';
+import Streamer from './pages/streaming/Streamer';
+import StreamBroadcaster from './pages/streaming/StreamBroadcaster';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
@@ -95,6 +103,8 @@ function App() {
 
   return (
         <ErrorBoundary>
+        <ToastContainer />
+
             <Suspense fallback={<LoadingSpinner />}>
     <RegistrationProvider>
       <FiltersProvider>
@@ -127,10 +137,11 @@ function App() {
                 {/* <Route path={config.ROUTES.REACTION} element={<ReactOnUser />} /> */}
 
                 {/* Streaming Features */}
-                {/* <Route path={config.ROUTES.STREAMS.LIST} element={<Streams />} />
+                <Route path={config.ROUTES.STREAMS.LIST} element={<Streams />} />
                 <Route path={config.ROUTES.STREAMS.WATCH} element={<WatchingStream />} />
                 <Route path={config.ROUTES.STREAMS.FILTERS} element={<StreamFilters />} />
-                <Route path={config.ROUTES.STREAMS.STREAMER} element={<Streamer />} /> */}
+                <Route path={config.ROUTES.STREAMS.STREAMER} element={<Streamer />} />
+                <Route path={config.ROUTES.STREAMS.BROADCASTER} element={<StreamBroadcaster />} />
 
                 {/* Chat Features */}
                 <Route path={config.ROUTES.CHATS.LIST} element={<Chats />} />

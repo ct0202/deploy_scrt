@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import "./styles/SwiperCustomPagination.css";
+import "../styles/SwiperCustomPagination.css";
 
 import { INSTRUCTIONS_MEET } from "../../constants/instructions";
 import PresentsShop from "../../components/shared/PresentsShop";
