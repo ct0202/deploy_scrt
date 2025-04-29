@@ -7,7 +7,7 @@ export const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'https://api.mytad
 
 export const AGORA_APP_ID = "12934dd56c904bada036f4e00867a7b3";
 
-export const isTelegram = 0;
+export const isTelegram = 1;
 
 const config = {
     API_URL: process.env.REACT_APP_API_URL || 'https://api.mytadating.site',
