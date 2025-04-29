@@ -1,70 +1,41 @@
 import { axiosPublic, axiosPrivate } from '../axios';
-import {AUTH_TOKEN_KEY} from '../config';
+import { AUTH_TOKEN_KEY } from '../config';
 import config from '../config';
-import { isTelegram } from '../config';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUserId, updateRegistrationData, updatePhoto, setAudioMessage } from '../store/userSlice';
-import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateRegistrationData, updatePhoto, setAudioMessage } from '../store/userSlice';
+import useTelegramId from '../hooks/useTelegramId';
+import useUserId from '../hooks/useUserId';
+import { toast } from 'react-toastify';
 
 export const useAuth = () => {
     const dispatch = useDispatch();
-    const userId = useSelector(state => state.user.userId);
-    const telegram_id = localStorage.getItem("telegramId");
-    console.log('telegram_id', telegram_id);
-    const status = localStorage.getItem("auth_status");
-
-    // const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
-    console.log("status", status);
-    console.log('telegramId check', telegram_id);
+    const telegramId = useTelegramId();
+    const userId = useUserId();
 
     const initAuth = async () => {
-        if (status !== "authorized")
-        {
-            try {
-                if (isTelegram) {
-                    // if (!userId) {
-                        console.log('if telegram_id', telegram_id);
-                        const initData = window.Telegram.WebApp.initData;
-                        let userData = new URLSearchParams(initData);
-                        userData = JSON.parse(userData.get("user"));
-                        const telegramId = userData.id;
-                        localStorage.setItem('telegramId', telegramId);
-                        dispatch(setUserId(telegramId));
-                        
-                        console.log('login with telegramId', telegramId);
-                        const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
-                            telegramId: telegramId
-                        });
-                        console.log('login response', response);
-                        handleAuthResponse(response);
-                    // }
-                } else {
-                    if (!userId) {
-                        const telegramId = localStorage.getItem('telegramId');
-                        if (!telegramId) {
-                            console.error('No Telegram ID found in localStorage');
-                            return;
-                        }
-                        
-                        dispatch(setUserId(telegramId));
-                        
-                        const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
-                            telegramId: telegramId
-                        });
-                        
-                        handleAuthResponse(response);
-                    }
-                }
-            } catch (error) {
-                if(error.status === 404) {
-                    localStorage.setItem("auth_status", 'registering');
-                    return;
-                }
-                console.error('Auth initialization error:', error);
-                // Clear invalid state
-                localStorage.removeItem('telegramId');
-                dispatch(setUserId(null));
+        const status = localStorage.getItem("auth_status");
+        if (status === "authorized") {
+            return;
+        }
+
+        try {
+            if (!telegramId) {
+                toast.error('Telegram ID not found');
+                return;
             }
+
+            const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
+                telegramId: telegramId
+            });
+
+            handleAuthResponse(response);
+        } catch (error) {
+            if (error.response?.status === 404) {
+                localStorage.setItem("auth_status", 'registering');
+                return;
+            }
+            console.error('Auth initialization error:', error);
+            toast.error('Authentication failed');
         }
     };
 
@@ -72,11 +43,8 @@ export const useAuth = () => {
         if (response.data) {
             // Save token
             if (response.data.token) {
-                console.log(response.data.user._id);
-                
                 localStorage.setItem("auth_status", 'authorized');
                 localStorage.setItem(AUTH_TOKEN_KEY, response.data.token);
-                localStorage.setItem("userId", response.data.user._id);
             }
             
             // Update user data in Redux
@@ -113,9 +81,10 @@ export const useAuth = () => {
             await axiosPrivate.post(config.API.AUTH.LOGOUT);
         } catch (error) {
             console.error('Logout error:', error);
+            toast.error('Logout failed');
         } finally {
             localStorage.removeItem(AUTH_TOKEN_KEY);
-            window.location.href = '/';
+            localStorage.removeItem("auth_status");
         }
     };
 

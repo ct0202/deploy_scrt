@@ -8,6 +8,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
 import ScrollBlocker from "./ScrollBlocker";
+import { useTelegramId } from './hooks/useTelegramId';
 import { useAuth } from './services/auth.service';
 import TelegramIdInput from './components/TelegramIdInput';
 
@@ -54,6 +55,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
+  const telegramId = useTelegramId();
   const { initAuth } = useAuth();
   const [showTelegramIdInput, setShowTelegramIdInput] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -85,26 +87,11 @@ function App() {
 
     useEffect(() => {
         const checkAuth = async () => {
-            // Check if we're in Telegram environment
-
-            // const isTelegramEnv = 0;
-            // setIsTelegram(isTelegramEnv ? 1 : 0);
-            
-            if (!isTelegram) {
-                const telegramId = localStorage.getItem('telegramId');
-                if (!telegramId) {
-                    setShowTelegramIdInput(true);
-                } else {
-                    await initAuth();
-                }
-            } else {
-                await initAuth();
-            }
+            await initAuth();
             setIsInitialized(true);
         };
-
         checkAuth();
-    }, []);
+    }, [initAuth]);
 
     const handleTelegramIdSet = async (telegramId) => {
         localStorage.setItem('telegramId', telegramId);

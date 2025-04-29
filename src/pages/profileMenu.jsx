@@ -4,17 +4,20 @@ import React, {useRef, useState, useEffect} from "react";
 import Policy from "../components/shared/Policy";
 import { axiosPrivate } from "../axios";
 import config from "../config";
+import { useAuth } from '../services/auth.service';
+import { useUserId } from '../hooks/useUserId';
 
 function ProfileMenu() {
     const navigate = useNavigate();
+    const userId = useUserId();
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUserData = async () => {
+            if (!userId) return;
             try {
-                const userId = localStorage.getItem("userId");
-                const response = await axiosPrivate.get(config.API.USERS.BY_ID(userId));
+                const response = await axiosPrivate.get(`/users/${userId}`);
                 setUserData(response.data);
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -22,9 +25,8 @@ function ProfileMenu() {
                 setLoading(false);
             }
         };
-
         fetchUserData();
-    }, []);
+    }, [userId]);
 
     // Функция для вычисления возраста
     const calculateAge = (birthDate) => {

@@ -4,14 +4,14 @@ import { Navigation } from "../../components/shared/Navigation";
 import {ChatCard} from "../../components/chat/chatCard";
 import {useNavigate} from "react-router-dom";
 import chatService from '../../services/chat.service';
-
+import useUserId from '../../hooks/useUserId';
 const Chats = () => {
     const navigate = useNavigate();
     const [chats, setChats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     
-    const userId = localStorage.getItem('userId');
+    const userId = useUserId();
 
     useEffect(() => {
         const fetchChats = async () => {
@@ -47,11 +47,11 @@ const Chats = () => {
 
         console.log('Debug - Current userId:', userId);
         console.log('Debug - Chat participants:', chat.participants);
-        let otherParticipant = chat?.participants[0];
+        let otherParticipant = chat?.participants.find(p => p.userId !== userId);
 
         // Fallback to chat participants
         if (chat.participants) {
-            otherParticipant = chat.participants.find(p => p.userId._id !== userId);
+            otherParticipant = chat.participants.find(p => p.userId !== userId);
             if (otherParticipant) {
                 return otherParticipant;
             }

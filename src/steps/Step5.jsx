@@ -8,13 +8,14 @@ import { axiosPublic } from '../axios';
 import axios from "axios";
 import config from '../config';
 import { useAuth } from '../services/auth.service';
+import useTelegramId from '../hooks/useTelegramId';
 
 function Step5({ setStep }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const registrationData = useSelector((state) => state.user.registrationData);
     const interests = useSelector((state) => state.user.registrationData.interests);
-    const telegramId = localStorage.getItem('telegramId');
+    const telegramId = useTelegramId();
     const { telegram_id } = useAuth();
     const [disabled, setDisabled] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -89,7 +90,7 @@ function Step5({ setStep }) {
                 console.log('=== End Registration Data Debug ===');
 
                 // Use axiosPublic with proper configuration
-                const response = await axiosPublic.post(config.API.AUTH.REGISTER, formData, {
+                const response = await axiosPublic.post('/auth/register', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'Accept': 'application/json'
