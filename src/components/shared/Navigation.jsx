@@ -30,7 +30,7 @@ export const Navigation = ({tab}) => {
               }`}
               onClick={() => {
                 setMenuAction(2);
-                navigate("/Chat");
+                navigate("/chats/video/:id");
               }}
             >
               <img
@@ -60,7 +60,7 @@ export const Navigation = ({tab}) => {
               }`}
               onClick={() => {
                 setMenuAction(4);
-                navigate("/textChats")
+                navigate("/chats")
               }}
             >
               <img
