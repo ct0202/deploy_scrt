@@ -14,6 +14,7 @@ const TelegramIdInput = ({ onTelegramIdSet }) => {
       setError('Telegram ID must be a number');
       return;
     }
+    console.log("telegramId from setter", telegramId);
     onTelegramIdSet(telegramId);
   };
 
