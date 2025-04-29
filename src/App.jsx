@@ -165,6 +165,7 @@ function App() {
                 <Route path={config.ROUTES.INVITE} element={<Invite />} />
                 <Route path={config.ROUTES.PAYMENT} element={<MakePayment />} />
                 <Route path={config.ROUTES.PREMIUM} element={<Premium />} />
+                <Route path={config.ROUTES.MYTA_IDEA} element={<MytaIdea />} />
             </Route>
           </Routes>
         </div>
