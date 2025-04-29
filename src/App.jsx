@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { RegistrationProvider } from './context/RegistrationContext';
 import { FiltersProvider } from "./context/FiltersContext";
 import config from './config';
+import { isTelegram } from './config';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -47,6 +48,7 @@ import StreamFilters from './pages/streaming/StreamFilters';
 import Streamer from './pages/streaming/Streamer';
 import StreamBroadcaster from './pages/streaming/StreamBroadcaster';
 
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -54,7 +56,6 @@ import 'react-toastify/dist/ReactToastify.css';
 function App() {
   const { initAuth } = useAuth();
   const [showTelegramIdInput, setShowTelegramIdInput] = useState(false);
-  const [isTelegram, setIsTelegram] = useState(1);
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
