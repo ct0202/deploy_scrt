@@ -9,8 +9,8 @@ export const useAuth = () => {
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user.userId);
     const telegram_id = localStorage.getItem("telegramId");
-    const isTelegram = 0;
-
+    console.log('telegram_id', telegram_id);
+    const isTelegram = 1;
     const status = localStorage.getItem("auth_status");
 
     // const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
@@ -22,24 +22,22 @@ export const useAuth = () => {
         {
             try {
                 if (isTelegram) {
-                    const tg = window.Telegram.WebApp;
-                    tg.disableVerticalSwipes();
-                    tg.requestFullscreen();
-                    tg.ready();
-                    tg.expand();
-
-                    if (!userId) {
-                        let userData = new URLSearchParams(tg.initData);
+                    // if (!userId) {
+                        console.log('if telegram_id', telegram_id);
+                        const initData = window.Telegram.WebApp.initData;
+                        let userData = new URLSearchParams(initData);
                         userData = JSON.parse(userData.get("user"));
                         const telegramId = userData.id;
+                        localStorage.setItem('telegramId', telegramId);
                         dispatch(setUserId(telegramId));
                         
+                        console.log('login with telegramId', telegramId);
                         const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
                             telegramId: telegramId
                         });
-                        
+                        console.log('login response', response);
                         handleAuthResponse(response);
-                    }
+                    // }
                 } else {
                     if (!userId) {
                         const telegramId = localStorage.getItem('telegramId');
