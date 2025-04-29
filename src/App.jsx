@@ -52,18 +52,31 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
-    const { initAuth } = useAuth();
-    const [showTelegramIdInput, setShowTelegramIdInput] = useState(false);
-    const [isTelegram, setIsTelegram] = useState(0);
-    const [isInitialized, setIsInitialized] = useState(false);
+  const { initAuth } = useAuth();
+  const [showTelegramIdInput, setShowTelegramIdInput] = useState(false);
+  const [isTelegram, setIsTelegram] = useState(1);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    if (isTelegram === 1) { 
+      const tg = window.Telegram.WebApp;
+      tg.requestFullscreen();
+      tg.disableVerticalSwipes();
+      tg.ready();
+
+      return () => {
+        tg.close(); // Закрытие веб-приложения (при необходимости)
+      };
+    }
+  }, []);
 
   useEffect(() => {
         const checkAuth = async () => {
             // Check if we're in Telegram environment
-            const isTelegramEnv = 0;
-            setIsTelegram(isTelegramEnv ? 1 : 0);
+            // const isTelegramEnv = 0;
+            // setIsTelegram(isTelegramEnv ? 1 : 0);
             
-            if (!isTelegramEnv) {
+            if (!isTelegram) {
                 const telegramId = localStorage.getItem('telegramId');
                 if (!telegramId) {
                     setShowTelegramIdInput(true);
