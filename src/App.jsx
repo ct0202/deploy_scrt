@@ -70,9 +70,22 @@ function App() {
     }
   }, []);
 
-  useEffect(() => {
+    useEffect(() => {
+      const tg = window.Telegram.WebApp;
+      tg.requestFullscreen();
+      tg.disableVerticalSwipes();
+      tg.ready();
+  
+      return () => {
+        tg.close(); // Закрытие веб-приложения (при необходимости)
+      };
+    }, []);
+
+
+    useEffect(() => {
         const checkAuth = async () => {
             // Check if we're in Telegram environment
+
             // const isTelegramEnv = 0;
             // setIsTelegram(isTelegramEnv ? 1 : 0);
             
@@ -166,6 +179,7 @@ function App() {
                 <Route path={config.ROUTES.INVITE} element={<Invite />} />
                 <Route path={config.ROUTES.PAYMENT} element={<MakePayment />} />
                 <Route path={config.ROUTES.PREMIUM} element={<Premium />} />
+                <Route path={config.ROUTES.MYTA_IDEA} element={<MytaIdea />} />
             </Route>
           </Routes>
         </div>

@@ -132,29 +132,7 @@ function Meet() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-white">Loading potential matches...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-white">Error: {error}</div>
-      </div>
-    );
-  }
-
-  if (potentialMatches.length === 0) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-white">No potential matches found</div>
-      </div>
-    );
-  }
+  
 
   const currentMatch = potentialMatches[currentMatchIndex];
   console.log('Current match:', currentMatch);
@@ -231,6 +209,20 @@ function Meet() {
             </div>
             <div></div>
             <div className="w-[100%] flex justify-center align-center mt-4">
+              {
+                loading ?
+                      <div className="flex items-center justify-center h-screen">
+                        <div className="text-white">Loading potential matches...</div>
+                      </div>
+                :  ( error ?
+                  <div className="flex items-center justify-center h-screen">
+                    <div className="text-white">Error: {error}</div>
+                  </div>
+                : (potentialMatches.length === 0 ?
+                    <div className="flex items-center justify-center h-screen">
+                      <div className="text-white">No potential matches found</div>
+                    </div>
+                  :
               <div className="relative w-[343px] rounded-[16px]">
                 <div className="w-full relative">
                   <div
@@ -345,6 +337,9 @@ function Meet() {
                   </h1>
                 </div>
               </div>
+              ) 
+            )
+              } 
             </div>
             <div className="fixed bottom-0 z-[6] w-[100%] flex items-center justify-center">
               <Navigation tab={1} />
