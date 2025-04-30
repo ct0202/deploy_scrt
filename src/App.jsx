@@ -57,6 +57,7 @@ function App() {
     const dispatch = useDispatch();
     const authState = useSelector(state => state.auth);
     const { telegramId } = authState || {};
+    console.log('authState', authState);
     const { initAuth } = useAuth();
     const [showTelegramIdInput, setShowTelegramIdInput] = useState(false);
     const [isInitialized, setIsInitialized] = useState(false);
@@ -64,17 +65,25 @@ function App() {
     useEffect(() => {
         if (isTelegram === 1) { 
             const tg = window.Telegram.WebApp;
+            
+            const initData = tg.initData;
+            let userData = new URLSearchParams(initData);
+            userData = JSON.parse(userData.get("user"));
+            const tg_id = userData.id;
+            // localStorage.setItem('telegramId', telegramId);
+            // dispatch(setUserId(telegramId));
+            dispatch(setAuthData({ 
+              auth_token: null,
+              userId: null,
+              telegramId: tg_id
+            }));
+            
+            
             tg.requestFullscreen();
             tg.disableVerticalSwipes();
             tg.ready();
 
-            // const initData = window.Telegram.WebApp.initData;
-            // let userData = new URLSearchParams(initData);
-            // userData = JSON.parse(userData.get("user"));
-            // const telegramId = userData.id;
-            // localStorage.setItem('telegramId', telegramId);
-            // dispatch(setUserId(telegramId));
-
+            
             return () => {
                 tg.close();
             };
