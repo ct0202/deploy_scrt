@@ -1,16 +1,15 @@
-export const API_URL = process.env.REACT_APP_API_URL || 'https://api.mytadating.site/api';
+const PRODUCTION = false;
 
 export const AUTH_TOKEN_KEY = "auth_token";
-export const DEFAULT_PAGE_SIZE = 10;
-
-export const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'https://api.mytadating.site:3001';
-
 export const AGORA_APP_ID = "12934dd56c904bada036f4e00867a7b3";
 
-export const isTelegram = 1;
+export const DEFAULT_PAGE_SIZE = 10;
+
+// export const SOCKET_URL = PRODUCTION ? 'https://api.mytadating.site:3001' : 'http://localhost:3001';
+export const isTelegram = PRODUCTION ? 1 : 0;
 
 const config = {
-    API_URL: process.env.REACT_APP_API_URL || 'https://api.mytadating.site',
+    API_URL: PRODUCTION ? 'https://api.mytadating.site' : 'http://localhost:3001',
     DEFAULT_USER_ID: '67fba439cf98acec362a6a2f', // Current user's ID
     FALLBACK_AVATAR: '/images/default-avatar.png',
     MESSAGE_STATUS: {
@@ -121,7 +120,7 @@ const config = {
         PAYMENT: '/makepayment',
         PREMIUM: '/premium'
     },
-    WS_URL: 'https://api.mytadating.site'
+    WS_URL: PRODUCTION ? 'https://api.mytadating.site' : 'http://localhost:3001'
 };
 
 export default config; 
