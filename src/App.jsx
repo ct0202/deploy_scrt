@@ -49,7 +49,7 @@ import WatchingStream from './pages/streaming/WatchingStream';
 import StreamFilters from './pages/streaming/StreamFilters';
 import Streamer from './pages/streaming/Streamer';
 import StreamBroadcaster from './pages/streaming/StreamBroadcaster';
-
+import StreamViewer from './pages/streaming/StreamViewer';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -66,6 +66,7 @@ function App() {
         if (isTelegram === 1) { 
             const tg = window.Telegram.WebApp;
             
+            
             tg.requestFullscreen();
             tg.disableVerticalSwipes();
             tg.ready();
@@ -74,21 +75,18 @@ function App() {
             let userData = new URLSearchParams(initData);
             userData = JSON.parse(userData.get("user"));
             const tg_id = userData.id;
-
-            // Only set telegramId if it's not already set
-            if (!telegramId) {
-                dispatch(setAuthData({ 
-                    auth_token: null,
-                    userId: null,
-                    telegramId: tg_id
-                }));
-            }
+            dispatch(setAuthData({ 
+              auth_token: null,
+              userId: null,
+              telegramId: tg_id
+            }));
+            
             
             return () => {
                 tg.close();
             };
         }
-    }, [dispatch, telegramId]);
+    }, []);
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -103,7 +101,7 @@ function App() {
             }
         };
         checkAuth();
-    }, [initAuth, telegramId, isTelegram]);
+    }, [initAuth, telegramId]);
 
     const handleTelegramIdSet = async (id) => {
         dispatch(setAuthData({ 
@@ -152,10 +150,11 @@ function App() {
 
                                     {/* Streaming Features */}
                                     <Route path={config.ROUTES.STREAMS.LIST} element={<Streams />} />
-                                    <Route path={config.ROUTES.STREAMS.WATCH} element={<WatchingStream />} />
+                                    <Route path={`${config.ROUTES.STREAMS.WATCH}/:stream_id`} element={<WatchingStream />} />
                                     <Route path={config.ROUTES.STREAMS.FILTERS} element={<StreamFilters />} />
-                                    <Route path={config.ROUTES.STREAMS.STREAMER} element={<Streamer />} />
-                                    <Route path={config.ROUTES.STREAMS.BROADCASTER} element={<StreamBroadcaster />} />
+                                    <Route path={`${config.ROUTES.STREAMS.STREAMER}/:id`} element={<Streamer />} />
+                                    <Route path={`${config.ROUTES.STREAMS.BROADCASTER}/:id`} element={<StreamBroadcaster />} />
+                                    <Route path="/streaming/watch/:streamId" element={<StreamViewer />} />
 
                                     {/* Chat Features */}
                                     <Route path={config.ROUTES.CHATS.LIST} element={<Chats />} />
