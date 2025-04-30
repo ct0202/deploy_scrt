@@ -1,11 +1,20 @@
 // src/store/authSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-    auth_token: null,
-    userId: null,
-    telegramId: null
+// Load initial state from localStorage
+const loadInitialState = () => {
+    const storedState = localStorage.getItem('authState');
+    if (storedState) {
+        return JSON.parse(storedState);
+    }
+    return {
+        auth_token: null,
+        userId: null,
+        telegramId: null
+    };
 };
+
+const initialState = loadInitialState();
 
 const authSlice = createSlice({
     name: 'auth',
@@ -17,18 +26,14 @@ const authSlice = createSlice({
             state.userId = userId;
             state.telegramId = telegramId;
             
-            // Sync with localStorage
-            if (auth_token) {
-                localStorage.setItem('token', auth_token);
-            } else {
-                localStorage.removeItem('token');
-            }
+            // Persist to localStorage
+            localStorage.setItem('authState', JSON.stringify(state));
         },
         clearAuthData: (state) => {
             state.auth_token = null;
             state.userId = null;
             state.telegramId = null;
-            localStorage.removeItem('token');
+            localStorage.removeItem('authState');
         }
     }
 });

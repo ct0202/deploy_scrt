@@ -66,42 +66,44 @@ function App() {
         if (isTelegram === 1) { 
             const tg = window.Telegram.WebApp;
             
-            const initData = tg.initData;
-            let userData = new URLSearchParams(initData);
-            userData = JSON.parse(userData.get("user"));
-            const tg_id = userData.id;
-            // localStorage.setItem('telegramId', telegramId);
-            // dispatch(setUserId(telegramId));
-            dispatch(setAuthData({ 
-              auth_token: null,
-              userId: null,
-              telegramId: tg_id
-            }));
-            
-            
             tg.requestFullscreen();
             tg.disableVerticalSwipes();
             tg.ready();
 
+            const initData = tg.initData;
+            let userData = new URLSearchParams(initData);
+            userData = JSON.parse(userData.get("user"));
+            const tg_id = userData.id;
+
+            // Only set telegramId if it's not already set
+            if (!telegramId) {
+                dispatch(setAuthData({ 
+                    auth_token: null,
+                    userId: null,
+                    telegramId: tg_id
+                }));
+            }
             
             return () => {
                 tg.close();
             };
         }
-    }, []);
+    }, [dispatch, telegramId]);
 
     useEffect(() => {
         const checkAuth = async () => {
-            if (!telegramId) {
-                setShowTelegramIdInput(true);
+            if (telegramId) { 
+                await initAuth();
                 setIsInitialized(true);
-                return;
+            } else {
+                if (isTelegram !== 1) {
+                    setShowTelegramIdInput(true);
+                }
+                setIsInitialized(true);
             }
-            await initAuth();
-            setIsInitialized(true);
         };
         checkAuth();
-    }, [initAuth, telegramId]);
+    }, [initAuth, telegramId, isTelegram]);
 
     const handleTelegramIdSet = async (id) => {
         dispatch(setAuthData({ 
