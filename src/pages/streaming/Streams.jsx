@@ -51,15 +51,36 @@ function Streams() {
         </div>
       </div>
       <div className="flex flex-wrap relative w-[343px] h-[auto] gap-[11px] mt-[12px] mb-[120px]">
-        {streams.map((stream) => (
-          <img
-            key={stream.id}
-            onClick={() => navigate(`${config.ROUTES.STREAMS.WATCH}/${stream.id}`)}
-            src={stream.image}
-            alt={stream.title}
-            className="cursor-pointer"
-          />
-        ))}
+        <img
+          onClick={() => navigate(`${config.ROUTES.STREAMS.WATCH}/${"test-stream-id"}`)}
+          src="/images/Card.svg"
+          alt=""
+        />
+        <img
+          onClick={() => navigate(`${config.ROUTES.STREAMS.WATCH}/${"test-stream-id"}`)}
+          src="/images/Card1.svg"
+          alt=""
+        />
+        <img
+          onClick={() => navigate(`${config.ROUTES.STREAMS.WATCH}/${"test-stream-id"}`)}
+          src="/images/Card.svg"
+          alt=""
+        />
+        <img
+          onClick={() => navigate(`${config.ROUTES.STREAMS.WATCH}/${"test-stream-id"}`)}
+          src="/images/Card1.svg"
+          alt=""
+        />
+        <img
+          onClick={() => navigate(`${config.ROUTES.STREAMS.WATCH}/${"test-stream-id"}`)}
+          src="/images/Card.svg"
+          alt=""
+        />
+        <img
+          onClick={() => navigate(`${config.ROUTES.STREAMS.WATCH}/${"test-stream-id"}`)}
+          src="/images/Card1.svg"
+          alt=""
+        />
       </div>
       <img
         src="/icons/strimBtn.svg"

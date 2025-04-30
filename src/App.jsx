@@ -49,7 +49,7 @@ import WatchingStream from './pages/streaming/WatchingStream';
 import StreamFilters from './pages/streaming/StreamFilters';
 import Streamer from './pages/streaming/Streamer';
 import StreamBroadcaster from './pages/streaming/StreamBroadcaster';
-
+import StreamViewer from './pages/streaming/StreamViewer';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -66,23 +66,21 @@ function App() {
         if (isTelegram === 1) { 
             const tg = window.Telegram.WebApp;
             
+            
+            tg.requestFullscreen();
+            tg.disableVerticalSwipes();
+            tg.ready();
+
             const initData = tg.initData;
             let userData = new URLSearchParams(initData);
             userData = JSON.parse(userData.get("user"));
             const tg_id = userData.id;
-            // localStorage.setItem('telegramId', telegramId);
-            // dispatch(setUserId(telegramId));
             dispatch(setAuthData({ 
               auth_token: null,
               userId: null,
               telegramId: tg_id
             }));
             
-            
-            tg.requestFullscreen();
-            tg.disableVerticalSwipes();
-            tg.ready();
-
             
             return () => {
                 tg.close();
@@ -92,13 +90,15 @@ function App() {
 
     useEffect(() => {
         const checkAuth = async () => {
-            if (!telegramId) {
-                setShowTelegramIdInput(true);
+            if (telegramId) { 
+                await initAuth();
                 setIsInitialized(true);
-                return;
+            } else {
+                if (isTelegram !== 1) {
+                    setShowTelegramIdInput(true);
+                }
+                setIsInitialized(true);
             }
-            await initAuth();
-            setIsInitialized(true);
         };
         checkAuth();
     }, [initAuth, telegramId]);
@@ -150,10 +150,11 @@ function App() {
 
                                     {/* Streaming Features */}
                                     <Route path={config.ROUTES.STREAMS.LIST} element={<Streams />} />
-                                    <Route path={config.ROUTES.STREAMS.WATCH} element={<WatchingStream />} />
+                                    <Route path={`${config.ROUTES.STREAMS.WATCH}/:stream_id`} element={<WatchingStream />} />
                                     <Route path={config.ROUTES.STREAMS.FILTERS} element={<StreamFilters />} />
-                                    <Route path={config.ROUTES.STREAMS.STREAMER} element={<Streamer />} />
-                                    <Route path={config.ROUTES.STREAMS.BROADCASTER} element={<StreamBroadcaster />} />
+                                    <Route path={`${config.ROUTES.STREAMS.STREAMER}/:id`} element={<Streamer />} />
+                                    <Route path={`${config.ROUTES.STREAMS.BROADCASTER}/:id`} element={<StreamBroadcaster />} />
+                                    <Route path="/streaming/watch/:streamId" element={<StreamViewer />} />
 
                                     {/* Chat Features */}
                                     <Route path={config.ROUTES.CHATS.LIST} element={<Chats />} />
