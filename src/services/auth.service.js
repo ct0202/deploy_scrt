@@ -20,11 +20,11 @@ export const useAuth = () => {
                 toast.error('Telegram ID not found');
                 return;
             }
-
+            
             const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
                 telegramId: telegramId
             });
-
+            
             handleAuthResponse(response);
         } catch (error) {
             if (error.response?.status === 404) {
@@ -97,7 +97,7 @@ export const useAuth = () => {
             if (response.data.token) {
                 dispatch(setAuthData({ 
                     auth_token: response.data.token,
-                    userId: response.data.user?._id,
+                    userId: null,
                     telegramId: telegramId
                 }));
                 return true;

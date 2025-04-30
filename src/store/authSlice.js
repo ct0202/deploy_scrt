@@ -11,28 +11,27 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setTelegramId: (state, action) => {
-            state.telegramId = action.payload;
-        },
-        setUserId: (state, action) => {
-            state.userId = action.payload;
-        },  
-        setAuthToken: (state, action) => {
-            state.auth_token = action.payload;
-        },
         setAuthData: (state, action) => {
             const { auth_token, userId, telegramId } = action.payload;
             state.auth_token = auth_token;
             state.userId = userId;
             state.telegramId = telegramId;
+            
+            // Sync with localStorage
+            if (auth_token) {
+                localStorage.setItem('token', auth_token);
+            } else {
+                localStorage.removeItem('token');
+            }
         },
         clearAuthData: (state) => {
             state.auth_token = null;
             state.userId = null;
             state.telegramId = null;
+            localStorage.removeItem('token');
         }
     }
 });
 
-export const { setAuthData, clearAuthData, setTelegramId, setUserId, setAuthToken } = authSlice.actions;
+export const { setAuthData, clearAuthData } = authSlice.actions;
 export default authSlice.reducer;

@@ -57,7 +57,6 @@ function App() {
     const dispatch = useDispatch();
     const authState = useSelector(state => state.auth);
     const { telegramId } = authState || {};
-    console.log('authState', authState);
     const { initAuth } = useAuth();
     const [showTelegramIdInput, setShowTelegramIdInput] = useState(false);
     const [isInitialized, setIsInitialized] = useState(false);
@@ -69,16 +68,12 @@ function App() {
             tg.disableVerticalSwipes();
             tg.ready();
 
-            const initData = tg.initData;
-            let userData = new URLSearchParams(initData);
-            userData = JSON.parse(userData.get("user"));
-
-            const tg_id = userData.id;
-            dispatch(setAuthData({ 
-              auth_token: null,
-              userId: null,
-              telegramId: tg_id
-            }));
+            // const initData = window.Telegram.WebApp.initData;
+            // let userData = new URLSearchParams(initData);
+            // userData = JSON.parse(userData.get("user"));
+            // const telegramId = userData.id;
+            // localStorage.setItem('telegramId', telegramId);
+            // dispatch(setUserId(telegramId));
 
             return () => {
                 tg.close();
@@ -87,16 +82,16 @@ function App() {
     }, []);
 
     useEffect(() => {
-      if (telegramId) {
         const checkAuth = async () => {
+            if (!telegramId) {
+                setShowTelegramIdInput(true);
+                setIsInitialized(true);
+                return;
+            }
             await initAuth();
             setIsInitialized(true);
         };
         checkAuth();
-      }
-      else {
-        setShowTelegramIdInput(true);
-      }
     }, [initAuth, telegramId]);
 
     const handleTelegramIdSet = async (id) => {
