@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addInterest, removeInterest } from '../store/userSlice';
 import { INTEREST } from "../constants/interests";
 import { axiosPublic } from '../axios';
+import axios from "axios";
+import config from '../config';
+import { useAuth } from '../services/auth.service';
 
 function Step5({ setStep }) {
     const navigate = useNavigate();
