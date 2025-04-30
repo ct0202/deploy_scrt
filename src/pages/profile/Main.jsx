@@ -39,8 +39,8 @@ function Main() {
         if (userData) {
             // Format the birthDay date to yyyy-MM-dd
             const formattedBirthDay = userData.birthDay ? new Date(userData.birthDay).toISOString().split('T')[0] : "";
-            
-            setFormData({
+
+        setFormData({
                 name: userData.name || "",
                 gender: userData.gender || null,
                 targetGender: userData.wantToFind || null,
@@ -49,7 +49,7 @@ function Main() {
                 city: userData.city || "",
                 latitude: userData.coordinates?.latitude || null,
                 longitude: userData.coordinates?.longitude || null
-            });
+        });
         }
     }, [userData]);
 
@@ -87,7 +87,7 @@ function Main() {
             };
 
             const response = await axiosPrivate.put('/users/mainInfoUpdate', requestData);
-            
+
             if (response.data) {
                 dispatch(updateRegistrationData({
                     name: formData.name,
