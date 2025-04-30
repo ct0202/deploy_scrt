@@ -47,3 +47,33 @@ export const INSTRUCTIONS_MEET = [
         "Листайте анкету вниз, чтобы увидеть дополнительную информацию о человеке",
     },
   ];
+
+export const INSTRUCTIONS_VIDEOCHAT = [
+  {
+      id: 1,
+      svg: "/icons/instructions_timer_25sec.svg",
+      title: "25 секунд",
+      description:
+          "У вас есть 25 секунд, чтобы определить, нравится ли вам человек или нет",
+  },
+  {
+      id: 2,
+      svg: "/icons/instr1.svg",
+      title: "Лайк",
+      description:
+          "Если вам понравился человек и вы хотели бы продолжить общение в переписке – поставтье лайк",
+  },
+  {
+      id: 3,
+      svg: "/icons/instr3.svg",
+      title: "Дизлайк",
+      description: "Хотите перейти к следующему собеседнику – поставтье дизлайк",
+  },
+  {
+      id: 4,
+      svg: "/icons/instr4.svg",
+      title: "Начать переписку",
+      description:
+          "Не хотите дожидаться симпатии? Напишите первым",
+  }
+];
