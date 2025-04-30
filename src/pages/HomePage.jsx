@@ -21,7 +21,8 @@ export default function HomePage() {
     }
     if(status === "authorized") {
       // Redirect to calculate page if user not found
-      window.location.href = config.ROUTES.MEET;
+      // window.location.href = config.ROUTES.MEET;
+      navigate(config.ROUTES.MEET);
       return;
     }
     const checkUser = async () => {

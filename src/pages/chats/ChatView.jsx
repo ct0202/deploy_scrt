@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import chatService from "../../services/chat.service";
 import config from '../../config';
-
+import useUserId from '../../hooks/useUserId';
 function ChatView () {
     const navigate = useNavigate();
     const { chat_id } = useParams();
@@ -17,7 +17,7 @@ function ChatView () {
     const [isLoading, setIsLoading] = useState(false);
     const [messageInput, setMessageInput] = useState('');
     const messagesEndRef = useRef(null);
-    const currentUserId = localStorage.getItem('userId');
+    const currentUserId = useUserId();
     const typingTimeoutRef = useRef(null);
     const messagesContainerRef = useRef(null);
 

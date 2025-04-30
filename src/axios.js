@@ -12,10 +12,20 @@ const axiosPrivate = axios.create({
     baseURL: config.API_URL
 });
 
+// Function to get user ID that works in both React and non-React contexts
+const getUserId = () => {
+    // First try to get from localStorage
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+        return storedUserId;
+    }
+    return null;
+};
+
 // Add auth interceptor to private instance
 axiosPrivate.interceptors.request.use((config) => {
     const token = localStorage.getItem(AUTH_TOKEN_KEY);
-    const userId = localStorage.getItem("userId");
+    const userId = getUserId();
     
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -52,7 +62,7 @@ axiosPrivate.interceptors.response.use(
             } catch (refreshError) {
                 // If refresh fails, clear token and redirect to login
                 localStorage.removeItem(AUTH_TOKEN_KEY);
-                window.location.href = '/';
+                // window.location.href = '/';
                 return Promise.reject(refreshError);
             }
         }
@@ -61,4 +71,4 @@ axiosPrivate.interceptors.response.use(
     }
 );
 
-export { axiosPublic, axiosPrivate }; 
+export { axiosPublic, axiosPrivate, getUserId }; 

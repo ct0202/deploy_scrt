@@ -20,6 +20,7 @@ const StreamBroadcaster = () => {
     const localAudioTrack = useRef(null);
     const localScreenTrack = useRef(null);
     const localVideoContainer = useRef(null);
+    const statsInterval = useRef(null);
 
     useEffect(() => {
         initializeAgora();
@@ -64,15 +65,12 @@ const StreamBroadcaster = () => {
             // Publish tracks
             await client.current.publish([localAudioTrack.current, localVideoTrack.current]);
 
-            // Set up event handlers for viewer count
-            client.current.on('user-joined', handleUserJoined);
-            client.current.on('user-left', handleUserLeft);
-
-            // Set up periodic stats check
-            const statsInterval = setInterval(async () => {
+            // Set up periodic stats check for viewer count
+            statsInterval.current = setInterval(async () => {
                 try {
                     const stats = await client.current.getRTCStats();
-                    setViewerCount(stats.UserCount - 1); // Subtract 1 to exclude the broadcaster
+                    // Subtract 1 to exclude the broadcaster from the count
+                    setViewerCount(Math.max(0, stats.UserCount - 1));
                 } catch (error) {
                     console.error('Error getting stats:', error);
                 }
@@ -80,20 +78,10 @@ const StreamBroadcaster = () => {
 
             setIsStreaming(true);
             setIsLoading(false);
-
-            return () => clearInterval(statsInterval);
         } catch (error) {
             console.error('Error initializing stream:', error);
             toast.error('Failed to start stream');
         }
-    };
-
-    const handleUserJoined = (user) => {
-        setViewerCount(prev => prev + 1);
-    };
-
-    const handleUserLeft = (user) => {
-        setViewerCount(prev => Math.max(0, prev - 1));
     };
 
     const toggleScreenShare = async () => {
@@ -146,6 +134,11 @@ const StreamBroadcaster = () => {
                 if (localScreenTrack.current) {
                     localScreenTrack.current.stop();
                     localScreenTrack.current.close();
+                }
+
+                // Clear the stats interval
+                if (statsInterval.current) {
+                    clearInterval(statsInterval.current);
                 }
 
                 // Leave the channel

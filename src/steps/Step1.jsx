@@ -21,7 +21,6 @@ function Step1({ setStep }) {
   ];
 
   useEffect(() => {
-    // localStorage.setItem("auth_status", null);
     if (
       registrationData.name?.trim() &&
       registrationData.gender &&
