@@ -4,40 +4,20 @@ import background from "../assets/background.svg";
 import { useNavigate } from "react-router-dom";
 import Policy from "../components/shared/Policy";
 import config from "../config";
+import { useSelector } from 'react-redux';
 
 export default function HomePage() {
   const navigate = useNavigate();
   const [showPolicy, setShowPolicy] = useState(false);
   const [agree, setAgree] = useState(false);
-
-  const status = localStorage.getItem("auth_status");
-  
+  const { auth_token } = useSelector(state => state.auth);
 
   useEffect(() => {
-    if(status === "registering") {
-      // Redirect to calculate page if user not found
-      // window.location.href = config.ROUTES.CALCULATE;
-      return;
-    }
-    if(status === "authorized") {
-      // Redirect to calculate page if user not found
-      // window.location.href = config.ROUTES.MEET;
+    if (auth_token) {
       navigate(config.ROUTES.MEET);
       return;
     }
-    const checkUser = async () => {
-      // if(localStorage.getItem("userId")){
-      //   const res = await axios.get(`/getUserInfo/${localStorage.getItem("userId")}`);
-      //   if(res.data){
-      //     navigate("/menu");
-      //   }
-      // }
-    };
-    checkUser();
-  }, []);
-
-
-  
+  }, [auth_token, navigate]);
 
   const handlePolicyClick = () => {
     setShowPolicy(true);

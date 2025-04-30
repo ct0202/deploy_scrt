@@ -1,24 +1,20 @@
 import { axiosPublic, axiosPrivate } from '../axios';
-import { AUTH_TOKEN_KEY } from '../config';
 import config from '../config';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateRegistrationData, updatePhoto, setAudioMessage } from '../store/userSlice';
-import useTelegramId from '../hooks/useTelegramId';
-import useUserId from '../hooks/useUserId';
+import { setAuthData, clearAuthData } from '../store/authSlice';
 import { toast } from 'react-toastify';
 
 export const useAuth = () => {
     const dispatch = useDispatch();
-    const telegramId = useTelegramId();
-    const userId = useUserId();
+    const { telegramId, auth_token } = useSelector(state => state.auth);
 
     const initAuth = async () => {
-        const status = localStorage.getItem("auth_status");
-        if (status === "authorized") {
+        if (auth_token) {
             return;
         }
 
-        try {
+        try {                
             if (!telegramId) {
                 toast.error('Telegram ID not found');
                 return;
@@ -31,7 +27,11 @@ export const useAuth = () => {
             handleAuthResponse(response);
         } catch (error) {
             if (error.response?.status === 404) {
-                localStorage.setItem("auth_status", 'registering');
+                dispatch(setAuthData({ 
+                    auth_token: null,
+                    userId: null,
+                    telegramId: telegramId
+                }));
                 return;
             }
             console.error('Auth initialization error:', error);
@@ -41,10 +41,13 @@ export const useAuth = () => {
 
     const handleAuthResponse = (response) => {
         if (response.data) {
-            // Save token
+            // Update auth data in Redux
             if (response.data.token) {
-                localStorage.setItem("auth_status", 'authorized');
-                localStorage.setItem(AUTH_TOKEN_KEY, response.data.token);
+                dispatch(setAuthData({ 
+                    auth_token: response.data.token,
+                    userId: response.data.user?._id,
+                    telegramId: telegramId
+                }));
             }
             
             // Update user data in Redux
@@ -83,8 +86,7 @@ export const useAuth = () => {
             console.error('Logout error:', error);
             toast.error('Logout failed');
         } finally {
-            localStorage.removeItem(AUTH_TOKEN_KEY);
-            localStorage.removeItem("auth_status");
+            dispatch(clearAuthData());
         }
     };
 
@@ -92,7 +94,11 @@ export const useAuth = () => {
         try {
             const response = await axiosPublic.post(config.API.AUTH.REFRESH);
             if (response.data.token) {
-                localStorage.setItem(AUTH_TOKEN_KEY, response.data.token);
+                dispatch(setAuthData({ 
+                    auth_token: response.data.token,
+                    userId: response.data.user?._id,
+                    telegramId: telegramId
+                }));
                 return true;
             }
         } catch (error) {

@@ -4,12 +4,12 @@ import React, {useRef, useState, useEffect} from "react";
 import Policy from "../components/shared/Policy";
 import { axiosPrivate } from "../axios";
 import config from "../config";
-import { useAuth } from '../services/auth.service';
-import { useUserId } from '../hooks/useUserId';
+import { useDispatch, useSelector } from 'react-redux';
 
 function ProfileMenu() {
     const navigate = useNavigate();
-    const userId = useUserId();
+    const dispatch = useDispatch();
+    const { userId } = useSelector(state => state.auth);
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
 

@@ -3,6 +3,7 @@ import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { axiosPrivate } from '../axios';
 import config from '../config';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Navigation } from "../components/shared/Navigation";
 
@@ -32,6 +33,7 @@ function Meet() {
   const [error, setError] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
+  const { userId } = useSelector(state => state.auth);
 
   const navigate = useNavigate();
 

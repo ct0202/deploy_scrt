@@ -5,18 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addInterest, removeInterest } from '../store/userSlice';
 import { INTEREST } from "../constants/interests";
 import { axiosPublic } from '../axios';
-import axios from "axios";
-import config from '../config';
-import { useAuth } from '../services/auth.service';
-import useTelegramId from '../hooks/useTelegramId';
 
 function Step5({ setStep }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const registrationData = useSelector((state) => state.user.registrationData);
     const interests = useSelector((state) => state.user.registrationData.interests);
-    const telegramId = useTelegramId();
-    const { telegram_id } = useAuth();
+    const { telegramId } = useSelector(state => state.auth);
     const [disabled, setDisabled] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -103,7 +98,7 @@ function Step5({ setStep }) {
                 if (response.data) {
                     // Store the token if returned
                     if (response.data.token) {
-                        localStorage.setItem('token', response.data.token);
+                        // localStorage.setItem('token', response.data.token);
                     }
                     navigate("/meet");
                 }

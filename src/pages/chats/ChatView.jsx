@@ -2,7 +2,8 @@ import React, {useEffect, useState, useRef} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import chatService from "../../services/chat.service";
 import config from '../../config';
-import useUserId from '../../hooks/useUserId';
+import { useSelector } from 'react-redux';
+
 function ChatView () {
     const navigate = useNavigate();
     const { chat_id } = useParams();
@@ -17,7 +18,7 @@ function ChatView () {
     const [isLoading, setIsLoading] = useState(false);
     const [messageInput, setMessageInput] = useState('');
     const messagesEndRef = useRef(null);
-    const currentUserId = useUserId();
+    const { userId: currentUserId } = useSelector(state => state.auth);
     const typingTimeoutRef = useRef(null);
     const messagesContainerRef = useRef(null);
 
@@ -46,14 +47,13 @@ function ChatView () {
     }, [messages]);
 
     useEffect(() => {
-        const token = localStorage.getItem('userId');
-        if (!token) {
-            // navigate('/login');
-            // return;
+        if (!currentUserId) {
+            navigate('/');
+            return;
         }
 
         // Connect to WebSocket
-        chatService.connect(token);
+        chatService.connect(currentUserId);
 
         // Set up message listener
         const unsubscribeMessage = chatService.onMessage((newMessage) => {

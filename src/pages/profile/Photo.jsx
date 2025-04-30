@@ -5,7 +5,7 @@ import { axiosPrivate } from '../../axios';
 
 function Photo() {
     const navigate = useNavigate();
-    const telegramId = localStorage.getItem("telegramId");
+    const { telegramId } = useSelector(state => state.auth);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [photos, setPhotos] = useState({});
     const fileInputs = useRef({});

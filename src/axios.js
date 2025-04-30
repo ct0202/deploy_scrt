@@ -1,6 +1,7 @@
 import axios from "axios";
 import config from "./config";
-import { AUTH_TOKEN_KEY } from "./config";
+import { store } from "./store";
+import { setAuthData, clearAuthData } from "./store/authSlice";
 
 // Create axios instance with baseURL from config
 const axiosPublic = axios.create({
@@ -12,23 +13,13 @@ const axiosPrivate = axios.create({
     baseURL: config.API_URL
 });
 
-// Function to get user ID that works in both React and non-React contexts
-const getUserId = () => {
-    // First try to get from localStorage
-    const storedUserId = localStorage.getItem('userId');
-    if (storedUserId) {
-        return storedUserId;
-    }
-    return null;
-};
-
 // Add auth interceptor to private instance
 axiosPrivate.interceptors.request.use((config) => {
-    const token = localStorage.getItem(AUTH_TOKEN_KEY);
-    const userId = getUserId();
+    const state = store.getState();
+    const { auth_token, userId } = state.auth;
     
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+    if (auth_token) {
+        config.headers.Authorization = `Bearer ${auth_token}`;
     }
     
     if (userId) {
@@ -53,16 +44,19 @@ axiosPrivate.interceptors.response.use(
                 const response = await axiosPublic.post(config.API.AUTH.REFRESH);
                 const { token } = response.data;
                 
-                // Save new token
-                localStorage.setItem(AUTH_TOKEN_KEY, token);
+                // Update token in Redux store
+                store.dispatch(setAuthData({ 
+                    auth_token: token,
+                    userId: store.getState().auth.userId,
+                    telegramId: store.getState().auth.telegramId
+                }));
                 
                 // Retry original request with new token
                 originalRequest.headers.Authorization = `Bearer ${token}`;
                 return axiosPrivate(originalRequest);
             } catch (refreshError) {
-                // If refresh fails, clear token and redirect to login
-                localStorage.removeItem(AUTH_TOKEN_KEY);
-                // window.location.href = '/';
+                // If refresh fails, clear auth data
+                store.dispatch(clearAuthData());
                 return Promise.reject(refreshError);
             }
         }
@@ -71,4 +65,4 @@ axiosPrivate.interceptors.response.use(
     }
 );
 
-export { axiosPublic, axiosPrivate, getUserId }; 
+export { axiosPublic, axiosPrivate }; 

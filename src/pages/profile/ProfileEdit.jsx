@@ -9,14 +9,13 @@ import "../styles/SwiperCustomPagination.css";
 import { axiosPrivate } from "../../axios";
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from '../../store/userSlice';
-import { useUserId } from '../../hooks/useUserId';
 
 function ProfileEdit() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userData = useSelector((state) => state.user.userData);
+    const { userId } = useSelector(state => state.auth);
     const [loading, setLoading] = useState(true);
-    const userId = useUserId();
 
     useEffect(() => {
         const fetchUserData = async () => {
