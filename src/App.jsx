@@ -57,7 +57,6 @@ function App() {
     const dispatch = useDispatch();
     const authState = useSelector(state => state.auth);
     const { telegramId } = authState || {};
-
     console.log('authState', authState);
     const { initAuth } = useAuth();
     const [showTelegramIdInput, setShowTelegramIdInput] = useState(false);
@@ -73,30 +72,32 @@ function App() {
             const initData = tg.initData;
             let userData = new URLSearchParams(initData);
             userData = JSON.parse(userData.get("user"));
+
             const tg_id = userData.id;
             dispatch(setAuthData({ 
-                auth_token: null,
-                userId: null,
-                telegramId: tg_id
+              auth_token: null,
+              userId: null,
+              telegramId: tg_id
             }));
 
             return () => {
-              tg.close();
+                tg.close();
             };
-        } 
+        }
     }, []);
 
     useEffect(() => {
+      if (telegramId) {
         const checkAuth = async () => {
-          if (telegramId) { 
             await initAuth();
             setIsInitialized(true);
-          } else {
-            setShowTelegramIdInput(true);
-          }
         };
         checkAuth();
-    }, [initAuth]);
+      }
+      else {
+        setShowTelegramIdInput(true);
+      }
+    }, [initAuth, telegramId]);
 
     const handleTelegramIdSet = async (id) => {
         dispatch(setAuthData({ 

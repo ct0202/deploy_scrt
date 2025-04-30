@@ -1,4 +1,5 @@
 import { axiosPublic, axiosPrivate } from '../axios';
+import { AUTH_TOKEN_KEY } from '../config';
 import config from '../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRegistrationData, updatePhoto, setAudioMessage } from '../store/userSlice';
@@ -14,7 +15,7 @@ export const useAuth = () => {
             return;
         }
 
-        try {                
+        try {
             if (!telegramId) {
                 toast.error('Telegram ID not found');
                 return;
