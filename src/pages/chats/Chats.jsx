@@ -4,14 +4,13 @@ import { Navigation } from "../../components/shared/Navigation";
 import {ChatCard} from "../../components/chat/chatCard";
 import {useNavigate} from "react-router-dom";
 import chatService from '../../services/chat.service';
-import useUserId from '../../hooks/useUserId';
+
 const Chats = () => {
     const navigate = useNavigate();
     const [chats, setChats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    
-    const userId = useUserId();
+    const { userId } = useSelector(state => state.auth);
 
     useEffect(() => {
         const fetchChats = async () => {

@@ -8,8 +8,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
 import ScrollBlocker from "./ScrollBlocker";
-import { useTelegramId } from './hooks/useTelegramId';
+import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from './services/auth.service';
+import { setAuthData } from './store/authSlice';
 import TelegramIdInput from './components/TelegramIdInput';
 
 import Layout from './pages/Layout';
@@ -49,52 +50,60 @@ import StreamFilters from './pages/streaming/StreamFilters';
 import Streamer from './pages/streaming/Streamer';
 import StreamBroadcaster from './pages/streaming/StreamBroadcaster';
 
-
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 function App() {
-  const telegramId = useTelegramId();
-  const { initAuth } = useAuth();
-  const [showTelegramIdInput, setShowTelegramIdInput] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
+    const dispatch = useDispatch();
+    const authState = useSelector(state => state.auth);
+    const { telegramId } = authState || {};
 
-  useEffect(() => {
-    if (isTelegram === 1) { 
-      const tg = window.Telegram.WebApp;
-      tg.requestFullscreen();
-      tg.disableVerticalSwipes();
-      tg.ready();
+    console.log('authState', authState);
+    const { initAuth } = useAuth();
+    const [showTelegramIdInput, setShowTelegramIdInput] = useState(false);
+    const [isInitialized, setIsInitialized] = useState(false);
 
-      return () => {
-        tg.close(); // Закрытие веб-приложения (при необходимости)
-      };
-    }
-  }, []);
+    useEffect(() => {
+        if (isTelegram === 1) { 
+            const tg = window.Telegram.WebApp;
+            tg.requestFullscreen();
+            tg.disableVerticalSwipes();
+            tg.ready();
 
-    // useEffect(() => {
-    //   const tg = window.Telegram.WebApp;
-    //   tg.requestFullscreen();
-    //   tg.disableVerticalSwipes();
-    //   tg.ready();
-  
-    //   return () => {
-    //     tg.close(); // Закрытие веб-приложения (при необходимости)
-    //   };
-    // }, []);
+            const initData = tg.initData;
+            let userData = new URLSearchParams(initData);
+            userData = JSON.parse(userData.get("user"));
+            const tg_id = userData.id;
+            dispatch(setAuthData({ 
+                auth_token: null,
+                userId: null,
+                telegramId: tg_id
+            }));
 
+            return () => {
+              tg.close();
+            };
+        } 
+    }, []);
 
     useEffect(() => {
         const checkAuth = async () => {
+          if (telegramId) { 
             await initAuth();
             setIsInitialized(true);
+          } else {
+            setShowTelegramIdInput(true);
+          }
         };
         checkAuth();
     }, [initAuth]);
 
-    const handleTelegramIdSet = async (telegramId) => {
-        localStorage.setItem('telegramId', telegramId);
+    const handleTelegramIdSet = async (id) => {
+        dispatch(setAuthData({ 
+            auth_token: null,
+            userId: null,
+            telegramId: id
+        }));
         setShowTelegramIdInput(false);
         await initAuth();
     };
@@ -103,79 +112,75 @@ function App() {
         return <LoadingSpinner />;
     }
 
-  return (
+    return (
         <ErrorBoundary>
-        <ToastContainer />
-
+            <ToastContainer />
             <Suspense fallback={<LoadingSpinner />}>
-    <RegistrationProvider>
-      <FiltersProvider>
-        <div
-          className="App flex flex-col justify-start items-center w-[100%] h-[100%] [background:linear-gradient(180deg,rgb(1,13,13)_0%,rgb(3.01,42.5,42.5)_100%)] bg-[100%_100%] bg-repeat-y bg-cover"
-          style={{ height: "100vh" }}
-        >
-          <ScrollBlocker />
-            {showTelegramIdInput && <TelegramIdInput onTelegramIdSet={handleTelegramIdSet} />}
-          <Routes>
-            {/* Public Routes */}
-            <Route path={config.ROUTES.HOME} element={<Layout />}>
-                <Route index element={<HomePage />} />
-                <Route path={config.ROUTES.MENU} element={<Menu />} />
-                <Route path={config.ROUTES.CALCULATE} element={<CalculatePage />} />
-                {/* <Route path={config.ROUTES.SUPPORT} element={<Support />} />
-                <Route path={config.ROUTES.MYTA_IDEA} element={<MytaIdea />} /> */}
-              </Route>
-             
-            {/* Protected Routes */}
-            <Route path={config.ROUTES.HOME} element={
-                <ProtectedRoute>
-                    <Layout />
-                </ProtectedRoute>
-            }>
-                {/* Dating Features */}
-                <Route path={config.ROUTES.MEET} element={<Meet />} />
-                <Route path={config.ROUTES.MATCH} element={<Match />} />
-                <Route path={config.ROUTES.FILTERS} element={<Filters />} />
-                {/* <Route path={config.ROUTES.REACTION} element={<ReactOnUser />} /> */}
+                <RegistrationProvider>
+                    <FiltersProvider>
+                        <div
+                            className="App flex flex-col justify-start items-center w-[100%] h-[100%] [background:linear-gradient(180deg,rgb(1,13,13)_0%,rgb(3.01,42.5,42.5)_100%)] bg-[100%_100%] bg-repeat-y bg-cover"
+                            style={{ height: "100vh" }}
+                        >
+                            <ScrollBlocker />
+                            {showTelegramIdInput && <TelegramIdInput onTelegramIdSet={handleTelegramIdSet} />}
+                            <Routes>
+                                {/* Public Routes */}
+                                <Route path={config.ROUTES.HOME} element={<Layout />}>
+                                    <Route index element={<HomePage />} />
+                                    <Route path={config.ROUTES.MENU} element={<Menu />} />
+                                    <Route path={config.ROUTES.CALCULATE} element={<CalculatePage />} />
+                                </Route>
+                                
+                                {/* Protected Routes */}
+                                <Route path={config.ROUTES.HOME} element={
+                                    <ProtectedRoute>
+                                        <Layout />
+                                    </ProtectedRoute>
+                                }>
+                                    {/* Dating Features */}
+                                    <Route path={config.ROUTES.MEET} element={<Meet />} />
+                                    <Route path={config.ROUTES.MATCH} element={<Match />} />
+                                    <Route path={config.ROUTES.FILTERS} element={<Filters />} />
 
-                {/* Streaming Features */}
-                <Route path={config.ROUTES.STREAMS.LIST} element={<Streams />} />
-                <Route path={config.ROUTES.STREAMS.WATCH} element={<WatchingStream />} />
-                <Route path={config.ROUTES.STREAMS.FILTERS} element={<StreamFilters />} />
-                <Route path={config.ROUTES.STREAMS.STREAMER} element={<Streamer />} />
-                <Route path={config.ROUTES.STREAMS.BROADCASTER} element={<StreamBroadcaster />} />
+                                    {/* Streaming Features */}
+                                    <Route path={config.ROUTES.STREAMS.LIST} element={<Streams />} />
+                                    <Route path={config.ROUTES.STREAMS.WATCH} element={<WatchingStream />} />
+                                    <Route path={config.ROUTES.STREAMS.FILTERS} element={<StreamFilters />} />
+                                    <Route path={config.ROUTES.STREAMS.STREAMER} element={<Streamer />} />
+                                    <Route path={config.ROUTES.STREAMS.BROADCASTER} element={<StreamBroadcaster />} />
 
-                {/* Chat Features */}
-                <Route path={config.ROUTES.CHATS.LIST} element={<Chats />} />
-                <Route path={config.ROUTES.CHATS.TEXT} element={<ChatView />} />
-                <Route path={config.ROUTES.CHATS.VIDEO} element={<VideoChat />} />
+                                    {/* Chat Features */}
+                                    <Route path={config.ROUTES.CHATS.LIST} element={<Chats />} />
+                                    <Route path={config.ROUTES.CHATS.TEXT} element={<ChatView />} />
+                                    <Route path={config.ROUTES.CHATS.VIDEO} element={<VideoChat />} />
 
-                {/* Profile Features */}
-                <Route path={config.ROUTES.PROFILE.VIEW} element={<Profile />} />
-                <Route path={config.ROUTES.NOTIFICATIONS} element={<Notifications />} />
-                <Route path={config.ROUTES.PROFILE_MENU} element={<ProfileMenu />} />
-                <Route path={config.ROUTES.PROFILE.EDIT} element={<ProfileEdit />} />
-                <Route path={config.ROUTES.PROFILE.PHOTO} element={<Photo />} />
-                <Route path={config.ROUTES.PROFILE.MAIN} element={<Main />} />
-                <Route path={config.ROUTES.PROFILE.MEET_GOAL} element={<MeetGoal />} />
-                <Route path={config.ROUTES.PROFILE.AUDIO} element={<Audio />} />
-                <Route path={config.ROUTES.PROFILE.INTERESTS} element={<Interests />} />
-                <Route path={config.ROUTES.PROFILE.DELETE} element={<DeleteProfile />} />
-                <Route path={config.ROUTES.PROFILE.CONFIRM_DELETE} element={<ConfirmDeleteProfile />} />
+                                    {/* Profile Features */}
+                                    <Route path={config.ROUTES.PROFILE.VIEW} element={<Profile />} />
+                                    <Route path={config.ROUTES.NOTIFICATIONS} element={<Notifications />} />
+                                    <Route path={config.ROUTES.PROFILE_MENU} element={<ProfileMenu />} />
+                                    <Route path={config.ROUTES.PROFILE.EDIT} element={<ProfileEdit />} />
+                                    <Route path={config.ROUTES.PROFILE.PHOTO} element={<Photo />} />
+                                    <Route path={config.ROUTES.PROFILE.MAIN} element={<Main />} />
+                                    <Route path={config.ROUTES.PROFILE.MEET_GOAL} element={<MeetGoal />} />
+                                    <Route path={config.ROUTES.PROFILE.AUDIO} element={<Audio />} />
+                                    <Route path={config.ROUTES.PROFILE.INTERESTS} element={<Interests />} />
+                                    <Route path={config.ROUTES.PROFILE.DELETE} element={<DeleteProfile />} />
+                                    <Route path={config.ROUTES.PROFILE.CONFIRM_DELETE} element={<ConfirmDeleteProfile />} />
 
-                {/* Payment Features */}
-                <Route path={config.ROUTES.INVITE} element={<Invite />} />
-                <Route path={config.ROUTES.PAYMENT} element={<MakePayment />} />
-                <Route path={config.ROUTES.PREMIUM} element={<Premium />} />
-                <Route path={config.ROUTES.MYTA_IDEA} element={<MytaIdea />} />
-            </Route>
-          </Routes>
-        </div>
-      </FiltersProvider>
-    </RegistrationProvider>
+                                    {/* Payment Features */}
+                                    <Route path={config.ROUTES.INVITE} element={<Invite />} />
+                                    <Route path={config.ROUTES.PAYMENT} element={<MakePayment />} />
+                                    <Route path={config.ROUTES.PREMIUM} element={<Premium />} />
+                                    <Route path={config.ROUTES.MYTA_IDEA} element={<MytaIdea />} />
+                                </Route>
+                            </Routes>
+                        </div>
+                    </FiltersProvider>
+                </RegistrationProvider>
             </Suspense>
         </ErrorBoundary>
-  );
+    );
 }
 
 export default App;

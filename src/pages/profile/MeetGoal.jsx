@@ -7,7 +7,7 @@ import { axiosPrivate } from '../../axios';
 function MeetGoal() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const userId = useSelector((state) => state.user.userId);
+    const { telegramId } = useSelector(state => state.auth);
     const registrationData = useSelector((state) => state.user.registrationData);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -48,7 +48,7 @@ function MeetGoal() {
             setIsSubmitting(true);
             console.log('Sending meet goal update request...');
             const response = await axiosPrivate.put('/users/updateMeetGoal', {
-                telegramId: userId,
+                telegramId: telegramId,
                 purpose: registrationData.purpose
             });
 
