@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Select from 'react-select';
 import { countries } from 'countries-list';
 import axios from 'axios';
@@ -232,6 +232,7 @@ const LocationSelect = ({ onLocationSelect }) => {
   const [selectedCity, setSelectedCity] = useState(null);
   const [cityOptions, setCityOptions] = useState([]);
   const [coordinates, setCoordinates] = useState(null);
+  const containerRef = useRef(null);
 
   // Преобразуем объект стран в массив для react-select с русскими названиями
   const countryOptions = Object.entries(countries)
@@ -241,41 +242,6 @@ const LocationSelect = ({ onLocationSelect }) => {
       originalName: country.name
     }))
     .sort((a, b) => a.label.localeCompare(b.label, 'ru'));
-
-  // Функция для загрузки городов страны
-
-  // const loadCities = useCallback(async (country) => {
-  //   if (!country) return;
-    
-  //   const cacheKey = country.originalName;
-    
-  //   // Проверяем кэш
-  //   if (cityCache.has(cacheKey)) {
-  //     setCityOptions(cityCache.get(cacheKey));
-  //     return;
-  //   }
-    
-  //   try {
-  //     const response = await axios.get(
-  //       `https://nominatim.openstreetmap.org/search?format=json&q=${country.originalName}&limit=100&accept-language=ru&featuretype=city&countrycodes=${country.value}`
-  //     );
-      
-  //     const cities = response.data
-  //       .map(item => ({
-  //         value: item.display_name,
-  //         label: item.display_name.split(',')[0],
-  //         lat: item.lat,
-  //         lon: item.lon
-  //       }))
-  //       .sort((a, b) => a.label.localeCompare(b.label, 'ru'));
-      
-  //     // Сохраняем в кэш
-  //     cityCache.set(cacheKey, cities);
-  //     setCityOptions(cities);
-  //   } catch (error) {
-  //     console.error('Error fetching cities:', error);
-  //   }
-  // }, []);
 
   const loadCities = useCallback(async (country) => {
     if (!country) return;
@@ -405,8 +371,26 @@ const LocationSelect = ({ onLocationSelect }) => {
     })
   };
 
+  const handleFocus = (element) => {
+    if (containerRef.current && element) {
+      setTimeout(() => {
+        const container = containerRef.current;
+        const selectElement = element.closest('.react-select__control');
+        if (selectElement) {
+          const containerRect = container.getBoundingClientRect();
+          const selectRect = selectElement.getBoundingClientRect();
+          const scrollTop = selectRect.top - containerRect.top - (containerRect.height / 2) + (selectRect.height / 2);
+          container.scrollTo({
+            top: scrollTop,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
+    }
+  };
+
   return (
-    <div className="w-full">
+    <div className="w-full" ref={containerRef}>
       <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
         Ваша страна
       </h1>
@@ -414,6 +398,7 @@ const LocationSelect = ({ onLocationSelect }) => {
         options={countryOptions}
         value={selectedCountry}
         onChange={handleCountryChange}
+        onFocus={(e) => handleFocus(e.target)}
         placeholder="— выберите страну —"
         className="mt-4"
         styles={customStyles}
@@ -426,12 +411,24 @@ const LocationSelect = ({ onLocationSelect }) => {
         options={cityOptions}
         value={selectedCity}
         onChange={handleCitySelect}
+        onFocus={(e) => handleFocus(e.target)}
         placeholder="Выберите город"
         className="mt-4"
         styles={customStyles}
         isClearable
-        isSearchable={false}
+        isSearchable={true}
         isLoading={selectedCountry && cityOptions.length === 0}
+        noOptionsMessage={() => "Город не найден"}
+        formatCreateLabel={(inputValue) => `Использовать "${inputValue}"`}
+        onCreateOption={(inputValue) => {
+            const newOption = {
+                value: inputValue,
+                label: inputValue,
+                lat: null,
+                lon: null
+            };
+            handleCitySelect(newOption);
+        }}
       />
     </div>
   );
