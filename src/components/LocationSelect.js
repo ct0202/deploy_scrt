@@ -416,7 +416,7 @@ const LocationSelect = ({ onLocationSelect }) => {
             e.target.focus();
             handleFocus(e.target);
         }}
-        placeholder="Выберите город"
+        placeholder="Введите город"
         className="mt-4"
         styles={customStyles}
         isClearable
@@ -432,6 +432,18 @@ const LocationSelect = ({ onLocationSelect }) => {
                 lon: null
             };
             handleCitySelect(newOption);
+        }}
+        inputValue={selectedCity?.label || ''}
+        onInputChange={(inputValue) => {
+            if (inputValue) {
+                const newOption = {
+                    value: inputValue,
+                    label: inputValue,
+                    lat: null,
+                    lon: null
+                };
+                handleCitySelect(newOption);
+            }
         }}
       />
     </div>
