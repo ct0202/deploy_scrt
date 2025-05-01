@@ -412,11 +412,23 @@ const LocationSelect = ({ onLocationSelect }) => {
         value={selectedCity}
         onChange={handleCitySelect}
         onFocus={(e) => handleFocus(e.target)}
-        placeholder="Выберите город"
+        placeholder="Введите город"
         className="mt-4"
         styles={customStyles}
-     
+        isClearable
+        isSearchable={true}
         isLoading={selectedCountry && cityOptions.length === 0}
+        noOptionsMessage={() => "Город не найден"}
+        formatCreateLabel={(inputValue) => `Использовать "${inputValue}"`}
+        onCreateOption={(inputValue) => {
+            const newOption = {
+                value: inputValue,
+                label: inputValue,
+                lat: null,
+                lon: null
+            };
+            handleCitySelect(newOption);
+        }}
       />
     </div>
   );

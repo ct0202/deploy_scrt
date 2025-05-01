@@ -3,6 +3,7 @@ import { Button } from "../components/Button";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRegistrationData } from '../store/userSlice';
 import LocationSelect from '../components/LocationSelect';
+import DatePicker from '../components/DatePicker';
 
 function Step1({ setStep }) {
   const dispatch = useDispatch();
@@ -108,13 +109,9 @@ function Step1({ setStep }) {
       <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
         Ваша дата рождения?
       </h1>
-      <input
-        type="date"
-        name="birthDay"
-        placeholder="Выбрать дату"
-        value={registrationData.birthDay || ''}
-        onChange={handleChange}
-        className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 text-white outline-none focus:border-[#a1f69e]"
+      <DatePicker 
+        value={registrationData.birthDay} 
+        onChange={(date) => dispatch(updateRegistrationData({ field: 'birthDay', value: date }))} 
       />
 
       <LocationSelect onLocationSelect={handleLocationSelect} />
