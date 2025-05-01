@@ -84,7 +84,7 @@ const DatePicker = ({ value, onChange }) => {
                 placeholder="Выберите дату"
                 onClick={() => setIsOpen(true)}
                 readOnly
-                className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e] cursor-pointer"
+                className="w-full h-full bg-transparent text-white outline-none cursor-pointer"
             />
             {isOpen && (
                 <div className="absolute top-[80px] left-0 w-[343px] bg-[#022424] border border-[#233636] rounded-[8px] p-4 z-10">
