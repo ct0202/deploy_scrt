@@ -109,7 +109,7 @@ function Step1({ setStep }) {
       <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
         Ваша дата рождения?
       </h1>
-      <div className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]">
+      <div className="w-[343px] h-[64px] flex justify-center items-center rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]">
         <DatePicker 
           value={registrationData.birthDay} 
           onChange={(date) => dispatch(updateRegistrationData({ field: 'birthDay', value: date }))} 
