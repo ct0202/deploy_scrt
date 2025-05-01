@@ -412,10 +412,6 @@ const LocationSelect = ({ onLocationSelect }) => {
         value={selectedCity}
         onChange={handleCitySelect}
         onFocus={(e) => handleFocus(e.target)}
-        onClick={(e) => {
-            e.target.focus();
-            handleFocus(e.target);
-        }}
         placeholder="Введите город"
         className="mt-4"
         styles={customStyles}
