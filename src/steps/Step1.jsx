@@ -22,20 +22,23 @@ function Step1({ setStep }) {
   ];
 
   useEffect(() => {
-    if (
-      registrationData.name?.trim() &&
-      registrationData.gender &&
-      registrationData.wantToFind &&
-      registrationData.birthDay &&
-      registrationData.country &&
-      registrationData.city?.trim() &&
-      registrationData.coordinates.latitude &&
-      registrationData.coordinates.longitude
-    ) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
+    const isNameValid = registrationData.name?.trim()?.length > 0;
+    const isGenderValid = registrationData.gender && ['male', 'female'].includes(registrationData.gender);
+    const isWantToFindValid = registrationData.wantToFind && ['male', 'female', 'all'].includes(registrationData.wantToFind);
+    const isBirthDayValid = registrationData.birthDay && new Date(registrationData.birthDay) < new Date();
+    const isCountryValid = registrationData.country?.trim()?.length > 0;
+    const isCityValid = registrationData.city?.trim()?.length > 0;
+    const isCoordinatesValid = registrationData.coordinates?.latitude && registrationData.coordinates?.longitude;
+
+    setDisabled(!(
+      isNameValid &&
+      isGenderValid &&
+      isWantToFindValid &&
+      isBirthDayValid &&
+      isCountryValid &&
+      isCityValid &&
+      isCoordinatesValid
+    ));
   }, [registrationData]);
 
   const handleChange = (e) => {
@@ -49,6 +52,10 @@ function Step1({ setStep }) {
       city: locationData.city,
       coordinates: locationData.coordinates
     }));
+  };
+
+  const handleDateChange = (date) => {
+    dispatch(updateRegistrationData({ birthDay: date }));
   };
 
   return (
@@ -112,7 +119,7 @@ function Step1({ setStep }) {
       <div className="w-[343px] h-[64px] flex justify-center items-center rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]">
         <DatePicker 
           value={registrationData.birthDay} 
-          onChange={(date) => dispatch(updateRegistrationData({ field: 'birthDay', value: date }))} 
+          onChange={handleDateChange}
         />
       </div>
 
