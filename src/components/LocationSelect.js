@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import Select from 'react-select';
 import { countries } from 'countries-list';
 import axios from 'axios';
 
@@ -232,6 +231,9 @@ const LocationSelect = ({ onLocationSelect }) => {
   const [selectedCity, setSelectedCity] = useState(null);
   const [cityOptions, setCityOptions] = useState([]);
   const [coordinates, setCoordinates] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('country');
+  const [searchQuery, setSearchQuery] = useState('');
   const containerRef = useRef(null);
 
   // Преобразуем объект стран в массив для react-select с русскими названиями
@@ -298,138 +300,157 @@ const LocationSelect = ({ onLocationSelect }) => {
     }
   }, [selectedCountry, loadCities]);
 
-  const handleCountryChange = (selectedOption) => {
-    setSelectedCountry(selectedOption);
+  const handleCountrySelect = (country) => {
+    setSelectedCountry(country);
     setSelectedCity(null);
-    setCityOptions([]);
     setCoordinates(null);
-    onLocationSelect({
-      country: selectedOption.label,
-      city: '',
-      coordinates: { latitude: null, longitude: null }
-    });
+    setActiveTab('city');
+    loadCities(country);
   };
 
-  const handleCitySelect = (selectedOption) => {
-    if (selectedOption) {
-      setSelectedCity(selectedOption);
+  const handleCitySelect = (city) => {
+    if (city) {
+      setSelectedCity(city);
       setCoordinates({
-        latitude: selectedOption.lat,
-        longitude: selectedOption.lon
+        latitude: city.lat,
+        longitude: city.lon
       });
       onLocationSelect({
         country: selectedCountry.label,
-        city: selectedOption.label,
+        city: city.label,
         coordinates: {
-          latitude: selectedOption.lat,
-          longitude: selectedOption.lon
+          latitude: city.lat,
+          longitude: city.lon
         }
       });
-    } else {
-      setSelectedCity(null);
-      setCoordinates(null);
-      onLocationSelect({
-        country: selectedCountry.label,
-        city: '',
-        coordinates: { latitude: null, longitude: null }
-      });
+      setIsModalOpen(false);
     }
   };
 
-  const customStyles = {
-    control: (base) => ({
-      ...base,
-      backgroundColor: '#022424',
-      borderColor: '#233636',
-      height: '64px',
-      borderRadius: '8px',
-      '&:hover': {
-        borderColor: '#a1f69e'
-      }
-    }),
-    singleValue: (base) => ({
-      ...base,
-      color: 'white'
-    }),
-    input: (base) => ({
-      ...base,
-      color: 'white'
-    }),
-    menu: (base) => ({
-      ...base,
-      backgroundColor: '#022424',
-      borderColor: '#233636',
-      zIndex: 9999
-    }),
-    option: (base, state) => ({
-      ...base,
-      backgroundColor: state.isSelected ? '#043939' : '#022424',
-      color: 'white',
-      '&:hover': {
-        backgroundColor: '#043939'
-      }
-    })
+  const handleInputClick = (tab) => {
+    setActiveTab(tab);
+    setIsModalOpen(true);
   };
 
-  const handleFocus = (element) => {
-    if (containerRef.current && element) {
-      setTimeout(() => {
-        const container = containerRef.current;
-        const selectElement = element.closest('.react-select__control');
-        if (selectElement) {
-          const containerRect = container.getBoundingClientRect();
-          const selectRect = selectElement.getBoundingClientRect();
-          const scrollTop = selectRect.top - containerRect.top - (containerRect.height / 2) + (selectRect.height / 2);
-          container.scrollTo({
-            top: scrollTop,
-            behavior: 'smooth'
-          });
-        }
-      }, 100);
-    }
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setSearchQuery('');
   };
+
+  const filteredOptions = activeTab === 'country' 
+    ? countryOptions.filter(country => 
+        country.label.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : cityOptions.filter(city => 
+        city.label.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
   return (
     <div className="w-full" ref={containerRef}>
       <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
         Ваша страна
       </h1>
-      <Select
-        options={countryOptions}
-        value={selectedCountry}
-        onChange={handleCountryChange}
-        onFocus={(e) => handleFocus(e.target)}
-        placeholder="— выберите страну —"
-        className="mt-4"
-        styles={customStyles}
-      />
+      <div
+        onClick={() => handleInputClick('country')}
+        className="w-full h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e] flex items-center cursor-pointer"
+      >
+        {selectedCountry ? selectedCountry.label : "Выберите страну"}
+      </div>
       
       <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
         Населенный пункт (город, деревня)
       </h1>
-      <Select
-        options={cityOptions}
-        value={selectedCity}
-        onChange={handleCitySelect}
-        onFocus={(e) => handleFocus(e.target)}
-        placeholder="Введите город"
-        className="mt-4"
-        styles={customStyles}
-        isClearable
-        isSearchable={true}
-        isLoading={selectedCountry && cityOptions.length === 0}
-        noOptionsMessage={() => "Город не найден"}
-        formatCreateLabel={(inputValue) => `Использовать "${inputValue}"`}
-        onCreateOption={(inputValue) => {
-            const newOption = {
-                value: inputValue,
-                label: inputValue,
-                lat: null,
-                lon: null
-            };
-            handleCitySelect(newOption);
-        }}
-      />
+      <div
+        onClick={() => handleInputClick('city')}
+        className="w-full h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e] flex items-center cursor-pointer"
+      >
+        {selectedCity ? selectedCity.label : "Введите город"}
+      </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="w-[343px] bg-[#022424] border border-[#233636] rounded-[8px] p-4">
+            <div className="flex justify-between mb-4">
+              <button
+                onClick={() => handleTabChange('country')}
+                className={`px-4 py-2 rounded-[400px] ${
+                  activeTab === 'country'
+                    ? 'bg-[#043939] border-[1.5px] border-[#a1f69e] text-white'
+                    : 'bg-[#022424] text-white'
+                }`}
+              >
+                Страна
+              </button>
+              <button
+                onClick={() => handleTabChange('city')}
+                className={`px-4 py-2 rounded-[400px] ${
+                  activeTab === 'city'
+                    ? 'bg-[#043939] border-[1.5px] border-[#a1f69e] text-white'
+                    : 'bg-[#022424] text-white'
+                }`}
+              >
+                Город
+              </button>
+            </div>
+
+            <div className="relative mb-4">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={`Поиск ${activeTab === 'country' ? 'страны' : 'города'}...`}
+                className="w-full h-[48px] rounded-[8px] bg-[#022424] pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
+              />
+            </div>
+
+            <div className="h-[300px] overflow-y-auto">
+              {activeTab === 'country' ? (
+                <div className="space-y-2">
+                  {filteredOptions.map((country) => (
+                    <div
+                      key={country.value}
+                      onClick={() => handleCountrySelect(country)}
+                      className={`p-2 text-white rounded-[8px] cursor-pointer ${
+                        selectedCountry?.value === country.value
+                          ? 'bg-[#043939] border-[1.5px] border-[#a1f69e]'
+                          : 'hover:bg-[#043939]'
+                      }`}
+                    >
+                      {country.label}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {filteredOptions.map((city) => (
+                    <div
+                      key={city.value}
+                      onClick={() => handleCitySelect(city)}
+                      className={`p-2 text-white rounded-[8px] cursor-pointer ${
+                        selectedCity?.value === city.value
+                          ? 'bg-[#043939] border-[1.5px] border-[#a1f69e]'
+                          : 'hover:bg-[#043939]'
+                      }`}
+                    >
+                      {city.label}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={() => {
+                setIsModalOpen(false);
+                setSearchQuery('');
+              }}
+              className="w-full h-[48px] mt-4 bg-[#a1f69e] text-[#022424] rounded-[400px] font-semibold text-[18px] flex items-center justify-center"
+            >
+              Готово
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
