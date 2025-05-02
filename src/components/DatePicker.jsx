@@ -102,10 +102,14 @@ const DatePicker = ({ value, onChange }) => {
                     <div className="w-[343px] bg-[#022424] border border-[#233636] rounded-[8px] p-4">
                         <div className="flex justify-between w-full">
                             <div 
-                                className="w-1/3 h-[200px] overflow-y-auto snap-y snap-mandatory" 
+                                className="w-1/3 h-[200px] overflow-y-auto snap-y snap-mandatory scroll-smooth scrollbar-hide" 
                                 ref={dayRef} 
                                 onScroll={() => handleScroll(dayRef, 'day')}
-                                onTouchMove={() => handleScroll(dayRef, 'day')}
+                                onTouchMove={(e) => {
+                                    e.preventDefault();
+                                    handleScroll(dayRef, 'day');
+                                }}
+                                style={{ scrollBehavior: 'smooth', scrollSnapType: 'y mandatory' }}
                             >
                                 {paddedDays.map((day, index) => (
                                     <div 
@@ -119,10 +123,14 @@ const DatePicker = ({ value, onChange }) => {
                                 ))}
                             </div>
                             <div 
-                                className="w-1/3 h-[200px] overflow-y-auto snap-y snap-mandatory" 
+                                className="w-1/3 h-[200px] overflow-y-auto snap-y snap-mandatory scroll-smooth scrollbar-hide" 
                                 ref={monthRef} 
                                 onScroll={() => handleScroll(monthRef, 'month')}
-                                onTouchMove={() => handleScroll(monthRef, 'month')}
+                                onTouchMove={(e) => {
+                                    e.preventDefault();
+                                    handleScroll(monthRef, 'month');
+                                }}
+                                style={{ scrollBehavior: 'smooth', scrollSnapType: 'y mandatory' }}
                             >
                                 {paddedMonths.map((month, index) => (
                                     <div 
@@ -136,10 +144,14 @@ const DatePicker = ({ value, onChange }) => {
                                 ))}
                             </div>
                             <div 
-                                className="w-1/3 h-[200px] overflow-y-auto snap-y snap-mandatory" 
+                                className="w-1/3 h-[200px] overflow-y-auto snap-y snap-mandatory scroll-smooth scrollbar-hide" 
                                 ref={yearRef} 
                                 onScroll={() => handleScroll(yearRef, 'year')}
-                                onTouchMove={() => handleScroll(yearRef, 'year')}
+                                onTouchMove={(e) => {
+                                    e.preventDefault();
+                                    handleScroll(yearRef, 'year');
+                                }}
+                                style={{ scrollBehavior: 'smooth', scrollSnapType: 'y mandatory' }}
                             >
                                 {paddedYears.map((year, index) => (
                                     <div 
