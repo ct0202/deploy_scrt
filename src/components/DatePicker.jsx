@@ -88,15 +88,15 @@ const DatePicker = ({ value, onChange }) => {
 
     return (
         <div className="relative w-full" ref={containerRef}>
-            <input
+            <div
                 type="text"
                 value={formatDate(new Date(selectedDate.year, selectedDate.month - 1, selectedDate.day))}
-                placeholder="Выберите дату"
                 onClick={() => setIsOpen(true)}
                 onTouchStart={() => setIsOpen(true)}
-                readOnly
                 className="w-full h-full bg-transparent text-white outline-none cursor-pointer"
-            />
+            >
+                <span>{formatDate(new Date(selectedDate.year, selectedDate.month - 1, selectedDate.day))}</span>
+            </div>
             {isOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="w-[343px] bg-[#022424] border border-[#233636] rounded-[8px] p-4">
