@@ -8,6 +8,8 @@ function Step2({ setStep }) {
   const registrationData = useSelector((state) => state.user.registrationData);
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [disabled, setDisabled] = useState(true);
+  const [touchStartY, setTouchStartY] = useState(null);
+  const [touchStartX, setTouchStartX] = useState(null);
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
   const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -69,6 +71,37 @@ function Step2({ setStep }) {
     }
   };
 
+  const handleTouchStart = (e, index) => {
+    if (!registrationData.photos[index]) return;
+    setDraggedIndex(index);
+    setTouchStartY(e.touches[0].clientY);
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    if (draggedIndex === null) return;
+    e.preventDefault();
+  };
+
+  const handleTouchEnd = (e, dropIndex) => {
+    if (draggedIndex === null || draggedIndex === dropIndex) {
+      setDraggedIndex(null);
+      return;
+    }
+
+    const touchEndY = e.changedTouches[0].clientY;
+    const touchEndX = e.changedTouches[0].clientX;
+    const deltaY = Math.abs(touchEndY - touchStartY);
+    const deltaX = Math.abs(touchEndX - touchStartX);
+
+    // Проверяем, что движение было достаточно значительным
+    if (deltaY > 20 || deltaX > 20) {
+      dispatch(reorderPhotos({ fromIndex: draggedIndex, toIndex: dropIndex }));
+    }
+    
+    setDraggedIndex(null);
+  };
+
   return (
     <div className="flex flex-col items-center w-[343px] h-screen overflow-y-auto overflow-x-hidden">
       <h1 className="font-raleway font-semibold mt-6 text-white text-[20px]">
@@ -85,6 +118,9 @@ function Step2({ setStep }) {
             onDragStart={() => handleDragStart(index)}
             onDragOver={handleDragOver}
             onDrop={() => handleDrop(index)}
+            onTouchStart={(e) => handleTouchStart(e, index)}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={(e) => handleTouchEnd(e, index)}
             className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] relative flex items-center justify-center cursor-pointer
               ${draggedIndex === index ? 'opacity-50' : ''}`}
           >
