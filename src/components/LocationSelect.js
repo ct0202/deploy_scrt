@@ -168,7 +168,6 @@ const countryTranslations = {
   'Guadeloupe': 'Гваделупа',
   'Martinique': 'Мартиника',
   'Saint Martin': 'Сен-Мартен',
-  'Saint Barthélemy': 'Сен-Бартелеми',
   'Saint Pierre and Miquelon': 'Сен-Пьер и Микелон',
   'Bermuda': 'Бермуды',
   'Cayman Islands': 'Острова Кайман',
@@ -206,7 +205,6 @@ const countryTranslations = {
   'Guadeloupe': 'Гваделупа',
   'Martinique': 'Мартиника',
   'Saint Martin': 'Сен-Мартен',
-  'Saint Barthélemy': 'Сен-Бартелеми',
   'Saint Pierre and Miquelon': 'Сен-Пьер и Микелон',
   'Bermuda': 'Бермуды',
   'Cayman Islands': 'Острова Кайман',
@@ -234,6 +232,8 @@ const LocationSelect = ({ onLocationSelect }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('country');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [cityInput, setCityInput] = useState('');
   const containerRef = useRef(null);
 
   // Преобразуем объект стран в массив для react-select с русскими названиями
@@ -243,7 +243,10 @@ const LocationSelect = ({ onLocationSelect }) => {
       label: countryTranslations[country.name] || country.name,
       originalName: country.name
     }))
-    .sort((a, b) => a.label.localeCompare(b.label, 'ru'));
+    .sort((a, b) => a.label.localeCompare(b.label, 'ru'))
+    .filter((country, index, self) => 
+      index === self.findIndex((c) => c.label === country.label)
+    );
 
   const loadCities = useCallback(async (country) => {
     if (!country) return;
@@ -255,15 +258,19 @@ const LocationSelect = ({ onLocationSelect }) => {
       return;
     }
   
+    setIsLoading(true);
     try {
       const query = `
         [out:json][timeout:25];
         area["ISO3166-1"="${country.value}"][admin_level=2];
         (
-          node["place"="city"](area);
-          node["place"="town"](area);
+          node["place"~"city|town|village"](area);
+          way["place"~"city|town|village"](area);
+          relation["place"~"city|town|village"](area);
         );
         out body;
+        >;
+        out skel qt;
       `;
   
       const response = await axios.post(
@@ -277,18 +284,57 @@ const LocationSelect = ({ onLocationSelect }) => {
       );
   
       const cities = response.data.elements
-        .map(item => ({
-          value: item.tags.name,
-          label: item.tags.name,
-          lat: item.lat,
-          lon: item.lon
-        }))
+        .filter(item => item.tags && item.tags.name)
+        .map(item => {
+          const name = item.tags.name;
+          const nameRu = item.tags['name:ru'] || name;
+          const lat = item.lat || item.center?.lat;
+          const lon = item.lon || item.center?.lon;
+          
+          return {
+            value: `${name}_${lat}_${lon}`,
+            label: nameRu,
+            lat: lat,
+            lon: lon
+          };
+        })
+        .filter(city => city.lat && city.lon)
+        .filter((city, index, self) => 
+          index === self.findIndex((c) => c.label === city.label)
+        )
         .sort((a, b) => a.label.localeCompare(b.label, 'ru'));
+  
+      console.log('Список городов:', cities);
+      console.log('Количество городов:', cities.length);
   
       cityCache.set(cacheKey, cities);
       setCityOptions(cities);
     } catch (error) {
       console.error('Error fetching cities:', error);
+      try {
+        const response = await axios.get(
+          `https://nominatim.openstreetmap.org/search?country=${country.originalName}&format=json&featuretype=city&limit=1000`
+        );
+        
+        const cities = response.data
+          .map(item => ({
+            value: item.display_name,
+            label: item.display_name,
+            lat: parseFloat(item.lat),
+            lon: parseFloat(item.lon)
+          }))
+          .filter((city, index, self) => 
+            index === self.findIndex((c) => c.label === city.label)
+          )
+          .sort((a, b) => a.label.localeCompare(b.label, 'ru'));
+        
+        cityCache.set(cacheKey, cities);
+        setCityOptions(cities);
+      } catch (fallbackError) {
+        console.error('Fallback API error:', fallbackError);
+      }
+    } finally {
+      setIsLoading(false);
     }
   }, []);
   
@@ -297,6 +343,7 @@ const LocationSelect = ({ onLocationSelect }) => {
   useEffect(() => {
     if (selectedCountry) {
       loadCities(selectedCountry);
+      setSearchQuery('');
     }
   }, [selectedCountry, loadCities]);
 
@@ -329,6 +376,7 @@ const LocationSelect = ({ onLocationSelect }) => {
 
   const handleInputClick = (tab) => {
     setActiveTab(tab);
+    setSearchQuery('');
     setIsModalOpen(true);
   };
 
@@ -345,6 +393,22 @@ const LocationSelect = ({ onLocationSelect }) => {
         city.label.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
+  const handleCityInputChange = (e) => {
+    const value = e.target.value;
+    setCityInput(value);
+    
+    if (value.length >= 2) {
+      const filtered = cityOptions.filter(city => 
+        city.label.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredCityOptions(filtered);
+    } else {
+      setFilteredCityOptions([]);
+    }
+  };
+
+  const [filteredCityOptions, setFilteredCityOptions] = useState([]);
+
   return (
     <div className="w-full" ref={containerRef}>
       <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
@@ -360,11 +424,31 @@ const LocationSelect = ({ onLocationSelect }) => {
       <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
         Населенный пункт (город, деревня)
       </h1>
-      <div
-        onClick={() => handleInputClick('city')}
-        className="w-full h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e] flex items-center cursor-pointer"
-      >
-        {selectedCity ? selectedCity.label : "Введите город"}
+      <div className="relative">
+        <input
+          type="text"
+          value={cityInput}
+          onChange={handleCityInputChange}
+          placeholder="Введите город"
+          className="w-full h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
+        />
+        {filteredCityOptions.length > 0 && (
+          <div className="absolute top-full left-0 right-0 mt-1 bg-[#022424] border border-[#233636] rounded-[8px] max-h-[200px] overflow-y-auto z-10">
+            {filteredCityOptions.map((city) => (
+              <div
+                key={`${city.value}_${city.lat}_${city.lon}`}
+                onClick={() => {
+                  setCityInput(city.label);
+                  setFilteredCityOptions([]);
+                  handleCitySelect(city);
+                }}
+                className="p-3 hover:bg-[#043939] cursor-pointer text-white"
+              >
+                {city.label}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {isModalOpen && (
@@ -404,7 +488,12 @@ const LocationSelect = ({ onLocationSelect }) => {
             </div>
 
             <div className="h-[300px] overflow-y-auto">
-              {activeTab === 'country' ? (
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center h-full">
+                  <div className="w-8 h-8 border-4 border-[#a1f69e] border-t-transparent rounded-full animate-spin"></div>
+                  <p className="mt-4 text-white">Загрузка городов...</p>
+                </div>
+              ) : activeTab === 'country' ? (
                 <div className="space-y-2">
                   {filteredOptions.map((country) => (
                     <div

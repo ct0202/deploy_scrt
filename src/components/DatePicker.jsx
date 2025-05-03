@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 
 const DatePicker = ({ value, onChange }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [showAgeWarning, setShowAgeWarning] = useState(false);
     const [selectedDate, setSelectedDate] = useState({
         day: value ? new Date(value).getDate() : 1,
         month: value ? new Date(value).getMonth() + 1 : 1,
@@ -24,6 +25,38 @@ const DatePicker = ({ value, onChange }) => {
     const paddedMonths = [...Array(5).fill(''), ...months, ...Array(5).fill('')];
     const paddedYears = [...Array(5).fill(''), ...years, ...Array(5).fill('')];
 
+    const checkAge = (date) => {
+        const today = new Date();
+        const birthDate = new Date(date.year, date.month - 1, date.day);
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            return age - 1;
+        }
+        return age;
+    };
+
+    const handleDateSelect = () => {
+        const age = checkAge(selectedDate);
+        
+        if (age < 18) {
+            setShowAgeWarning(true);
+            return;
+        }
+
+        const date = new Date(selectedDate.year, selectedDate.month - 1, selectedDate.day);
+        onChange(date.toISOString().split('T')[0]);
+        setIsOpen(false);
+    };
+
+    const handleChangeDate = () => {
+        setShowAgeWarning(false);
+        requestAnimationFrame(() => {
+            setIsOpen(true);
+        });
+    };
+
     const handleScroll = (ref, type) => {
         if (ref.current) {
             const element = ref.current;
@@ -41,12 +74,10 @@ const DatePicker = ({ value, onChange }) => {
             }
 
             if (newValue !== undefined) {
-                setSelectedDate(prev => {
-                    const newDate = { ...prev, [type]: newValue };
-                    const date = new Date(newDate.year, newDate.month - 1, newDate.day);
-                    onChange(date.toISOString().split('T')[0]);
-                    return newDate;
-                });
+                setSelectedDate(prev => ({
+                    ...prev,
+                    [type]: newValue
+                }));
             }
         }
     };
@@ -84,6 +115,10 @@ const DatePicker = ({ value, onChange }) => {
         if (!date) return '';
         const d = new Date(date);
         return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+    };
+
+    const handleExit = () => {
+        window.location.href = 'https://t.me/jordan_nigger_666_bot';
     };
 
     return (
@@ -166,11 +201,35 @@ const DatePicker = ({ value, onChange }) => {
                             </div>
                         </div>
                         <button
-                            onClick={() => setIsOpen(false)}
+                            onClick={handleDateSelect}
                             className="w-full h-[48px] mt-4 bg-[#a1f69e] text-[#022424] rounded-[400px] font-semibold text-[18px] flex items-center justify-center"
                         >
                             Готово
                         </button>
+                    </div>
+                </div>
+            )}
+
+            {showAgeWarning && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="w-[343px] bg-[#022424] border border-[#233636] rounded-[8px] p-4">
+                        <h2 className="text-white text-center text-[18px] font-semibold mb-4">
+                            Приложение доступно только совершеннолетним пользователям
+                        </h2>
+                        <div className="space-y-3">
+                            <button
+                                onClick={handleChangeDate}
+                                className="w-full h-[48px] bg-[#a1f69e] text-[#022424] rounded-[400px] font-semibold text-[18px] flex items-center justify-center"
+                            >
+                                Изменить дату рождения
+                            </button>
+                            <button
+                                onClick={handleExit}
+                                className="w-full h-[48px] bg-[#022424] text-white border border-[#233636] rounded-[400px] font-semibold text-[18px] flex items-center justify-center"
+                            >
+                                Выйти
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

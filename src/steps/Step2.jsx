@@ -34,6 +34,7 @@ function Step2({ setStep }) {
       }
     };
     reader.readAsDataURL(file);
+    event.target.value = ''; // Сбрасываем значение input, чтобы можно было загрузить ту же фотографию снова
   };
 
   const checkPhotos = () => {
@@ -57,6 +58,15 @@ function Step2({ setStep }) {
     if (draggedIndex === null || draggedIndex === dropIndex) return;
     dispatch(reorderPhotos({ fromIndex: draggedIndex, toIndex: dropIndex }));
     setDraggedIndex(null);
+  };
+
+  const handleDeletePhoto = (index) => {
+    const newPhotos = [...registrationData.photos];
+    newPhotos[index] = null;
+    dispatch(updatePhoto({ index, photo: null }));
+    if (index === 0) {
+        setDisabled(true);
+    }
   };
 
   return (
@@ -85,6 +95,7 @@ function Step2({ setStep }) {
                   alt={`Photo ${index + 1}`}
                   className="w-full h-full object-cover rounded-[16px]"
                 />
+                <div className="absolute top-[8px] right-[8px] pointer-events-auto z-10" onClick={() => handleDeletePhoto(index)}><img src="/icons/delete_img.svg" className="w-[16px] h-[16px]" alt="Удалить" /></div>
                 {index === 0 && (
                   <div className="absolute bottom-0 left-0 right-0 h-[40px] flex items-center justify-center bg-gradient-to-t from-[#032B2B] to-transparent rounded-b-[16px]">
                     <span className="text-white font-raleway text-[14px]">Главное фото</span>
