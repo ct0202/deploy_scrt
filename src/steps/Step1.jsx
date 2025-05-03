@@ -43,6 +43,7 @@ function Step1({ setStep }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'name' && value.length > 20) return;
     dispatch(updateRegistrationData({ [name]: value }));
   };
 
@@ -67,6 +68,7 @@ function Step1({ setStep }) {
         type="text"
         name="name"
         placeholder="Ваше имя"
+        maxLength={20}
         className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
         value={registrationData.name || ''}
         onChange={handleChange}
