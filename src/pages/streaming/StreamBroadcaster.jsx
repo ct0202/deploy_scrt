@@ -1,18 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import { toast } from 'react-toastify';
 import { AGORA_APP_ID } from '../../config';
+import streamChatService from '../../services/stream-chat.service';
 
 const StreamBroadcaster = () => {
     const { streamId } = useParams();
-    const userId = useSelector((state) => state.user.userId);
+    console.log('[StreamBroadcaster] Stream ID:', streamId);
+    const navigate = useNavigate();
+    const userId = useSelector((state) => state.auth.userId);
+    console.log('[StreamBroadcaster] User ID:', userId);
+
     const [isLoading, setIsLoading] = useState(true);
     const [isStreaming, setIsStreaming] = useState(false);
     const [streamTitle, setStreamTitle] = useState('');
     const [streamDescription, setStreamDescription] = useState('');
     const [viewerCount, setViewerCount] = useState(0);
+    const [chatMessages, setChatMessages] = useState([]);
+    const [messageInput, setMessageInput] = useState('');
 
     // Agora refs
     const client = useRef(null);
@@ -24,10 +31,68 @@ const StreamBroadcaster = () => {
 
     useEffect(() => {
         initializeAgora();
+        initializeChat();
+
         return () => {
             stopStreaming();
+            streamChatService.disconnect();
         };
     }, []);
+
+    const initializeChat = () => {
+        try {
+            console.log('[StreamBroadcaster] Initializing chat...');
+            // Connect to stream chat service
+            const token = localStorage.getItem('token');
+            streamChatService.connect(token);
+            console.log('[StreamBroadcaster] Connected to chat service');
+
+            // Set up message listener
+            const messageUnsubscribe = streamChatService.onMessage((data) => {
+                console.log('[StreamBroadcaster] Received message:', data);
+                if (data.type === 'message') {
+                    const formattedMessage = {
+                        id: data.data._id,
+                        username: data.data.username,
+                        message: data.data.message,
+                        timestamp: new Date(data.data.timestamp).toLocaleTimeString(),
+                        role: data.data.role
+                    };
+                    console.log('[StreamBroadcaster] Formatted message:', formattedMessage);
+                    // setChatMessages(prev => [...prev, formattedMessage]);
+                } 
+            });
+
+            // Set up history listener
+            const historyUnsubscribe = streamChatService.onHistory((data) => {
+                console.log('[StreamBroadcaster] Received chat history:', data);
+                const formattedMessages = data.messages;
+                console.log('[StreamBroadcaster] Formatted history:', formattedMessages);
+                setChatMessages(data?.data?.messages);
+            });
+
+            // Set up error listener
+            const errorUnsubscribe = streamChatService.onError((error) => {
+                console.error('[StreamBroadcaster] Chat error:', error);
+                toast.error(error.message || 'Chat error occurred');
+            });
+
+            // Create stream chat
+            console.log('[StreamBroadcaster] Creating stream chat');
+            streamChatService.createStreamChat(streamId);
+
+            // Cleanup on unmount
+            return () => {
+                console.log('[StreamBroadcaster] Cleaning up chat listeners');
+                messageUnsubscribe();
+                historyUnsubscribe();
+                errorUnsubscribe();
+            };
+        } catch (error) {
+            console.error('[StreamBroadcaster] Error initializing chat:', error);
+            toast.error('Failed to initialize chat');
+        }
+    };
 
     const initializeAgora = async () => {
         try {
@@ -81,6 +146,21 @@ const StreamBroadcaster = () => {
         } catch (error) {
             console.error('Error initializing stream:', error);
             toast.error('Failed to start stream');
+        }
+    };
+
+    const sendMessage = async (e) => {
+        e.preventDefault();
+        if (!messageInput.trim()) return;
+
+        try {
+            console.log('[StreamBroadcaster] Sending message:', messageInput);
+            await streamChatService.sendMessage(streamId, userId, messageInput);
+            console.log('[StreamBroadcaster] Message sent successfully');
+            setMessageInput('');
+        } catch (error) {
+            console.error('[StreamBroadcaster] Error sending message:', error);
+            toast.error('Failed to send message');
         }
     };
 
@@ -148,6 +228,7 @@ const StreamBroadcaster = () => {
             console.error('Error stopping stream:', error);
         } finally {
             setIsStreaming(false);
+            // navigate('/'); // Navigate to home after stopping stream
         }
     };
 
@@ -190,6 +271,45 @@ const StreamBroadcaster = () => {
                     </div>
 
                     <div className="space-y-4">
+                        <div className="bg-[#043939] p-4 rounded-lg">
+                            <h2 className="text-lg font-semibold mb-2">Stream Chat</h2>
+                            <div className="space-y-2">
+                                <div className="h-64 overflow-y-auto bg-[#022424] p-2 rounded">
+                                    {chatMessages?.map((msg) => (
+                                        <div key={msg.id} className={`mb-2 ${msg.isSystem ? 'text-gray-400 italic' : ''}`}>
+                                            <p className="text-sm text-gray-400">
+                                                {msg.timestamp}
+                                            </p>
+                                            <p className="text-sm">
+                                                {msg.isSystem ? (
+                                                    <span>{msg.message}</span>
+                                                ) : (
+                                                    <>
+                                                        <span className="font-semibold">{msg.username}:</span> {msg.message}
+                                                    </>
+                                                )}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <form onSubmit={sendMessage} className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        value={messageInput}
+                                        onChange={(e) => setMessageInput(e.target.value)}
+                                        placeholder="Type a message..."
+                                        className="flex-1 bg-[#022424] p-2 rounded text-white"
+                                    />
+                                    <button 
+                                        type="submit"
+                                        className="bg-[#022424] hover:bg-[#033333] px-4 py-2 rounded"
+                                    >
+                                        Send
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
                         <div className="bg-[#043939] p-4 rounded-lg">
                             <h2 className="text-lg font-semibold mb-2">Stream Controls</h2>
                             <div className="flex gap-2">

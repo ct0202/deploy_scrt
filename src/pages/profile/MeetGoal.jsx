@@ -8,8 +8,9 @@ function MeetGoal() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { telegramId } = useSelector(state => state.auth);
-    const registrationData = useSelector((state) => state.user.registrationData);
+    const userData = useSelector((state) => state.user.userData);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [selectedPurpose, setSelectedPurpose] = useState(userData?.purpose || '');
 
     const options = [
         {
@@ -35,11 +36,12 @@ function MeetGoal() {
     ];
 
     const handlePurposeSelect = (purpose) => {
+        setSelectedPurpose(purpose);
         dispatch(updateRegistrationData({ field: 'purpose', value: purpose }));
     };
 
     const handleSave = async () => {
-        if (!registrationData.purpose) {
+        if (!selectedPurpose) {
             alert('Пожалуйста, выберите цель знакомства');
             return;
         }
@@ -49,14 +51,14 @@ function MeetGoal() {
             console.log('Sending meet goal update request...');
             const response = await axiosPrivate.put('/users/updateMeetGoal', {
                 telegramId: telegramId,
-                purpose: registrationData.purpose
+                purpose: selectedPurpose
             });
 
             console.log('Meet goal update response:', response.data);
             navigate(-1);
         } catch (error) {
             console.error('Error updating meet goal:', error);
-            alert('Произошла ошибка при сохранении цели знакомства. Пожалуйста, попробуйте еще раз.');
+            alert('Произошла ошибка при сохранении цели знакомства. Пожалуй, попробуйте еще раз.');
         } finally {
             setIsSubmitting(false);
         }
@@ -86,7 +88,7 @@ function MeetGoal() {
                             key={option.title}
                             onClick={() => handlePurposeSelect(option.title)}
                             className={`w-[343px] h-[89px] rounded-[8px] flex text-white cursor-pointer transition-all 
-                                ${registrationData.purpose === option.title
+                                ${selectedPurpose === option.title
                                     ? "bg-[#043939] border-[1.5px] border-[#a1f69e]"
                                     : "bg-[#022424] border-[1px] border-[#233636]"
                                 }`}

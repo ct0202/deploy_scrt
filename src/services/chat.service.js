@@ -6,7 +6,7 @@ let socket = null;
 const messageCallbacks = new Set();
 const typingCallbacks = new Set();
 
-export const connect = (token) => {
+const connect = (token) => {
     if (socket) {
         disconnect();
     }
@@ -18,15 +18,15 @@ export const connect = (token) => {
     });
 
     socket.on('connect', () => {
-        console.log('Connected to chat server');
+        console.log('[ChatService] Connected to chat server');
     });
 
     socket.on('disconnect', () => {
-        console.log('Disconnected from chat server');
+        console.log('[ChatService] Disconnected from chat server');
     });
 
     socket.on('new-message', (data) => {
-        console.log('New message received:', data);
+        console.log('[ChatService] New message received:', data);
         if (data.chatHistory) {
             // Update chat history
             messageCallbacks.forEach(callback => callback({
@@ -48,24 +48,24 @@ export const connect = (token) => {
     });
 
     socket.on('error', (error) => {
-        console.error('Socket error:', error);
+        console.error('[ChatService] Socket error:', error);
     });
 };
 
-export const disconnect = () => {
+const disconnect = () => {
     if (socket) {
         socket.disconnect();
         socket = null;
     }
 };
 
-export const joinChat = (chatId) => {
+const joinChat = (chatId) => {
     if (socket) {
         socket.emit('join-chat', chatId);
     }
 };
 
-export const sendMessage = (chatId, content) => {
+const sendMessage = (chatId, content) => {
     if (socket) {
         const userId = localStorage.getItem('userId');
         socket.emit('send-message', {
@@ -76,7 +76,7 @@ export const sendMessage = (chatId, content) => {
     }
 };
 
-export const markAsRead = (chatId) => {
+const markAsRead = (chatId) => {
     if (socket) {
         const userId = localStorage.getItem('userId');
         socket.emit('mark-read', {
@@ -86,12 +86,12 @@ export const markAsRead = (chatId) => {
     }
 };
 
-export const onMessage = (callback) => {
+const onMessage = (callback) => {
     messageCallbacks.add(callback);
     return () => messageCallbacks.delete(callback);
 };
 
-export const onTyping = (callback) => {
+const onTyping = (callback) => {
     // typingCallbacks.add(callback);
     // return () => typingCallbacks.delete(callback);
 };
@@ -117,14 +117,14 @@ async function getUserChats(page = 1, limit = 20) {
             }
         };
     } catch (error) {
-        console.error('Error fetching user chats:', error);
+        console.error('[ChatService] Error fetching user chats:', error);
         throw error;
     }
 }
 
 async function getChatHistory(chatId, page = 1, limit = 50) {
     try {
-        console.log('Fetching chat history for chatId:', chatId);
+        console.log('[ChatService] Fetching chat history for chatId:', chatId);
         const response = await axiosPrivate.get(config.API.CHATS.HISTORY(chatId), {
             params: { page, limit },
             headers: {
@@ -144,7 +144,7 @@ async function getChatHistory(chatId, page = 1, limit = 50) {
             }
         };
     } catch (error) {
-        console.error('Error fetching chat history:', error);
+        console.error('[ChatService] Error fetching chat history:', error);
         throw error;
     }
 }
@@ -158,7 +158,7 @@ async function updateTypingStatus(chatId, isTyping) {
     // }
 }
 
-export default {
+const chatService = {
     connect,
     disconnect,
     joinChat,
@@ -169,4 +169,6 @@ export default {
     getUserChats,
     getChatHistory,
     updateTypingStatus
-}; 
+};
+
+export default chatService; 

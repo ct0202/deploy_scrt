@@ -6,9 +6,26 @@ import { axiosPrivate } from '../../axios';
 function Photo() {
     const navigate = useNavigate();
     const { telegramId } = useSelector(state => state.auth);
+    const userData = useSelector(state => state.user.userData);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [photos, setPhotos] = useState({});
     const fileInputs = useRef({});
+
+    // Initialize photos from userData
+    React.useEffect(() => {
+        console.log('UserData photos:', userData?.photos);
+        if (userData?.photos) {
+            // Convert photos array to object with photoId as key
+            const photosObj = userData.photos.reduce((acc, photo, index) => {
+                if (photo) {
+                    acc[index + 1] = { url: photo };
+                }
+                return acc;
+            }, {});
+            console.log('Converted photos object:', photosObj);
+            setPhotos(photosObj);
+        }
+    }, [userData]);
 
     const handlePhotoSelect = (photoId) => {
         fileInputs.current[photoId]?.click();
@@ -19,7 +36,10 @@ function Photo() {
         if (file) {
             setPhotos(prev => ({
                 ...prev,
-                [photoId]: file
+                [photoId]: {
+                    file: file,
+                    preview: URL.createObjectURL(file)
+                }
             }));
         }
     };
@@ -31,10 +51,11 @@ function Photo() {
             setIsSubmitting(true);
             const formData = new FormData();
             formData.append('telegramId', telegramId);
-            console.log(telegramId);
 
-            Object.entries(photos).forEach(([photoId, file]) => {
-                formData.append(`photo${photoId}`, file);
+            Object.entries(photos).forEach(([photoId, photoData]) => {
+                if (photoData.file) {
+                    formData.append(`photo${photoId}`, photoData.file);
+                }
             });
 
             console.log('Sending photos update request...');
@@ -94,9 +115,15 @@ function Photo() {
                                         className="absolute top-0 left-0"
                                     />
                                 )}
-                                {photos[photoId] ? (
+                                {photos[photoId]?.preview ? (
                                     <img
-                                        src={URL.createObjectURL(photos[photoId])}
+                                        src={photos[photoId].preview}
+                                        alt={`Photo ${photoId}`}
+                                        className="w-full h-full object-cover rounded-[16px]"
+                                    />
+                                ) : photos[photoId]?.url ? (
+                                    <img
+                                        src={photos[photoId].url}
                                         alt={`Photo ${photoId}`}
                                         className="w-full h-full object-cover rounded-[16px]"
                                     />
