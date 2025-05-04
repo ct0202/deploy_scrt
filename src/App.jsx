@@ -66,7 +66,6 @@ function App() {
         if (isTelegram === 1) { 
             const tg = window.Telegram.WebApp;
             
-            
             tg.requestFullscreen();
             tg.disableVerticalSwipes();
             tg.ready();
