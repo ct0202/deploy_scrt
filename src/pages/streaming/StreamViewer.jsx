@@ -47,32 +47,38 @@ const StreamViewer = () => {
             console.log('[StreamViewer] Connected to chat service');
 
             // Set up message listener
+            // Set up message listener
             const messageUnsubscribe = streamChatService.onMessage((data) => {
-                console.log('[StreamViewer] Received message:', data);
+                console.log('[StreamBroadcaster] Received message:', data);
                 if (data.type === 'message') {
-                    setChatMessages(prev => [...prev, data.data]);
-                } else if (data.type === 'system') {
-                    setChatMessages(prev => [...prev, {
-                        ...data.data,
-                        isSystem: true
-                    }]);
-                }
+                    const formattedMessage = {
+                        id: data.data._id,
+                        username: data.data.username,
+                        message: data.data.message,
+                        timestamp: new Date(data.data.timestamp).toLocaleTimeString(),
+                        role: data.data.role
+                    };
+                    console.log('[StreamBroadcaster] Formatted message:', formattedMessage);
+                    // setChatMessages(prev => [...prev, formattedMessage]);
+                } 
             });
 
             // Set up history listener
             const historyUnsubscribe = streamChatService.onHistory((data) => {
-                console.log('[StreamViewer] Received chat history:', data);
-                setChatMessages(data.messages || []);
+                console.log('[StreamBroadcaster] Received chat history:', data);
+                const formattedMessages = data.messages;
+                console.log('[StreamBroadcaster] Formatted history:', formattedMessages);
+                setChatMessages(data?.data?.messages);
+
             });
 
             // Set up error listener
             const errorUnsubscribe = streamChatService.onError((error) => {
-                console.error('[StreamViewer] Chat error:', error);
+                console.error('[StreamBroadcaster] Chat error:', error);
                 toast.error(error.message || 'Chat error occurred');
             });
-
-            // Join the stream chat
-            console.log('[StreamViewer] Joining stream chat:', streamId);
+            // Join stream chat
+            console.log('[StreamViewer] Joining stream chat');
             streamChatService.joinStreamChat(streamId);
 
             // Cleanup on unmount
@@ -152,7 +158,7 @@ const StreamViewer = () => {
         } catch (error) {
             console.error('Error initializing stream:', error);
             toast.error('Failed to join stream');
-            navigate(-1);
+            // navigate(-1);
         }
     };
 
@@ -162,7 +168,7 @@ const StreamViewer = () => {
 
         try {
             console.log('[StreamViewer] Sending message:', messageInput);
-            await streamChatService.sendMessage(streamId, messageInput);
+            await streamChatService.sendMessage(streamId, userId, messageInput);
             console.log('[StreamViewer] Message sent successfully');
             setMessageInput('');
         } catch (error) {
@@ -233,7 +239,7 @@ const StreamViewer = () => {
                                     {chatMessages.map((msg, index) => (
                                         <div key={index} className={`mb-2 ${msg.isSystem ? 'text-gray-400 italic' : ''}`}>
                                             <p className="text-sm text-gray-400">
-                                                {new Date(msg.timestamp).toLocaleTimeString()}
+                                                {msg.timestamp}
                                             </p>
                                             <p className="text-sm">
                                                 {msg.isSystem ? (

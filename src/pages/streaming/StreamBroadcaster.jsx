@@ -8,8 +8,11 @@ import streamChatService from '../../services/stream-chat.service';
 
 const StreamBroadcaster = () => {
     const { streamId } = useParams();
+    console.log('[StreamBroadcaster] Stream ID:', streamId);
     const navigate = useNavigate();
-    const userId = useSelector((state) => state.user.userId);
+    const userId = useSelector((state) => state.auth.userId);
+    console.log('[StreamBroadcaster] User ID:', userId);
+
     const [isLoading, setIsLoading] = useState(true);
     const [isStreaming, setIsStreaming] = useState(false);
     const [streamTitle, setStreamTitle] = useState('');
@@ -48,19 +51,24 @@ const StreamBroadcaster = () => {
             const messageUnsubscribe = streamChatService.onMessage((data) => {
                 console.log('[StreamBroadcaster] Received message:', data);
                 if (data.type === 'message') {
-                    setChatMessages(prev => [...prev, data.data]);
-                } else if (data.type === 'system') {
-                    setChatMessages(prev => [...prev, {
-                        ...data.data,
-                        isSystem: true
-                    }]);
-                }
+                    const formattedMessage = {
+                        id: data.data._id,
+                        username: data.data.username,
+                        message: data.data.message,
+                        timestamp: new Date(data.data.timestamp).toLocaleTimeString(),
+                        role: data.data.role
+                    };
+                    console.log('[StreamBroadcaster] Formatted message:', formattedMessage);
+                    // setChatMessages(prev => [...prev, formattedMessage]);
+                } 
             });
 
             // Set up history listener
             const historyUnsubscribe = streamChatService.onHistory((data) => {
                 console.log('[StreamBroadcaster] Received chat history:', data);
-                setChatMessages(data.messages || []);
+                const formattedMessages = data.messages;
+                console.log('[StreamBroadcaster] Formatted history:', formattedMessages);
+                setChatMessages(data.data.messages);
             });
 
             // Set up error listener
@@ -147,7 +155,7 @@ const StreamBroadcaster = () => {
 
         try {
             console.log('[StreamBroadcaster] Sending message:', messageInput);
-            await streamChatService.sendMessage(streamId, messageInput);
+            await streamChatService.sendMessage(streamId, userId, messageInput);
             console.log('[StreamBroadcaster] Message sent successfully');
             setMessageInput('');
         } catch (error) {
@@ -220,7 +228,7 @@ const StreamBroadcaster = () => {
             console.error('Error stopping stream:', error);
         } finally {
             setIsStreaming(false);
-            navigate('/'); // Navigate to home after stopping stream
+            // navigate('/'); // Navigate to home after stopping stream
         }
     };
 
@@ -267,10 +275,10 @@ const StreamBroadcaster = () => {
                             <h2 className="text-lg font-semibold mb-2">Stream Chat</h2>
                             <div className="space-y-2">
                                 <div className="h-64 overflow-y-auto bg-[#022424] p-2 rounded">
-                                    {chatMessages.map((msg, index) => (
-                                        <div key={index} className={`mb-2 ${msg.isSystem ? 'text-gray-400 italic' : ''}`}>
+                                    {chatMessages?.map((msg) => (
+                                        <div key={msg.id} className={`mb-2 ${msg.isSystem ? 'text-gray-400 italic' : ''}`}>
                                             <p className="text-sm text-gray-400">
-                                                {new Date(msg.timestamp).toLocaleTimeString()}
+                                                {msg.timestamp}
                                             </p>
                                             <p className="text-sm">
                                                 {msg.isSystem ? (
