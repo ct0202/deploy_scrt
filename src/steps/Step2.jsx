@@ -8,6 +8,8 @@ function Step2({ setStep }) {
   const registrationData = useSelector((state) => state.user.registrationData);
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [disabled, setDisabled] = useState(true);
+  const [touchStartY, setTouchStartY] = useState(null);
+  const [touchStartX, setTouchStartX] = useState(null);
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
   const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -34,6 +36,7 @@ function Step2({ setStep }) {
       }
     };
     reader.readAsDataURL(file);
+    event.target.value = ''; // Сбрасываем значение input, чтобы можно было загрузить ту же фотографию снова
   };
 
   const checkPhotos = () => {
@@ -59,6 +62,46 @@ function Step2({ setStep }) {
     setDraggedIndex(null);
   };
 
+  const handleDeletePhoto = (index) => {
+    const newPhotos = [...registrationData.photos];
+    newPhotos[index] = null;
+    dispatch(updatePhoto({ index, photo: null }));
+    if (index === 0) {
+        setDisabled(true);
+    }
+  };
+
+  const handleTouchStart = (e, index) => {
+    if (!registrationData.photos[index]) return;
+    setDraggedIndex(index);
+    setTouchStartY(e.touches[0].clientY);
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    if (draggedIndex === null) return;
+    e.preventDefault();
+  };
+
+  const handleTouchEnd = (e, dropIndex) => {
+    if (draggedIndex === null || draggedIndex === dropIndex) {
+      setDraggedIndex(null);
+      return;
+    }
+
+    const touchEndY = e.changedTouches[0].clientY;
+    const touchEndX = e.changedTouches[0].clientX;
+    const deltaY = Math.abs(touchEndY - touchStartY);
+    const deltaX = Math.abs(touchEndX - touchStartX);
+
+    // Проверяем, что движение было достаточно значительным
+    if (deltaY > 20 || deltaX > 20) {
+      dispatch(reorderPhotos({ fromIndex: draggedIndex, toIndex: dropIndex }));
+    }
+    
+    setDraggedIndex(null);
+  };
+
   return (
     <div className="flex flex-col items-center w-[343px] h-screen overflow-y-auto overflow-x-hidden">
       <h1 className="font-raleway font-semibold mt-6 text-white text-[20px]">
@@ -75,6 +118,9 @@ function Step2({ setStep }) {
             onDragStart={() => handleDragStart(index)}
             onDragOver={handleDragOver}
             onDrop={() => handleDrop(index)}
+            onTouchStart={(e) => handleTouchStart(e, index)}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={(e) => handleTouchEnd(e, index)}
             className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] relative flex items-center justify-center cursor-pointer
               ${draggedIndex === index ? 'opacity-50' : ''}`}
           >
@@ -85,6 +131,7 @@ function Step2({ setStep }) {
                   alt={`Photo ${index + 1}`}
                   className="w-full h-full object-cover rounded-[16px]"
                 />
+                <div className="absolute top-[8px] right-[8px] pointer-events-auto z-10" onClick={() => handleDeletePhoto(index)}><img src="/icons/delete_img.svg" className="w-[16px] h-[16px]" alt="Удалить" /></div>
                 {index === 0 && (
                   <div className="absolute bottom-0 left-0 right-0 h-[40px] flex items-center justify-center bg-gradient-to-t from-[#032B2B] to-transparent rounded-b-[16px]">
                     <span className="text-white font-raleway text-[14px]">Главное фото</span>

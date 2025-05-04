@@ -6,11 +6,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-// import "./styles/SwiperCustomPagination.css";
+
+import { INSTRUCTIONS_VIDEOCHAT } from "../../constants/instructions";
 
 import DayLimit from "../../components/shared/DayLimit";
 import PresentsShop from "../../components/shared/PresentsShop";
 import ChatProgressBar from "../../components/ui/ChatProgressBar";
+import Match from "../Match";
 
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import {Navigation} from "../../components/shared/Navigation";
@@ -39,6 +41,9 @@ function VideoChat() {
     const [swipeStart, setSwipeStart] = useState(0);
     const presentsRef = useRef(null);
 
+    const [screen, setScreen] = useState('start'); 
+    //start, chatting, wait, match, out-of-limit,
+
     const handleTouchStart = (e) => {
         setSwipeStart(e.touches[0].clientY);
     };
@@ -47,43 +52,10 @@ function VideoChat() {
         const swipeEnd = e.touches[0].clientY;
         const diff = swipeEnd - swipeStart;
 
-        // Если свайпнули вниз на 100px — закрываем
         if (diff > 100) {
             setPresentsShop(false);
         }
     };
-
-    const instructions = [
-        {
-            id: 1,
-            svg: "/icons/instructions_timer_25sec.svg",
-            title: "25 секунд",
-            description:
-                "У вас есть 25 секунд, чтобы определить, нравится ли вам человек или нет",
-        },
-        {
-            id: 2,
-            svg: "/icons/instr1.svg",
-            title: "Лайк",
-            description:
-                "Если вам понравился человек и вы хотели бы продолжить общение в переписке – поставтье лайк",
-        },
-        {
-            id: 3,
-            svg: "/icons/instr3.svg",
-            title: "Дизлайк",
-            description: "Хотите перейти к следующему собеседнику – поставтье дизлайк",
-        },
-        {
-            id: 4,
-            svg: "/icons/instr4.svg",
-            title: "Начать переписку",
-            description:
-                "Не хотите дожидаться симпатии? Напишите первым",
-        }
-    ];
-
-    // const [client] = useState(() => AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' }));
 
     const client = useMemo(() => AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' }), []);
 
@@ -213,11 +185,11 @@ function VideoChat() {
                     Основные функции и жесты
                 </h1>
                 <div className="grid gric-cols-1 justify-center flex-wrap items-center gap-[16px] mt-[16px]">
-                    {instructions.map((ins, index) => (
+                    {INSTRUCTIONS_VIDEOCHAT.map((ins, index) => (
                         <div
                             key={ins.id}
                             className={`w-[343px] pt-[10px] pb-[10px] gap-[12px] border-b ${
-                                index === instructions.length - 1 ? "border-none" : "border-[#6D6D6D]"
+                                index === INSTRUCTIONS_VIDEOCHAT.length - 1 ? "border-none" : "border-[#6D6D6D]"
                             } flex text-white cursor-pointer`}
                         >
                             <div className="h-[89px] flex justify-center items-center">
@@ -243,7 +215,7 @@ function VideoChat() {
                 </div>
             </div>
         )}
-        <div className="w-[100%] h-[100%] pt-[100px] flex flex-col !items-center overflow-x-hidden">
+        <div className="w-[100%] h-[100vh] pt-[100px] flex flex-col !items-center overflow-hidden">
             <div className="z-0 w-full flex justify-center items-center flex-col">
                 <div className="w-[343px] flex flex-row ">
                     <img
@@ -267,28 +239,27 @@ function VideoChat() {
                 </div>
                 <div></div>
                 <div className="w-[100%] flex justify-center align-center mt-4">
-                    {!viewLimit ?
+                    {screen === 'chatting' && (
                     <div className="relative w-[343px] rounded-[16px]">
 
-                        <div className="absolute top-0 mt-4 z-[3] w-[100%] flex items-center justify-center">
+                        <div className="
+                        absolute 
+                        top-0 
+                        mt-4 
+                        z-[3] 
+                        w-[100%] 
+                        flex 
+                        items-center 
+                        justify-center">
                             <ChatProgressBar completed={25}/>
                         </div>
-
-                        {/*<img*/}
-                        {/*  src="/mock/user_3/user_3_chat_mock.png"*/}
-                        {/*  className="z-[1] w-[363px] h-[527px] rounded-[16px] object-cover"*/}
-                        {/*/>*/}
 
                         <div
                             id="remote-video"
                             ref={remoteVideoRef}
                             className="z-[1] w-[343px] h-[527px] rounded-[16px] object-cover overflow-hidden"
-                        >123</div>
+                        ></div>
 
-                        {/*<img*/}
-                        {/*    src="/mock/user_4/user_4_chat_small.png"*/}
-                        {/*    className="absolute top-0 right-0 mt-6 mr-2 z-[2] w-[80px] h-[140px] rounded-[12px] object-cover"*/}
-                        {/*/>*/}
                         <div id="local-video"
                              style={{
                                  position: "absolute",
@@ -316,7 +287,7 @@ function VideoChat() {
                                 >
                                     <img
                                         src="/icons/photo_overlay_button_2.svg"
-                                        alt="Кнопка 2"
+                                        alt="Сменить собеседника"
                                         className=" w-[64px] h-[64px]"
                                     />
                                 </div>
@@ -325,7 +296,7 @@ function VideoChat() {
                                 >
                                     <img
                                         src="/icons/photo_overlay_button_5.svg"
-                                        alt="Кнопка 5"
+                                        alt="Подарок"
                                         className=" w-[64px] h-[64px]"
                                         onClick={() => {setPresentsShop(true)}}
                                     />
@@ -336,14 +307,15 @@ function VideoChat() {
                                 >
                                     <img
                                         src="/icons/photo_overlay_button_4.svg"
-                                        alt="Кнопка 4"
+                                        alt="Лайк"
                                         className="w-[64px] h-[64px]"
                                     />
                                 </div>
                             </div>
                         </div>
                     </div>
-                        :
+                    )}
+                    {screen === 'limit' && (
                         <div className="w-[343px] h-[527px]
                             bg-[#043939] rounded-[16px]
                             flex items-center justify-center flex-col
@@ -362,13 +334,57 @@ function VideoChat() {
                                 </Button>
                             </div>
                         </div>
-                    }
+                    )}
+                    {screen === 'wait' && (
+                        <div className="w-[343px] h-[527px]
+                        bg-[#043939] rounded-[16px]
+                        flex items-center justify-center flex-col
+                        ">
+                            <object data="/icons/video_chat_wait.svg" type="image/svg+xml" className="w-[48px] h-[48px]"></object>
+                            <p className="text-center text-white text-[20px] font-medium mt-[19px]">Ищем собеседника.</p>
+                            <p className="text-center text-white text-[20px] font-medium">Пожалуйста подождите...</p>
+                            <div className="w-[100%]"></div>
+                        </div>
+                    )}
+                    {screen === 'start' && (
+                        <div className="w-[343px] 
+                        h-[527px]
+                        bg-[#043939] 
+                        rounded-[16px]
+                        flex 
+                        items-center 
+                        justify-center 
+                        flex-col 
+                        relative
+                        ">
+                            <div className="absolute bottom-[16px] w-[311px] h-[64px] flex items-center justify-center">
+                                <Button>Найти собеседника</Button>
+                            </div>
+                            <div className="w-[100%] h-[100%] flex items-center justify-center">
+                            <div id="local-video"
+                             style={{
+                                 position: "absolute",
+                                 top: 0,
+                                 right: 0,
+                                 marginTop: "2rem",
+                                 marginRight: "0.5rem",
+                                 zIndex: 2,
+                                 width: "100%",
+                                 height: "100%",
+                                 borderRadius: "12px",
+                                 objectFit: "cover",
+                                 overflow: "hidden",
+                             }}
+                            />
+                            
+                            </div>
+                        </div>
+                    )}
                 </div>
                 <div className="fixed bottom-0 z-[6] w-[100%] flex items-center justify-center">
                     <Navigation tab={2} />
                 </div>
             </div>
-
 
             {showToast && (
                 <div

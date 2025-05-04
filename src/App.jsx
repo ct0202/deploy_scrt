@@ -67,7 +67,6 @@ function App() {
         if (isTelegram === 1) { 
             const tg = window.Telegram.WebApp;
             
-            
             tg.requestFullscreen();
             tg.disableVerticalSwipes();
             tg.ready();
@@ -76,6 +75,7 @@ function App() {
             let userData = new URLSearchParams(initData);
             userData = JSON.parse(userData.get("user"));
             const tg_id = userData.id;
+            console.log('tg_id', tg_id);
             dispatch(setAuthData({ 
               auth_token: null,
               userId: null,

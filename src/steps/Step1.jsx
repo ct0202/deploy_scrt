@@ -3,6 +3,7 @@ import { Button } from "../components/Button";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRegistrationData } from '../store/userSlice';
 import LocationSelect from '../components/LocationSelect';
+import DatePicker from '../components/DatePicker';
 
 function Step1({ setStep }) {
   const dispatch = useDispatch();
@@ -21,24 +22,28 @@ function Step1({ setStep }) {
   ];
 
   useEffect(() => {
-    if (
-      registrationData.name?.trim() &&
-      registrationData.gender &&
-      registrationData.wantToFind &&
-      registrationData.birthDay &&
-      registrationData.country &&
-      registrationData.city?.trim() &&
-      registrationData.coordinates.latitude &&
-      registrationData.coordinates.longitude
-    ) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
+    const isNameValid = registrationData.name?.trim()?.length > 0;
+    const isGenderValid = registrationData.gender && ['male', 'female'].includes(registrationData.gender);
+    const isWantToFindValid = registrationData.wantToFind && ['male', 'female', 'all'].includes(registrationData.wantToFind);
+    const isBirthDayValid = registrationData.birthDay && new Date(registrationData.birthDay) < new Date();
+    const isCountryValid = registrationData.country?.trim()?.length > 0;
+    const isCityValid = registrationData.city?.trim()?.length > 0;
+    const isCoordinatesValid = registrationData.coordinates?.latitude && registrationData.coordinates?.longitude;
+
+    setDisabled(!(
+      isNameValid &&
+      isGenderValid &&
+      isWantToFindValid &&
+      isBirthDayValid &&
+      isCountryValid &&
+      isCityValid &&
+      isCoordinatesValid
+    ));
   }, [registrationData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'name' && value.length > 20) return;
     dispatch(updateRegistrationData({ [name]: value }));
   };
 
@@ -50,6 +55,10 @@ function Step1({ setStep }) {
     }));
   };
 
+  const handleDateChange = (date) => {
+    dispatch(updateRegistrationData({ birthDay: date }));
+  };
+
   return (
     <div className="flex flex-col justify-start items-start w-[343px]">
       <h1 className="font-raleway font-semibold mt-6 text-white text-[20px]">
@@ -59,6 +68,7 @@ function Step1({ setStep }) {
         type="text"
         name="name"
         placeholder="Ваше имя"
+        maxLength={20}
         className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
         value={registrationData.name || ''}
         onChange={handleChange}
@@ -108,14 +118,12 @@ function Step1({ setStep }) {
       <h1 className="font-raleway font-semibold mt-[32px] text-white text-[20px]">
         Ваша дата рождения?
       </h1>
-      <input
-        type="date"
-        name="birthDay"
-        placeholder="Выбрать дату"
-        value={registrationData.birthDay || ''}
-        onChange={handleChange}
-        className="w-[343px] h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 text-white outline-none focus:border-[#a1f69e]"
-      />
+      <div className="w-[343px] h-[64px] flex justify-center items-center rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]">
+        <DatePicker 
+          value={registrationData.birthDay} 
+          onChange={handleDateChange}
+        />
+      </div>
 
       <LocationSelect onLocationSelect={handleLocationSelect} />
 

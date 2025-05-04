@@ -41,8 +41,8 @@ function Chat() {
     };
 
     return (
-        <div className="w-[100%] h-[100%] pt-[70px] flex flex-col font-raleway !items-center overflow-x-hidden">
-            <img src={background} alt="" className="absolute w-[100vw] z-0" />
+        <div className="z-[9999] w-[100vw] h-[100vh] flex flex-col font-raleway !items-center overflow-hidden  [background:linear-gradient(180deg,rgb(1,13,13)_0%,rgb(3.01,42.5,42.5)_100%)] bg-[100%_100%] bg-repeat-y bg-cover">
+            <img src={background} alt="" className="absolute w-[100vw] h-[100vh] z-0" />
             <div>
                 <img className="
                         w-[160px] h-[200px]
