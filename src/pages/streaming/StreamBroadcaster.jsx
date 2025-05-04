@@ -68,7 +68,7 @@ const StreamBroadcaster = () => {
                 console.log('[StreamBroadcaster] Received chat history:', data);
                 const formattedMessages = data.messages;
                 console.log('[StreamBroadcaster] Formatted history:', formattedMessages);
-                setChatMessages(data.data.messages);
+                setChatMessages(data?.data?.messages);
             });
 
             // Set up error listener

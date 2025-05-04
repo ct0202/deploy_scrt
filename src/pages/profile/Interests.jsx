@@ -3,32 +3,29 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { INTEREST } from "../../constants/interests";
 import { axiosPrivate } from '../../axios';
-
+import { updateRegistrationData } from '../../store/userSlice';
 
 function Interests() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const userId = useSelector((state) => state.user.userId);
-    const [selectedOptions, setSelectedOptions] = useState([]);
+    const telegramId = useSelector((state) => state.auth.telegramId);
+    const userData = useSelector((state) => state.user.userData);
+    const [selectedOptions, setSelectedOptions] = useState(userData?.interests || []);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
-        const storedData = localStorage.getItem("step4Data");
-        if (storedData) {
-            try {
-                const parsedData = JSON.parse(storedData);
-                setSelectedOptions(Array.isArray(parsedData) ? parsedData : []);
-            } catch (error) {
-                console.error("Ошибка парсинга step4Data:", error);
-                setSelectedOptions([]);
-            }
+        if (userData?.interests) {
+            setSelectedOptions(userData.interests);
         }
-    }, []);
+    }, [userData]);
 
     const addOption = (optionId) => {
-        setSelectedOptions((prev) =>
-            prev.includes(optionId) ? prev.filter((id) => id !== optionId) : [...prev, optionId]
-        );
+        const newSelectedOptions = selectedOptions.includes(optionId)
+            ? selectedOptions.filter((id) => id !== optionId)
+            : [...selectedOptions, optionId];
+        
+        setSelectedOptions(newSelectedOptions);
+        dispatch(updateRegistrationData({ field: 'interests', value: newSelectedOptions }));
     };
 
     const handleSave = async () => {
@@ -41,12 +38,11 @@ function Interests() {
             setIsSubmitting(true);
             console.log('Sending interests update request...');
             const response = await axiosPrivate.put('/users/updateInterests', {
-                telegramId: userId,
+                telegramId: telegramId,
                 interests: selectedOptions
             });
 
             console.log('Interests update response:', response.data);
-            localStorage.setItem("step4Data", JSON.stringify(selectedOptions));
             navigate(-1);
         } catch (error) {
             console.error('Error updating interests:', error);
@@ -75,9 +71,9 @@ function Interests() {
                     Выберите не менее 5 интересов, чтобы поделиться ими с другими пользователями
                 </h1>
                 <div className="flex flex-wrap gap-[8px] mt-[16px]">
-                    {INTEREST.map((option) => (
+                    {INTEREST.map((option, index) => (
                         <div
-                            key={option.id}
+                            key={index}
                             onClick={() => addOption(option.id)}
                             className={`w-auto ${ option.id === "Права людей с ограниченными возможностями" ? "text-[15px] p-2" :"p-3 text-[18px]"} h-[48px] rounded-[400px] flex justify-center items-center font-light text-white cursor-pointer transition-all
                             ${selectedOptions.includes(option.id)

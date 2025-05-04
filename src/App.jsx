@@ -44,6 +44,7 @@ import MytaIdea from './pages/MytaIdea';
 import MakePayment from './pages/payments/MakePayment';
 import Premium from './pages/payments/Premium';
 
+import Roulette from './pages/chats/Roulette';
 import Streams from './pages/streaming/Streams';
 import WatchingStream from './pages/streaming/WatchingStream';
 import StreamFilters from './pages/streaming/StreamFilters';
@@ -155,6 +156,7 @@ function App() {
                                     <Route path={`${config.ROUTES.STREAMS.STREAMER}/:id`} element={<Streamer />} />
                                     <Route path={`${config.ROUTES.STREAMS.BROADCASTER}/:streamId`} element={<StreamBroadcaster />} />
                                     <Route path="/streaming/watch/:streamId" element={<StreamViewer />} />
+                                    <Route path="/roulette" element={<Roulette />} />
 
                                     {/* Chat Features */}
                                     <Route path={config.ROUTES.CHATS.LIST} element={<Chats />} />
