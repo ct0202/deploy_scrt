@@ -10,8 +10,10 @@ function Step2({ setStep }) {
   const [disabled, setDisabled] = useState(true);
   const [touchStartY, setTouchStartY] = useState(null);
   const [touchStartX, setTouchStartX] = useState(null);
+  const [ghostPhoto, setGhostPhoto] = useState(null);
+  const [ghostStyle, setGhostStyle] = useState({});
 
-  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  const MAX_FILE_SIZE = 10 * 1024 * 1024;
   const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
 
   const handlePhotoUpload = (index, event) => {
@@ -36,7 +38,7 @@ function Step2({ setStep }) {
       }
     };
     reader.readAsDataURL(file);
-    event.target.value = ''; // Сбрасываем значение input, чтобы можно было загрузить ту же фотографию снова
+    event.target.value = '';
   };
 
   const checkPhotos = () => {
@@ -46,7 +48,7 @@ function Step2({ setStep }) {
 
   useEffect(() => {
     checkPhotos();
-  }, [checkPhotos]);
+  }, [registrationData.photos]);
 
   const handleDragStart = (index) => {
     setDraggedIndex(index);
@@ -61,7 +63,7 @@ function Step2({ setStep }) {
   const handleDragOver = (e, index) => {
     e.preventDefault();
     if (draggedIndex !== null && draggedIndex !== index) {
-        e.currentTarget.classList.add('drag-over');
+      e.currentTarget.classList.add('drag-over');
     }
   };
 
@@ -70,122 +72,141 @@ function Step2({ setStep }) {
   };
 
   const handleDeletePhoto = (index) => {
-    const newPhotos = [...registrationData.photos];
-    newPhotos[index] = null;
     dispatch(updatePhoto({ index, photo: null }));
     if (index === 0) {
-        setDisabled(true);
+      setDisabled(true);
     }
   };
 
+  // 💡 Touch Drag Support Below
+
   const handleTouchStart = (e, index) => {
-    if (!registrationData.photos[index]) return;
+    const photo = registrationData.photos[index];
+    if (!photo) return;
+
     setDraggedIndex(index);
+    setGhostPhoto(photo);
     setTouchStartY(e.touches[0].clientY);
     setTouchStartX(e.touches[0].clientX);
   };
 
   const handleTouchMove = (e) => {
     if (draggedIndex === null) return;
+
+    const touch = e.touches[0];
+    setGhostStyle({
+      top: touch.clientY - 80 + 'px',
+      left: touch.clientX - 80 + 'px',
+      position: 'fixed',
+      width: '160px',
+      height: '160px',
+      zIndex: 1000,
+      pointerEvents: 'none',
+      opacity: 0.8,
+    });
+
     e.preventDefault();
   };
 
-  const handleTouchEnd = (e, dropIndex) => {
-    if (draggedIndex === null || draggedIndex === dropIndex) {
-      setDraggedIndex(null);
-      return;
-    }
+  const handleTouchEnd = (e) => {
+    if (draggedIndex === null) return;
 
-    const touchEndY = e.changedTouches[0].clientY;
-    const touchEndX = e.changedTouches[0].clientX;
-    const deltaY = Math.abs(touchEndY - touchStartY);
-    const deltaX = Math.abs(touchEndX - touchStartX);
+    const touch = e.changedTouches[0];
+    const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+    const dropIndex = Number(dropTarget?.closest('[data-index]')?.getAttribute('data-index'));
 
-    if (deltaY > 20 || deltaX > 20) {
+    if (!isNaN(dropIndex) && dropIndex !== draggedIndex) {
       dispatch(reorderPhotos({ fromIndex: draggedIndex, toIndex: dropIndex }));
     }
-    
+
     setDraggedIndex(null);
+    setGhostPhoto(null);
   };
 
   return (
-    <div className="flex flex-col items-center w-[343px] h-screen overflow-y-auto overflow-x-hidden">
-      <h1 className="font-raleway font-semibold mt-6 text-white text-[20px]">
-        Добавьте фото
-      </h1>
-      <h1 className="font-raleway font-light mt-2 text-white text-[16px]">
-        Минимум одно, а лучше – все четыре
-      </h1>
-      <div className={`w-[343px] h-[343px] mt-5 grid grid-cols-2 gap-[15px]`}>
-        {[0, 1, 2, 3].map((index) => (
-          <div
-            key={index}
-            draggable={!!registrationData.photos[index]}
-            onDragStart={() => handleDragStart(index)}
-            onDragEnd={handleDragEnd}
-            onDragOver={(e) => handleDragOver(e, index)}
-            onDragLeave={handleDragLeave}
-            onTouchStart={(e) => handleTouchStart(e, index)}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={(e) => handleTouchEnd(e, index)}
-            className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] relative flex items-center justify-center cursor-pointer
+      <div className="flex flex-col items-center w-[343px] h-screen overflow-y-auto overflow-x-hidden">
+        <h1 className="font-raleway font-semibold mt-6 text-white text-[20px]">Добавьте фото</h1>
+        <h1 className="font-raleway font-light mt-2 text-white text-[16px]">Минимум одно, а лучше – все четыре</h1>
+
+        <div className="w-[343px] h-[343px] mt-5 grid grid-cols-2 gap-[15px]">
+          {[0, 1, 2, 3].map((index) => (
+              <div
+                  key={index}
+                  data-index={index}
+                  draggable={!!registrationData.photos[index]}
+                  onDragStart={() => handleDragStart(index)}
+                  onDragEnd={handleDragEnd}
+                  onDragOver={(e) => handleDragOver(e, index)}
+                  onDragLeave={handleDragLeave}
+                  onTouchStart={(e) => handleTouchStart(e, index)}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                  className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] relative flex items-center justify-center cursor-pointer
               ${draggedIndex === index ? 'opacity-50' : ''}
               transition-all duration-200 ease-in-out
               hover:border-[#A1F69E]
               drag-over:border-[#A1F69E]
               drag-over:scale-105`}
-          >
-            {registrationData.photos[index] ? (
-              <>
-                <img
-                  src={registrationData.photos[index]}
-                  alt={`Photo ${index + 1}`}
-                  className="w-full h-full object-cover rounded-[16px]"
-                />
-                <div className="absolute top-[8px] right-[8px] pointer-events-auto z-10" onClick={() => handleDeletePhoto(index)}><img src="/icons/delete_img.svg" className="w-[16px] h-[16px]" alt="Удалить" /></div>
-                {index === 0 && (
-                  <div className="absolute bottom-0 left-0 right-0 h-[40px] flex items-center justify-center bg-gradient-to-t from-[#032B2B] to-transparent rounded-b-[16px]">
-                    <span className="text-white font-raleway text-[14px]">Главное фото</span>
-                  </div>
-                )}
-              </>
-            ) : (
-              <>
-                {index === 0 && (
-                  <img
-                    src="/icons/main_photo_label.svg"
-                    alt=""
-                    className="absolute top-0 left-0"
-                  />
-                )}
-                {index > 0 && (
-                  <span className="absolute top-1 right-1 text-white font-raleway text-[15px] font-medium">
-                    +25 <img src="/icons/myta-coin.svg" alt="Монета MYTA" className="inline w-[16px]"/>
+              >
+                {registrationData.photos[index] ? (
+                    <>
+                      <img
+                          src={registrationData.photos[index]}
+                          alt={`Photo ${index + 1}`}
+                          className="w-full h-full object-cover rounded-[16px]"
+                      />
+                      <div className="absolute top-[8px] right-[8px] pointer-events-auto z-10" onClick={() => handleDeletePhoto(index)}>
+                        <img src="/icons/delete_img.svg" className="w-[16px] h-[16px]" alt="Удалить" />
+                      </div>
+                      {index === 0 && (
+                          <div className="absolute bottom-0 left-0 right-0 h-[40px] flex items-center justify-center bg-gradient-to-t from-[#032B2B] to-transparent rounded-b-[16px]">
+                            <span className="text-white font-raleway text-[14px]">Главное фото</span>
+                          </div>
+                      )}
+                    </>
+                ) : (
+                    <>
+                      {index === 0 && (
+                          <img src="/icons/main_photo_label.svg" alt="" className="absolute top-0 left-0" />
+                      )}
+                      {index > 0 && (
+                          <span className="absolute top-1 right-1 text-white font-raleway text-[15px] font-medium">
+                    +25 <img src="/icons/myta-coin.svg" alt="Монета MYTA" className="inline w-[16px]" />
                   </span>
+                      )}
+                      <img src="/icons/camera.svg" alt="Камера" />
+                    </>
                 )}
-                <img src="/icons/camera.svg" alt="Камера" />
-              </>
-            )}
-            <label className="absolute inset-0 flex items-center justify-center cursor-pointer">
-              <input
-                type="file"
-                accept="image/jpeg,image/png"
-                className="hidden"
-                onChange={(e) => handlePhotoUpload(index, e)}
-              />
-            </label>
-          </div>
-        ))}
+                <label className="absolute inset-0 flex items-center justify-center cursor-pointer">
+                  <input
+                      type="file"
+                      accept="image/jpeg,image/png"
+                      className="hidden"
+                      onChange={(e) => handlePhotoUpload(index, e)}
+                  />
+                </label>
+              </div>
+          ))}
+        </div>
+
+        <h1 className="font-raleway font-light mt-[15px] text-white text-[16px]">Перетащите, чтобы изменить порядок</h1>
+
+        <div className="fixed bottom-[20px]">
+          <Button onclick={() => setStep(3)} disabled={disabled}>
+            Далее
+          </Button>
+        </div>
+
+        {/* 👻 Призрак фото для тача */}
+        {ghostPhoto && (
+            <img
+                src={ghostPhoto}
+                style={ghostStyle}
+                className="rounded-[16px] shadow-lg transition-none"
+                alt="Призрак фото"
+            />
+        )}
       </div>
-      <h1 className="font-raleway font-light mt-[15px] text-white text-[16px]">
-        Перетащите, чтобы изменить порядок
-      </h1>
-      <div className="fixed bottom-[20px]">
-        <Button onclick={() => setStep(3)} disabled={disabled}>
-          Далее
-        </Button>
-      </div>
-    </div>
   );
 }
 
