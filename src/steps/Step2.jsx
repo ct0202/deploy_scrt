@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "../components/Button";
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePhoto, deletePhoto, reorderPhotos } from '../store/userSlice';
+import CropModal from "../components/CropModal";
 
 function Step2({ setStep }) {
   const dispatch = useDispatch();
@@ -13,8 +14,37 @@ function Step2({ setStep }) {
   const [ghostPhoto, setGhostPhoto] = useState(null);
   const [ghostStyle, setGhostStyle] = useState({});
 
+  const [croppingPhotoIndex, setCroppingPhotoIndex] = useState(null);
+  const [rawPhotoData, setRawPhotoData] = useState(null);
+
+
   const MAX_FILE_SIZE = 10 * 1024 * 1024;
   const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
+
+  // const handlePhotoUpload = (index, event) => {
+  //   const file = event.target.files[0];
+  //   if (!file) return;
+  //
+  //   if (file.size > MAX_FILE_SIZE) {
+  //     alert('Размер файла не должен превышать 5MB');
+  //     return;
+  //   }
+  //
+  //   if (!ALLOWED_TYPES.includes(file.type)) {
+  //     alert('Поддерживаются только форматы JPG и PNG');
+  //     return;
+  //   }
+  //
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     dispatch(updatePhoto({ index, photo: reader.result }));
+  //     if (index === 0) {
+  //       setDisabled(false);
+  //     }
+  //   };
+  //   reader.readAsDataURL(file);
+  //   event.target.value = '';
+  // };
 
   const handlePhotoUpload = (index, event) => {
     const file = event.target.files[0];
@@ -32,13 +62,10 @@ function Step2({ setStep }) {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      dispatch(updatePhoto({ index, photo: reader.result }));
-      if (index === 0) {
-        setDisabled(false);
-      }
+      setCroppingPhotoIndex(index);
+      setRawPhotoData(reader.result);
     };
     reader.readAsDataURL(file);
-    event.target.value = '';
   };
 
   const checkPhotos = () => {
@@ -187,6 +214,22 @@ function Step2({ setStep }) {
                 </label>
               </div>
           ))}
+          {croppingPhotoIndex !== null && rawPhotoData && (
+              <CropModal
+                  image={rawPhotoData}
+                  onCancel={() => {
+                    setCroppingPhotoIndex(null);
+                    setRawPhotoData(null);
+                  }}
+                  onSave={(croppedImage) => {
+                    dispatch(updatePhoto({ index: croppingPhotoIndex, photo: croppedImage }));
+                    if (croppingPhotoIndex === 0) setDisabled(false);
+                    setCroppingPhotoIndex(null);
+                    setRawPhotoData(null);
+                  }}
+              />
+          )}
+
         </div>
 
         <h1 className="font-raleway font-light mt-[15px] text-white text-[16px]">Перетащите, чтобы изменить порядок</h1>
