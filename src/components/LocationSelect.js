@@ -358,6 +358,7 @@ const LocationSelect = ({ onLocationSelect }) => {
   const handleCitySelect = (city) => {
     if (city) {
       setSelectedCity(city);
+
       setCoordinates({
         latitude: city.lat,
         longitude: city.lon
@@ -427,7 +428,7 @@ const LocationSelect = ({ onLocationSelect }) => {
       <div className="relative">
         <input
           type="text"
-          value={cityInput}
+          value={selectedCity.label}
           onChange={handleCityInputChange}
           placeholder="Введите город"
           className="w-full h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
@@ -438,7 +439,7 @@ const LocationSelect = ({ onLocationSelect }) => {
               <div
                 key={`${city.value}_${city.lat}_${city.lon}`}
                 onClick={() => {
-                  setCityInput(city.label);
+                  setCityInput(selectedCity.label);
                   setFilteredCityOptions([]);
                   handleCitySelect(city);
                 }}

@@ -50,16 +50,23 @@ function Step2({ setStep }) {
 
   const handleDragStart = (index) => {
     setDraggedIndex(index);
+    document.body.classList.add('dragging');
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (dropIndex) => {
-    if (draggedIndex === null || draggedIndex === dropIndex) return;
-    dispatch(reorderPhotos({ fromIndex: draggedIndex, toIndex: dropIndex }));
+  const handleDragEnd = () => {
     setDraggedIndex(null);
+    document.body.classList.remove('dragging');
+  };
+
+  const handleDragOver = (e, index) => {
+    e.preventDefault();
+    if (draggedIndex !== null && draggedIndex !== index) {
+        e.currentTarget.classList.add('drag-over');
+    }
+  };
+
+  const handleDragLeave = (e) => {
+    e.currentTarget.classList.remove('drag-over');
   };
 
   const handleDeletePhoto = (index) => {
@@ -94,7 +101,6 @@ function Step2({ setStep }) {
     const deltaY = Math.abs(touchEndY - touchStartY);
     const deltaX = Math.abs(touchEndX - touchStartX);
 
-    // Проверяем, что движение было достаточно значительным
     if (deltaY > 20 || deltaX > 20) {
       dispatch(reorderPhotos({ fromIndex: draggedIndex, toIndex: dropIndex }));
     }
@@ -116,13 +122,18 @@ function Step2({ setStep }) {
             key={index}
             draggable={!!registrationData.photos[index]}
             onDragStart={() => handleDragStart(index)}
-            onDragOver={handleDragOver}
-            onDrop={() => handleDrop(index)}
+            onDragEnd={handleDragEnd}
+            onDragOver={(e) => handleDragOver(e, index)}
+            onDragLeave={handleDragLeave}
             onTouchStart={(e) => handleTouchStart(e, index)}
             onTouchMove={handleTouchMove}
             onTouchEnd={(e) => handleTouchEnd(e, index)}
             className={`w-[164px] h-[164px] border-[1px] rounded-[16px] border-[#233636] bg-[#022424] relative flex items-center justify-center cursor-pointer
-              ${draggedIndex === index ? 'opacity-50' : ''}`}
+              ${draggedIndex === index ? 'opacity-50' : ''}
+              transition-all duration-200 ease-in-out
+              hover:border-[#A1F69E]
+              drag-over:border-[#A1F69E]
+              drag-over:scale-105`}
           >
             {registrationData.photos[index] ? (
               <>
