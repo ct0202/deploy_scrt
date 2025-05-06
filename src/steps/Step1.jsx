@@ -122,7 +122,7 @@ function Step1({ setStep }) {
         <DatePicker 
           value={registrationData.birthDay} 
           onChange={handleDateChange}
-        />
+      />
       </div>
 
       <LocationSelect onLocationSelect={handleLocationSelect} />
