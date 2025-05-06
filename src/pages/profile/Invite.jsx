@@ -1,18 +1,20 @@
 import {useNavigate} from "react-router-dom";
 import React, {useState} from "react";
 import {Button} from "../../components/Button";
+import config from "../../config";
+import { useSelector } from "react-redux";
 
 function ProfileMenu() {
     const navigate = useNavigate();
-
-    const textToCopy = "https://invite.fake123/cominvite/fake123.com";
+    const userId = useSelector((state) => state.auth.userId);
+    const textToCopy = `${window.location.origin}/friendcode/${userId}`;
     const [copied, setCopied] = useState(false);
 
     const handleCopy = () => {
         navigator.clipboard.writeText(textToCopy)
             .then(() => {
                 setCopied(true);
-                setTimeout(() => setCopied(false), 2000); // Убираем уведомление через 2 сек
+                setTimeout(() => setCopied(false), 2000);
             })
             .catch(err => console.error("Ошибка копирования: ", err));
     };
@@ -31,27 +33,35 @@ function ProfileMenu() {
             <img alt="Информация о приглашении" src='/icons/invite_info_block.svg' className='mt-[10px]'/>
             <img alt="Информация о приглашении" src='/icons/invite-info-block-2.svg' className='mt-[10px]'/>
             <div className='mb-[120px] overflow-scroll'>
-                <div
-                    className='w-[343px] border border-[#233636] p-[15px] text-white rounded-[24px] h-[138px] flex flex-col mt-[10px]'>
+                <div className='w-[343px] border border-[#233636] p-[15px] text-white rounded-[24px] h-[138px] flex flex-col mt-[10px]'>
                     <p className='w-full text-center text-[20px] font-semibold'>Ссылка приглашение</p>
-                    <div className='flex flex-row w-full mt-[15px]'>
-                        <p className='w-[260px] text-[16px] text-left'>https://invite.fake123/cominvite/<br/>fake123.com</p>
-                    <img alt="Копировать" src='/icons/Button-copy.svg' onClick={handleCopy}/>
+                    <div className='flex flex-row w-full mt-[15px] items-center'>
+                        <p className='w-[260px] text-[16px] text-left truncate'>
+                            {textToCopy}
+                        </p>
+                        <img 
+                            alt="Копировать" 
+                            src='/icons/Button-copy.svg' 
+                            onClick={handleCopy}
+                            className="cursor-pointer"
+                        />
+                    </div>
                 </div>
-            </div>
-            {copied && <div className='w-[343px] h-[48px] mt-[10px] pt-1 pb-1 bg-[#043939] flex items-center justify-start pl-3 rounded-[8px]'>
-                <img alt="Успешно" src='/icons/success-copy.svg' className='w-[24px] h-[24px]'/>
-                <p className='text-white ml-1 text-[16px]'>Ссылка скопирована</p>
-            </div>}
+                {copied && (
+                    <div className='w-[343px] h-[48px] mt-[10px] pt-1 pb-1 bg-[#043939] flex items-center justify-start pl-3 rounded-[8px]'>
+                        <img alt="Успешно" src='/icons/success-copy.svg' className='w-[24px] h-[24px]'/>
+                        <p className='text-white ml-1 text-[16px]'>Ссылка скопирована</p>
+                    </div>
+                )}
             </div>
             <div className='text-black fixed bottom-[20px]'>
-                <Button onclick={ () => {
+                <Button onclick={() => {
                     if (navigator.share) {
                         navigator
                             .share({
                                 title: "Пригласить друга",
                                 text: "Пригласить друга",
-                                url: window.location.href,
+                                url: textToCopy,
                             })
                             .then(() => console.log("Успешно поделились"))
                             .catch((error) => console.log("Ошибка при отправке:", error));

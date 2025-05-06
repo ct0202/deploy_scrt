@@ -17,7 +17,7 @@ export const useAuth = () => {
 
         try {
             if (!telegramId) {
-                toast.error('Telegram ID not found');
+                // toast.error('Telegram ID not found');
                 return;
             }
             
@@ -36,7 +36,7 @@ export const useAuth = () => {
                 return;
             }
             console.error('Auth initialization error:', error);
-            toast.error('Authentication failed');
+            // toast.error('Authentication failed');
         }
     };
 

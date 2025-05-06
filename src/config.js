@@ -90,7 +90,7 @@ const config = {
         FILTERS: '/filters',
         STREAMS: {
             LIST: '/streams',
-            WATCH: '/streams',
+            WATCH: '/streams/watch',
             FILTERS: '/streams/filters',
             STREAMER: '/streamer',
             BROADCASTER: '/broadcaster'
@@ -120,7 +120,8 @@ const config = {
         PAYMENT: '/makepayment',
         PREMIUM: '/premium'
     },
-    WS_URL: 'https://api.mytadating.site'
+    // WS_URL: 'https://api.mytadating.site'
+    WS_URL: 'http://localhost:3001'
 };
 
 export default config; 

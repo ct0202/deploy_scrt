@@ -14,17 +14,7 @@ function CalculatePage() {
   const { registrationData, setRegistrationData } = useRegistration();
 
   const navigate = useNavigate();
-  const { friendInviteId } = useParams();
-
-  useEffect(() => {
-    // Update registration data with friend invite ID if present
-    if (friendInviteId) {
-      setRegistrationData(prevData => ({
-        ...prevData,
-        friendInviteId
-      }));
-    }
-  }, [friendInviteId, setRegistrationData]);
+  // console.log('registrationData from calculate page', registrationData);
 
   return (
     <div className={`flex flex-col justify-center items-center w-[100%] ${step === 1 ? 'pt-[300px]' : ''} h-screen overflow-y-auto overflow-x-hidden`}>

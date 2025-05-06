@@ -7,10 +7,11 @@ import { AGORA_APP_ID } from '../../config';
 import streamChatService from '../../services/stream-chat.service';
 
 const StreamBroadcaster = () => {
-    const { streamId } = useParams();
-    console.log('[StreamBroadcaster] Stream ID:', streamId);
+    // const { streamId } = useParams();
+    // console.log('[StreamBroadcaster] Stream ID:', streamId);
     const navigate = useNavigate();
     const userId = useSelector((state) => state.auth.userId);
+    const streamId = userId;
     console.log('[StreamBroadcaster] User ID:', userId);
 
     const [isLoading, setIsLoading] = useState(true);

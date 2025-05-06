@@ -53,7 +53,7 @@ import StreamBroadcaster from './pages/streaming/StreamBroadcaster';
 import StreamViewer from './pages/streaming/StreamViewer';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import InvitationHandler from './pages/InvitationHandler';
 function App() {
     const dispatch = useDispatch();
     const authState = useSelector(state => state.auth);
@@ -136,6 +136,7 @@ function App() {
                                     <Route index element={<HomePage />} />
                                     <Route path={config.ROUTES.MENU} element={<Menu />} />
                                     <Route path={config.ROUTES.CALCULATE} element={<CalculatePage />} />
+                                    <Route path={"/friendcode/:invite_id"} element={<InvitationHandler />} />
                                 </Route>
                                 
                                 {/* Protected Routes */}
@@ -154,8 +155,8 @@ function App() {
                                     <Route path={`${config.ROUTES.STREAMS.WATCH}/:stream_id`} element={<WatchingStream />} />
                                     <Route path={config.ROUTES.STREAMS.FILTERS} element={<StreamFilters />} />
                                     <Route path={`${config.ROUTES.STREAMS.STREAMER}/:id`} element={<Streamer />} />
-                                    <Route path={`${config.ROUTES.STREAMS.BROADCASTER}/:streamId`} element={<StreamBroadcaster />} />
-                                    <Route path="/streaming/watch/:streamId" element={<StreamViewer />} />
+                                    <Route path={`${config.ROUTES.STREAMS.BROADCASTER}`} element={<StreamBroadcaster />} />
+                                    <Route path={`${config.ROUTES.STREAMS.WATCH}/:stream_id`} element={<StreamViewer />} />
                                     <Route path="/roulette" element={<Roulette />} />
 
                                     {/* Chat Features */}
