@@ -428,7 +428,7 @@ const LocationSelect = ({ onLocationSelect }) => {
       <div className="relative">
         <input
           type="text"
-          value={selectedCity}
+          value={selectedCity ? selectedCity.label : ""}
           onChange={handleCityInputChange}
           placeholder="Введите город"
           className="w-full h-[64px] rounded-[8px] bg-[#022424] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
