@@ -15,6 +15,8 @@ import ChatProgressBar from "../../components/ui/ChatProgressBar";
 import Match from "../Match";
 
 import AgoraRTC from 'agora-rtc-sdk-ng';
+import config from '../../config';
+import { axiosPrivate } from '../../axios';
 import {Navigation} from "../../components/shared/Navigation";
 import { AGORA_APP_ID } from "../../config";
 import { useParams } from "react-router-dom";
@@ -47,6 +49,18 @@ function VideoChat() {
     const handleTouchStart = (e) => {
         setSwipeStart(e.touches[0].clientY);
     };
+
+    const handleAddMytaCoins = async (amount) => {
+        try {
+            const response = await axiosPrivate.post(config.API.WALLET.PURCHASE, {
+              amount,
+              type: 'mytaCoins'
+            });
+            console.log('Myta coins added:', response.data);
+        } catch (error) {
+          console.error('Error purchasing coins:', error);
+        }
+      };  
 
     const handleTouchMove = (e) => {
         const swipeEnd = e.touches[0].clientY;
@@ -386,7 +400,7 @@ function VideoChat() {
                 </div>
             </div>
 
-            {showToast && (
+            {showToast && handleAddMytaCoins(25) && (
                 <div
                     className={`z-[150] w-[343px] fixed font-light mt-2  text-white flex justify-center items-center flex-wrap font-raleway gap-[5px] text-[16px] px-4 py-2 rounded-lg bg-[#043939] border-[1.5px] border-[#a1f69e] ${animateClass}`}
                 >

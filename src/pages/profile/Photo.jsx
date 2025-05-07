@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { axiosPrivate } from '../../axios';
+import config from '../../config';
 
 function Photo() {
     const navigate = useNavigate();
@@ -10,6 +11,8 @@ function Photo() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [photos, setPhotos] = useState({});
     const fileInputs = useRef({});
+
+   
 
     // Initialize photos from userData
     React.useEffect(() => {
@@ -26,6 +29,18 @@ function Photo() {
             setPhotos(photosObj);
         }
     }, [userData]);
+
+    const handleAddMytaCoins = async (amount) => {
+        try {
+            const response = await axiosPrivate.post(config.API.WALLET.PURCHASE, {
+                amount,
+                type: 'mytaCoins'
+            });
+            console.log('Myta coins added:', response.data);
+        } catch (error) {
+            console.error('Error purchasing coins:', error);
+        } 
+    };  
 
     const handlePhotoSelect = (photoId) => {
         fileInputs.current[photoId]?.click();
@@ -130,7 +145,7 @@ function Photo() {
                                 ) : (
                                     <img alt="Камера" src="/icons/camera.svg" />
                                 )}
-                                {photoId !== 1 && (
+                                {photoId !== 1 && handleAddMytaCoins(25) && (
                                     <span className="absolute top-1 right-1 text-white font-raleway text-[15px] font-medium">
                                         +25 <img alt="myta-coin" src="/icons/myta-coin.svg" className="inline w-[16px]"/>
                                     </span>
