@@ -16,14 +16,10 @@ const axiosPrivate = axios.create({
 // Add auth interceptor to private instance
 axiosPrivate.interceptors.request.use((config) => {
     const state = store.getState();
-    const { auth_token, userId } = state.auth;
+    const { auth_token } = state.auth;
     
     if (auth_token) {
         config.headers.Authorization = `Bearer ${auth_token}`;
-    }
-    
-    if (userId) {
-        config.headers['X-User-Id'] = userId;
     }
     
     return config;
@@ -47,7 +43,6 @@ axiosPrivate.interceptors.response.use(
                 // Update token in Redux store
                 store.dispatch(setAuthData({ 
                     auth_token: token,
-                    userId: store.getState().auth.userId,
                     telegramId: store.getState().auth.telegramId
                 }));
                 
