@@ -10,7 +10,7 @@ import axios from '../axios'
 import { useNavigate, useParams } from 'react-router-dom';
 
 function CalculatePage() {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
   const { registrationData, setRegistrationData } = useRegistration();
 
   const navigate = useNavigate();
