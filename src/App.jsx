@@ -182,6 +182,7 @@ function App() {
                                     <Route path={config.ROUTES.PAYMENT} element={<MakePayment />} />
                                     <Route path={config.ROUTES.PREMIUM} element={<Premium />} />
                                     <Route path={config.ROUTES.MYTA_IDEA} element={<MytaIdea />} />
+                                    <Route path={config.ROUTES.SUPPORT} element={<Support />} />
                                 </Route>
                             </Routes>
                         </div>
