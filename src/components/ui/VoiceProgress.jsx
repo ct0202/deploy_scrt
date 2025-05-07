@@ -13,6 +13,29 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
     const circumference = 2 * Math.PI * radius;
     const [currentTime, setCurrentTime] = useState(0);
 
+    const [volumeLevel, setVolumeLevel] = useState(0);
+
+    const [barHeights, setBarHeights] = useState(Array(46).fill(13)); // начальная высота
+
+
+    const playbackAudioContextRef = useRef(null);
+    const playbackSourceRef = useRef(null);
+    const analyserRef = useRef(null);
+
+    useEffect(() => {
+        // Сразу при загрузке компонента просим разрешение на микрофон
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then((stream) => {
+                // Сразу закрываем стрим, мы только хотим разрешение
+                stream.getTracks().forEach(track => track.stop());
+                console.log("Доступ к микрофону получен заранее");
+            })
+            .catch((error) => {
+                console.error("Ошибка при получении доступа к микрофону заранее:", error);
+                alert("Разрешите доступ к микрофону для использования записи");
+            });
+    }, []);
+
     useEffect(() => {
         let intervalId;
         if (isRecording) {
@@ -32,14 +55,43 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
     }, [isRecording]);
 
     useEffect(() => {
+        if (audioBlob) {
+            const fileReader = new FileReader();
+            fileReader.onloadend = () => {
+                const arrayBuffer = fileReader.result;
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                audioContext.decodeAudioData(arrayBuffer, (audioBuffer) => {
+                    const rawData = audioBuffer.getChannelData(0); // первый канал
+                    const samples = 46;
+                    const blockSize = Math.floor(rawData.length / samples);
+                    const heights = [];
+
+                    for (let i = 0; i < samples; i++) {
+                        let sum = 0;
+                        for (let j = 0; j < blockSize; j++) {
+                            sum += Math.abs(rawData[i * blockSize + j]);
+                        }
+                        const average = sum / blockSize;
+                        heights.push(Math.max(10, average * 200)); // масштабируем и ставим минимальную высоту
+                    }
+
+                    setBarHeights(heights);
+                });
+            };
+            fileReader.readAsArrayBuffer(audioBlob);
+        }
+    }, [audioBlob]);
+
+
+    useEffect(() => {
         onRecordingStateChange?.(isRecording);
     }, [isRecording, onRecordingStateChange]);
 
     const startRecording = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            
-            // Проверяем поддерживаемые MIME-типы
+
             let mimeType = 'audio/webm';
             if (MediaRecorder.isTypeSupported('audio/webm')) {
                 mimeType = 'audio/webm';
@@ -112,15 +164,47 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
     const strokeDashoffset = circumference - (progress / 100) * circumference;
 
     const togglePlay = () => {
-        if (audioRef.current) {
-            if (isPlaying) {
-                audioRef.current.pause();
-            } else {
-                audioRef.current.play();
-            }
-            setIsPlaying(!isPlaying);
+        if (!audioRef.current) return;
+
+        if (!playbackAudioContextRef.current) {
+            const audioContext = new AudioContext();
+            const source = audioContext.createMediaElementSource(audioRef.current);
+            const analyser = audioContext.createAnalyser();
+
+            analyser.fftSize = 256;
+
+            source.connect(analyser);
+            analyser.connect(audioContext.destination);
+
+            playbackAudioContextRef.current = audioContext;
+            playbackSourceRef.current = source;
+            analyserRef.current = analyser;
         }
+
+        const analyser = analyserRef.current;
+        if (!analyser) return;
+
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        const draw = () => {
+            analyser.getByteFrequencyData(dataArray);
+            const average = dataArray.reduce((a, b) => a + b, 0) / bufferLength;
+            setVolumeLevel(Math.round(average));
+            requestAnimationFrame(draw);
+        };
+
+        if (isPlaying) {
+            audioRef.current.pause();
+        } else {
+            audioRef.current.play().then(() => {
+                setTimeout(() => requestAnimationFrame(draw), 100); // <-- небольшая задержка
+            });
+        }
+
+        setIsPlaying(!isPlaying);
     };
+
 
     const handleAudioEnded = () => {
         setIsPlaying(false);
@@ -135,7 +219,7 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
     // Вычисляем, сколько палочек должно быть закрашено
     const getBarColor = (index, currentTime, duration) => {
         if (!audioRef.current) return "#085252";
-        const progress = (currentTime / audioRef.current.duration) * 42;
+        const progress = (currentTime / audioRef.current.duration) * 46;
         return index <= progress ? "#A1F69E" : "#085252";
     };
 
@@ -230,7 +314,7 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
                 </>
             )}
             {audioUrl && (
-                <div className="mt-6 w-[343px] h-[64px] border border-[#233636] bg-[#022424] gap-[17px] rounded-[8px] flex items-center justify-center">
+                <div className="mt-6 w-[343px] h-[64px] border border-[#233636] bg-[#022424] gap-[17px] rounded-[8px] flex items-center justify-between">
                     <button 
                         onClick={togglePlay}
                         className="ml-[10px] w-8 h-8 flex items-center justify-center bg-[#A1F69E] rounded-full"
@@ -241,15 +325,16 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
                             <object data="/icons/VoiceStartButton.svg" type="image/svg+xml" className="w-[44px] h-[44px] pointer-events-none" aria-label="Начать воспроизведение" />
                         )}
                     </button>
-                    <div className="flex-1 h-[30px] w-[206px] overflow-hidden">
-                        <div className=" flex items-center gap-[2px]">
-                            {Array.from({ length: 50 }).map((_, index) => (
+                    <div className="h-full w-full overflow-hidden">
+                        <div className="flex h-full w-[220px] justify-center items-center gap-[3px]">
+                            {Array.from({ length: 46 }).map((_, index) => (
                                 <div
                                     key={index}
-                                    className="w-[2px] h-[40px] rounded-[13px]"
+                                    className="w-[1px] h-[50px] rounded-[4px]"
                                     style={{
-                                        height: `20px`,
-                                        backgroundColor: getBarColor(index, currentTime, audioRef.current?.duration)
+                                        height: `${barHeights[index]}px`,
+                                        backgroundColor: getBarColor(index, currentTime, audioRef.current?.duration),
+                                        transition: "height 0.2s ease"
                                     }}
                                 />
                             ))}
