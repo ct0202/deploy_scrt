@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
+const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete, onResetRecording }) => {
     const [isRecording, setIsRecording] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -87,6 +87,14 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
     useEffect(() => {
         onRecordingStateChange?.(isRecording);
     }, [isRecording, onRecordingStateChange]);
+
+    const handleReset = () => {
+        setAudioBlob(null);
+        setAudioUrl(null);
+        setIsRecording(false);
+        setProgress(0);
+        onResetRecording?.(); // вызываем функцию сброса в родительском компоненте
+    };
 
     const startRecording = async () => {
         try {
@@ -352,16 +360,7 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete }) => {
                     />
                     <div className="fixed bottom-[30px]">
                         <div className="w-[343px] h-[64px] mb-[20px] rounded-[400px] border border-[#A1F69E] flex items-center justify-center"
-                        onClick={() => {
-                            setAudioBlob(null);
-                            setAudioUrl(null);
-                            setCurrentTime(0);
-                            setIsPlaying(false);
-                            if (audioRef.current) {
-                                audioRef.current.pause();
-                            }
-                            onRecordingComplete?.(false); 
-                        }}
+                        onClick={() => { handleReset() }}
                         >
                             <object data="/icons/Microphone.svg" type="image/svg+xml" className="w-[24px] h-[24px] pointer-events-none" aria-label="Микрофон" />
                             <span className="text-white font-medium">Перезаписать</span>

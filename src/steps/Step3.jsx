@@ -9,6 +9,11 @@ function Step3({ setStep }) {
   const [isRecording, setIsRecording] = useState(false);
   const [RecordingComplete, setRecordingComplete] = useState(false);
 
+    const handleResetRecording = () => {
+        setRecordingComplete(false);
+        setIsRecording(false);
+    };
+
   const handleRecordingComplete = (audioBlob) => {
     if (audioBlob) {
       const reader = new FileReader();
@@ -32,12 +37,14 @@ function Step3({ setStep }) {
         визитку можно будет перезаписать или удалить
       </h1>
 
-      <VoiceProgress 
-        onRecordingStateChange={setIsRecording} 
-        onRecordingComplete={handleRecordingComplete} 
-      />
+        <VoiceProgress
+            onRecordingStateChange={setIsRecording}
+            onRecordingComplete={handleRecordingComplete}
+            onResetRecording={handleResetRecording}
+        />
 
-      {!RecordingComplete && (
+
+        {!RecordingComplete && (
         <>
           <p className="font-raleway font-medium mt-4 text-white text-center text-[16px] pl-1">
             {isRecording ? "ИДЁТ ЗАПИСЬ..." : (
@@ -55,7 +62,7 @@ function Step3({ setStep }) {
           </button>
         </>
       )}
-      {RecordingComplete && 
+      {RecordingComplete &&
         <div className="fixed bottom-[130px]">
           <Button onclick={() => setStep(4)}>Далее</Button>
         </div>
