@@ -73,6 +73,18 @@ function Meet() {
     }
   };
 
+  const handleAddMytaCoins = async (amount) => {
+    try {
+        const response = await axiosPrivate.post(config.API.WALLET.PURCHASE, {
+          amount,
+          type: 'mytaCoins'
+        });
+        console.log('Myta coins added:', response.data);
+    } catch (error) {
+      console.error('Error purchasing coins:', error);
+    }
+  };  
+
   useEffect(() => {
     fetchPotentialMatches();
   }, []);
@@ -347,7 +359,7 @@ function Meet() {
               <Navigation tab={1} />
             </div>
           </div>
-          {showToast && (
+          {showToast && handleAddMytaCoins(100) && (
             <div
               className={`z-[30] w-[343px] fixed font-light mt-2  text-white flex justify-center items-center flex-wrap font-raleway gap-[5px] text-[16px] px-4 py-2 rounded-lg bg-[#043939] border-[1.5px] border-[#a1f69e] ${animateClass}`}
             >

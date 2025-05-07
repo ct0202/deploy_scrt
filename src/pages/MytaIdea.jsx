@@ -7,6 +7,7 @@ function MytaIdea() {
     const [tonInput, setTonInput] = useState(false);
     const [tonString, setTonString] = useState("");
     const [tonStringCorrect, setTonStringCorrect] = useState(false);
+    const [isConnecting, setIsConnecting] = useState(false);
 
     const inputRef = useRef(null);
 
@@ -27,6 +28,35 @@ function MytaIdea() {
         setTonString(e.target.value);
         if (e.target.value.length > 1) {
             setTonStringCorrect(true);
+        }
+    }
+
+    const connectTonWallet = async () => {
+        try {
+            setIsConnecting(true);
+            
+            // Check if Telegram WebApp is available
+            if (!window.Telegram?.WebApp) {
+                throw new Error('Telegram WebApp is not available');
+            }
+
+            // Request wallet connection
+            const result = await window.Telegram.WebApp.requestWallet();
+            
+            if (result) {
+                setTonString(result.address);
+                setTonStringCorrect(true);
+                setTonInput(true);
+                
+                // You can also store the wallet address in your backend here
+                // await saveWalletAddress(result.address);
+            }
+        } catch (error) {
+            console.error('Error connecting TON wallet:', error);
+            // Fallback to manual input if Telegram wallet connection fails
+            setTonInput(true);
+        } finally {
+            setIsConnecting(false);
         }
     }
 
@@ -165,18 +195,20 @@ function MytaIdea() {
                             value={tonString}
                             onChange={handleTonString}
                             className="w-[343px] h-[64px] rounded-[8px] bg-[#053939] mt-4 pl-4 border border-[#233636] text-white outline-none focus:border-[#a1f69e]"
+                            placeholder="Введите адрес TON кошелька"
                         />
                         { tonStringCorrect ? (
-                        <img alt="Успешно" className='absolute w-[24px] h-[24px] top-[95px] right-[10px]' src='/icons/input-success.svg' />
-                            ) : null}
+                            <img alt="Успешно" className='absolute w-[24px] h-[24px] top-[95px] right-[10px]' src='/icons/input-success.svg' />
+                        ) : null}
                     </div>
                 )
             }
             <div className='h-[64px] mb-[60px] mt-[20px]'>
                 <Button
-                    onclick={() => setTonInput(true)}
+                    onclick={connectTonWallet}
+                    disabled={isConnecting}
                 >
-                    Привязать TON кошелёк
+                    {isConnecting ? 'Подключение...' : 'Привязать TON кошелёк'}
                 </Button>
             </div>
 
