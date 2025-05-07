@@ -43,6 +43,7 @@ axiosPrivate.interceptors.response.use(
                 // Update token in Redux store
                 store.dispatch(setAuthData({ 
                     auth_token: token,
+                    userId: store.getState().auth.userId,
                     telegramId: store.getState().auth.telegramId
                 }));
                 
