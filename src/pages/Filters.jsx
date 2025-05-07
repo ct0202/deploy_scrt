@@ -1,9 +1,10 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useState, useEffect} from "react";
 import {Button} from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { axiosPrivate } from '../axios';
 import config from '../config';
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
+
 import DoubleRangeSlider from "../components/ui/DoubleRangeSlider";
 import {INTEREST} from "../constants/interests";
 
@@ -19,6 +20,27 @@ function Filters() {
     const [rangeAge, setRangeAge] = useState({ min: 18, max: 80 });
     const [rangeDist, setRangeDist] = useState({ min: 0, max: 100 });
 
+    useEffect(() => {
+        const fetchFilters = async () => {
+            try {
+                const response = await axiosPrivate.get(config.API.USERS.PROFILE);
+                const userFilters = response.data.filters;
+                
+                if (userFilters) {
+                    setSelectedTargetGender(userFilters.targetGender || null);
+                    setSelectedOption(userFilters.purpose || null);
+                    setSelectedInterests(userFilters.interests || []);
+                    setRangeAge(userFilters.ageRange || { min: 18, max: 80 });
+                    setRangeDist(userFilters.distanceRange || { min: 0, max: 100 });
+                }
+            } catch (error) {
+                console.error('Error fetching filters:', error);
+            }
+        };
+
+        fetchFilters();
+    }, []);
+
     const addInterest = (optionId) => {
         setSelectedInterests((prev) => prev.includes(optionId) ? prev.filter((id) => id !== optionId) : [...prev, optionId]);
     }
@@ -32,16 +54,34 @@ function Filters() {
     }, []);
 
 
-    const handleClear = () => {
-        console.log("handleClear");
-        setSelectedInterests([]);
-        setSelectedTargetGender(null);
-        setSelectedOption(null);
-        handleDistChange({ min: 0, max: 100 }); // Используем новый обработчик
-        handleAgeChange({ min: 18, max: 80 });
-        setResetCounter((prev) => prev + 1); // Увеличиваем значение для триггера
-
-    }
+    const handleClear = async () => {
+        try {
+            setIsSaving(true);
+            // Clear filters on the backend
+            await axiosPrivate.put(config.API.USERS.UPDATE_FILTERS, {
+                telegramId,
+                filters: {
+                    targetGender: null,
+                    purpose: null,
+                    interests: [],
+                    ageRange: { min: 18, max: 80 },
+                    distanceRange: { min: 0, max: 100 }
+                }
+            });
+            
+            // Clear UI state
+            setSelectedInterests([]);
+            setSelectedTargetGender(null);
+            setSelectedOption(null);
+            handleDistChange({ min: 0, max: 100 });
+            handleAgeChange({ min: 18, max: 80 });
+            setResetCounter((prev) => prev + 1);
+        } catch (error) {
+            console.error('Error clearing filters:', error);
+        } finally {
+            setIsSaving(false);
+        }
+    };
 
     const targetGenders = [
         { id: "male", label: "Мужчина", emoji: "👱🏻‍♂️" },
