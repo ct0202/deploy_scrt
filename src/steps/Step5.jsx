@@ -17,6 +17,7 @@ function Step5({ setStep }) {
     const { telegramId } = useSelector(state => state.auth);
     const [disabled, setDisabled] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [location, setLocation] = useState(null);
 
     console.log("step4");
 
@@ -41,10 +42,53 @@ function Step5({ setStep }) {
         return await response.blob();
     };
 
+    const getCurrentLocation = () => {
+        return new Promise((resolve, reject) => {
+            if (!navigator.geolocation) {
+                reject(new Error('Geolocation is not supported by your browser'));
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const locationData = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        accuracy: position.coords.accuracy
+                    };
+                    console.log('Current location:', locationData);
+                    resolve(locationData);
+                },
+                (error) => {
+                    console.error('Error getting location:', error);
+                    reject(error);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                }
+            );
+        });
+    };
+
     const saveDataAndNext = async () => {
         if (interests.length >= 5) {
             try {
                 setIsSubmitting(true);
+                let locationData = null;
+
+                // Get current location before proceeding
+                try {
+                    locationData = await getCurrentLocation();
+                    setLocation(locationData);
+                    console.log('Location data before registration:', locationData);
+                } catch (error) {
+                    console.error('Failed to get location:', error);
+                    alert('Пожалуйста, разрешите доступ к геолокации для продолжения регистрации');
+                    setIsSubmitting(false);
+                    return;
+                }
                 
                 // Create FormData object
                 const formData = new FormData();
@@ -57,8 +101,8 @@ function Step5({ setStep }) {
                 formData.append('birthDay', registrationData.birthDay);
                 formData.append('country', registrationData.country);
                 formData.append('city', registrationData.city);
-                formData.append('latitude', registrationData.coordinates.latitude);
-                formData.append('longitude', registrationData.coordinates.longitude);
+                formData.append('latitude', locationData.latitude);
+                formData.append('longitude', locationData.longitude);
                 formData.append('purpose', registrationData.purpose);
                 
                 // Add interests as JSON string
