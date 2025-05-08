@@ -23,12 +23,19 @@ function Step1({ setStep }) {
 
   useEffect(() => {
     const isNameValid = registrationData.name?.trim()?.length > 0;
+    console.log(registrationData.name);
     const isGenderValid = registrationData.gender && ['male', 'female'].includes(registrationData.gender);
+    console.log(registrationData.gender);
     const isWantToFindValid = registrationData.wantToFind && ['male', 'female', 'all'].includes(registrationData.wantToFind);
+    console.log(registrationData.wantToFind);
     const isBirthDayValid = registrationData.birthDay && new Date(registrationData.birthDay) < new Date();
+    console.log(registrationData.birthDay);
     const isCountryValid = registrationData.country?.trim()?.length > 0;
+    console.log(registrationData.country);
     const isCityValid = registrationData.city?.trim()?.length > 0;
+    console.log(registrationData.city);
     const isCoordinatesValid = registrationData.coordinates?.latitude && registrationData.coordinates?.longitude;
+    console.log(registrationData.coordinates);
 
     setDisabled(!(
       isNameValid &&
@@ -36,8 +43,7 @@ function Step1({ setStep }) {
       isWantToFindValid &&
       isBirthDayValid &&
       isCountryValid &&
-      isCityValid &&
-      isCoordinatesValid
+      isCityValid
     ));
   }, [registrationData]);
 
