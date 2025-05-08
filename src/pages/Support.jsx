@@ -24,8 +24,9 @@ function Support() {
                     <textarea placeholder='Опишите сложившуюся ситуацию' className='rounded-[8px] h-[240px] w-[343px] pl-[12px] pt-[15px]
             border border-[#233636] bg-[#022424] text-white'/>
                     <div className='text-black fixed bottom-[20px]'>
-                        <Button onclick={() => {
+                        <Button onClick={() => {
                             setSent(true)
+                            navigate('/profilemenu');
                         }}>
                     Отправить
                 </Button>

@@ -32,7 +32,8 @@ const config = {
             UPDATE_PHOTOS: '/users/updatePhotos',
             UPDATE_INTERESTS: '/users/updateInterests',
             UPDATE_MEET_GOAL: '/users/updateMeetGoal',
-            DELETE_PHOTO: '/users/photo'
+            DELETE_PHOTO: '/users/photo',
+            UPDATE_FILTERS: '/users/updateFilters'
         },
         MEDIA: {
             BASE: '/media',

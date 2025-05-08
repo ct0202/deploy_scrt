@@ -1,8 +1,9 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useState, useEffect} from "react";
 import {Button} from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { axiosPrivate } from '../axios';
 import config from '../config';
+import { useSelector } from "react-redux";
 
 import DoubleRangeSlider from "../components/ui/DoubleRangeSlider";
 import {INTEREST} from "../constants/interests";
@@ -12,11 +13,33 @@ function Filters() {
     const [selectedOption, setSelectedOption] = useState(null);
     const [selectedInterests, setSelectedInterests] = useState([]);
     const [resetCounter, setResetCounter] = useState(0);
-
+    const [isSaving, setIsSaving] = useState(false);
+    const { telegramId } = useSelector(state => state.auth);
     const navigate = useNavigate();
 
     const [rangeAge, setRangeAge] = useState({ min: 18, max: 80 });
     const [rangeDist, setRangeDist] = useState({ min: 0, max: 100 });
+
+    useEffect(() => {
+        const fetchFilters = async () => {
+            try {
+                const response = await axiosPrivate.get(config.API.USERS.PROFILE);
+                const userFilters = response.data.filters;
+                
+                if (userFilters) {
+                    setSelectedTargetGender(userFilters.targetGender || null);
+                    setSelectedOption(userFilters.purpose || null);
+                    setSelectedInterests(userFilters.interests || []);
+                    setRangeAge(userFilters.ageRange || { min: 18, max: 80 });
+                    setRangeDist(userFilters.distanceRange || { min: 0, max: 100 });
+                }
+            } catch (error) {
+                console.error('Error fetching filters:', error);
+            }
+        };
+
+        fetchFilters();
+    }, []);
 
     const addInterest = (optionId) => {
         setSelectedInterests((prev) => prev.includes(optionId) ? prev.filter((id) => id !== optionId) : [...prev, optionId]);
@@ -31,16 +54,34 @@ function Filters() {
     }, []);
 
 
-    const handleClear = () => {
-        console.log("handleClear");
-        setSelectedInterests([]);
-        setSelectedTargetGender(null);
-        setSelectedOption(null);
-        handleDistChange({ min: 0, max: 100 }); // Используем новый обработчик
-        handleAgeChange({ min: 18, max: 80 });
-        setResetCounter((prev) => prev + 1); // Увеличиваем значение для триггера
-
-    }
+    const handleClear = async () => {
+        try {
+            setIsSaving(true);
+            // Clear filters on the backend
+            await axiosPrivate.put(config.API.USERS.UPDATE_FILTERS, {
+                telegramId,
+                filters: {
+                    targetGender: null,
+                    purpose: null,
+                    interests: [],
+                    ageRange: { min: 18, max: 80 },
+                    distanceRange: { min: 0, max: 100 }
+                }
+            });
+            
+            // Clear UI state
+            setSelectedInterests([]);
+            setSelectedTargetGender(null);
+            setSelectedOption(null);
+            handleDistChange({ min: 0, max: 100 });
+            handleAgeChange({ min: 18, max: 80 });
+            setResetCounter((prev) => prev + 1);
+        } catch (error) {
+            console.error('Error clearing filters:', error);
+        } finally {
+            setIsSaving(false);
+        }
+    };
 
     const targetGenders = [
         { id: "male", label: "Мужчина", emoji: "👱🏻‍♂️" },
@@ -78,12 +119,24 @@ function Filters() {
         },
     ];
 
-    const saveFilters = async (filters) => {
+    const saveFilters = async () => {
         try {
-            await axiosPrivate.post(config.API.USERS.UPDATE, { filters });
-            // ... rest of the code
+            setIsSaving(true);
+            await axiosPrivate.put(config.API.USERS.UPDATE_FILTERS, {
+                telegramId,
+                filters: {
+                    targetGender: selectedTargetGender,
+                    purpose: selectedOption,
+                    interests: selectedInterests,
+                    ageRange: rangeAge,
+                    distanceRange: rangeDist
+                }
+            });
+            navigate('/meet');
         } catch (error) {
             console.error('Error saving filters:', error);
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -117,9 +170,9 @@ function Filters() {
                 Кого показывать
             </h1>
             <div className="flex justify-start flex-wrap items-center gap-[16px] mt-[16px]">
-                {targetGenders.map((gender) => (
+                {targetGenders.map((gender, index) => (
                     <div
-                        key={gender.id}
+                        key={index}
                         onClick={() => setSelectedTargetGender(gender.id)}
                         className={`w-[145px] h-[48px] rounded-[400px] flex justify-center items-center text-[18px] text-white gap-[8px] cursor-pointer transition-all 
             ${
@@ -196,9 +249,9 @@ function Filters() {
             </div>
 
             <div className="grid gric-cols-1 justify-start flex-wrap items-center gap-[16px] mt-[16px] opacity-40">
-                {options.map((option) => (
+                {options.map((option, index) => (
                     <div
-                        key={option.id}
+                        key={index}
                         onClick={() => setSelectedOption(option.id)}
                         className={`w-[auto] p-3 h-[48px] rounded-[400px] flex items-center  text-[#FFFFFF] cursor-pointer transition-all 
                         ${
@@ -224,9 +277,9 @@ function Filters() {
                 Интересы:
             </h1>
             <div className="flex flex-wrap  gap-[16px] mt-[16px] pb-[200px]">
-                {interests.map((option) => (
+                {interests.map((option, index) => (
                     <div
-                        key={option.id}
+                        key={index}
                         onClick={() => addInterest(option.id)}
                         className={`w-[auto] p-3 h-[48px] rounded-[400px] flex justify-center items-center text-[18px] font-light text-white gap-[8px] cursor-pointer transition-all 
             ${ selectedInterests.includes(option.id)
@@ -240,8 +293,11 @@ function Filters() {
             </div>
 
 
-            <div className="fixed bottom-4">
-                <Button
+            <div className="fixed bottom-4 w-[343px]">
+                <Button 
+                    onClick={saveFilters}
+                    disabled={isSaving}
+                    loading={isSaving}
                 >
                     Применить
                 </Button>
