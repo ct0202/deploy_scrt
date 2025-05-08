@@ -275,14 +275,7 @@ const LocationSelect = ({ onLocationSelect }) => {
     setIsLoading(true);
     try {
       // Filter cities for the selected country
-      console.log('country.originalName', country.originalName);
-      console.log('country translations', countryTranslations[country.originalName]);
-      console.log('allCities', allCities);
-      console.log('allCities.length', allCities.length);
-      console.log('allCities[0]', allCities[0]);
-      console.log('allCities[0].country', allCities[0].country);
-      console.log('allCities[0].city', allCities[0].city);
-
+      
       const cities = allCities
         .filter(city => city.country === countryTranslations[country.originalName])
         .map(city => ({
@@ -296,8 +289,6 @@ const LocationSelect = ({ onLocationSelect }) => {
         )
         .sort((a, b) => a.label.localeCompare(b.label, 'ru'));
 
-      console.log('Список городов:', cities);
-      console.log('Количество городов:', cities.length);
   
       cityCache.set(cacheKey, cities);
       setCityOptions(cities);

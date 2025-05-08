@@ -184,7 +184,7 @@ function Meet() {
             ))}
           </div>
           <div className="mt-[20px] mb-2 z-[9999]">
-            <Button onclick={() => setShowInstruction(false)}>
+            <Button onClick={() => setShowInstruction(false)}>
               Понятно
             </Button>
           </div>

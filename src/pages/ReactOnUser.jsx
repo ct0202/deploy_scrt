@@ -83,7 +83,7 @@ function Profile() {
                     </div>
                     <div className="mt-[20px] mb-2 z-[9999]">
                         <Button
-                            onclick={() => setShowInstruction(false)}
+                            onClick={() => setShowInstruction(false)}
                         >
                             Понятно
                         </Button>

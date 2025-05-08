@@ -120,7 +120,7 @@ function Profile() {
                     </div>
                     <div className="mt-[20px] mb-2 z-[9999]">
                         <Button
-                            onclick={() => setShowInstruction(false)}
+                            onClick={() => setShowInstruction(false)}
                         >
                             Понятно
                         </Button>
@@ -432,7 +432,7 @@ function Profile() {
                                                 наше приложение. Мы скроем профиль, чат и уведомления от этого
                                                 пользователя</p>
                                             <div className='text-black mt-[40px]'>
-                                                <Button onclick={() => setOpenReport(!openReport)}>
+                                                <Button onClick={() => setOpenReport(!openReport)}>
                                                     Заблокировать
                                                 </Button>
                                             </div>
