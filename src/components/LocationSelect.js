@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { countries } from 'countries-list';
-import axios from 'axios';
 
 // Словарь для перевода названий стран на русский
 const countryTranslations = {
@@ -235,6 +234,21 @@ const LocationSelect = ({ onLocationSelect }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [cityInput, setCityInput] = useState('');
   const containerRef = useRef(null);
+  const [allCities, setAllCities] = useState([]);
+
+  // Load cities data on component mount
+  useEffect(() => {
+    const loadCitiesData = async () => {
+      try {
+        const response = await fetch('/pre/worldcities.json');
+        const data = await response.json();
+        setAllCities(data);
+      } catch (error) {
+        console.error('Error loading cities data:', error);
+      }
+    };
+    loadCitiesData();
+  }, []);
 
   // Преобразуем объект стран в массив для react-select с русскими названиями
   const countryOptions = Object.entries(countries)
@@ -249,7 +263,7 @@ const LocationSelect = ({ onLocationSelect }) => {
     );
 
   const loadCities = useCallback(async (country) => {
-    if (!country) return;
+    if (!country || !allCities.length) return;
   
     const cacheKey = country.originalName;
   
@@ -260,83 +274,39 @@ const LocationSelect = ({ onLocationSelect }) => {
   
     setIsLoading(true);
     try {
-      const query = `
-        [out:json][timeout:25];
-        area["ISO3166-1"="${country.value}"][admin_level=2];
-        (
-          node["place"~"city|town|village"](area);
-          way["place"~"city|town|village"](area);
-          relation["place"~"city|town|village"](area);
-        );
-        out body;
-        >;
-        out skel qt;
-      `;
-  
-      const response = await axios.post(
-        'https://overpass-api.de/api/interpreter',
-        query,
-        {
-          headers: {
-            'Content-Type': 'text/plain'
-          }
-        }
-      );
-  
-      const cities = response.data.elements
-        .filter(item => item.tags && item.tags.name)
-        .map(item => {
-          const name = item.tags.name;
-          const nameRu = item.tags['name:ru'] || name;
-          const lat = item.lat || item.center?.lat;
-          const lon = item.lon || item.center?.lon;
-          
-          return {
-            value: `${name}_${lat}_${lon}`,
-            label: nameRu,
-            lat: lat,
-            lon: lon
-          };
-        })
-        .filter(city => city.lat && city.lon)
+      // Filter cities for the selected country
+      console.log('country.originalName', country.originalName);
+      console.log('country translations', countryTranslations[country.originalName]);
+      console.log('allCities', allCities);
+      console.log('allCities.length', allCities.length);
+      console.log('allCities[0]', allCities[0]);
+      console.log('allCities[0].country', allCities[0].country);
+      console.log('allCities[0].city', allCities[0].city);
+
+      const cities = allCities
+        .filter(city => city.country === countryTranslations[country.originalName])
+        .map(city => ({
+          value: `${city.city}_${city.lat}_${city.lng}`,
+          label: city.city,
+          lat: parseFloat(city.lat),
+          lon: parseFloat(city.lng)
+        }))
         .filter((city, index, self) => 
           index === self.findIndex((c) => c.label === city.label)
         )
         .sort((a, b) => a.label.localeCompare(b.label, 'ru'));
-  
+
       console.log('Список городов:', cities);
       console.log('Количество городов:', cities.length);
   
       cityCache.set(cacheKey, cities);
       setCityOptions(cities);
     } catch (error) {
-      console.error('Error fetching cities:', error);
-      try {
-        const response = await axios.get(
-          `https://nominatim.openstreetmap.org/search?country=${country.originalName}&format=json&featuretype=city&limit=1000`
-        );
-        
-        const cities = response.data
-          .map(item => ({
-            value: item.display_name,
-            label: item.display_name,
-            lat: parseFloat(item.lat),
-            lon: parseFloat(item.lon)
-          }))
-          .filter((city, index, self) => 
-            index === self.findIndex((c) => c.label === city.label)
-          )
-          .sort((a, b) => a.label.localeCompare(b.label, 'ru'));
-        
-        cityCache.set(cacheKey, cities);
-        setCityOptions(cities);
-      } catch (fallbackError) {
-        console.error('Fallback API error:', fallbackError);
-      }
+      console.error('Error processing cities:', error);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [allCities]);
   
 
   // Загружаем города при выборе страны
