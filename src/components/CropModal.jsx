@@ -30,8 +30,8 @@ function CropModal({ image, onCancel, onSave, aspect = 363 / 544 }) {
                     onCropComplete={onCropComplete}
                 />
                 <div className="absolute bottom-4 left-0 right-0 flex justify-around">
-                    <Button onclick={onCancel}>Отмена</Button>
-                    <Button onclick={handleSave}>Обрезать</Button>
+                    <Button onClick={onCancel}>Отмена</Button>
+                    <Button onClick={handleSave}>Обрезать</Button>
                 </div>
             </div>
         </div>

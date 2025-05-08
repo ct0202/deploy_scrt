@@ -246,7 +246,7 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete, onResetRec
     // };
 
     return (
-        <div className="w-fullh-[220px] flex items-center justify-center relative mt-10">
+        <div className="w-fullh-[220px] flex items-center justify-center relative mt-10 select-none">
                         {!audioUrl && (
                             <>
             <svg
