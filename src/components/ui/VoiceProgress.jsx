@@ -15,7 +15,7 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete, onResetRec
 
     const [volumeLevel, setVolumeLevel] = useState(0);
 
-    const [barHeights, setBarHeights] = useState(Array(46).fill(13)); // начальная высота
+    const [barHeights, setBarHeights] = useState(Array(46).fill(7)); // начальная высота
 
 
     const playbackAudioContextRef = useRef(null);
@@ -76,7 +76,7 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete, onResetRec
                             sum += Math.abs(rawData[i * blockSize + j]);
                         }
                         const average = sum / blockSize;
-                        heights.push(Math.max(10, average * 200)); // масштабируем и ставим минимальную высоту
+                        heights.push(Math.max(7, average * 300)); // масштабируем и ставим минимальную высоту
                     }
 
                     setBarHeights(heights);
