@@ -205,7 +205,7 @@ function MytaIdea() {
             }
             <div className='h-[64px] mb-[60px] mt-[20px]'>
                 <Button
-                    onclick={connectTonWallet}
+                    onClick={connectTonWallet}
                     disabled={isConnecting}
                 >
                     {isConnecting ? 'Подключение...' : 'Привязать TON кошелёк'}
