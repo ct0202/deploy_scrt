@@ -59,7 +59,7 @@ export default function HomePage() {
 
         <div className="absolute bottom-4 pointer-events-none">
 
-        <Button onClick={() => { console.log("clicked"); navigate("/menu")} } disabled={!agree} className="pointer-events-auto">
+        <Button onclick={() => navigate("/menu")} disabled={!agree} className="pointer-events-auto">
           Начать
         </Button>
 
