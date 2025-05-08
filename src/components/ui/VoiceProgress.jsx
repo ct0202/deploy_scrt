@@ -149,14 +149,36 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete, onResetRec
     };
 
     useEffect(() => {
+        // if (audioBlob) {
+        //     const url = URL.createObjectURL(audioBlob);
+        //     setAudioUrl(url);
+        //     return () => {
+        //         if (url) {
+        //             URL.revokeObjectURL(url);
+        //         }
+        //     };
+        // }
         if (audioBlob) {
             const url = URL.createObjectURL(audioBlob);
             setAudioUrl(url);
-            return () => {
-                if (url) {
-                    URL.revokeObjectURL(url);
+
+            // Play audio automatically after it's ready
+            const tryPlay = () => {
+                if (audioRef.current) {
+                    audioRef.current.play().catch(err => {
+                        console.warn("Auto-play failed:", err);
+                    });
                 }
             };
+
+            const playAfterLoad = () => {
+                audioRef.current?.removeEventListener("canplaythrough", playAfterLoad);
+                tryPlay();
+            };
+
+            audioRef.current?.addEventListener("canplaythrough", playAfterLoad);
+
+            return () => URL.revokeObjectURL(url);
         }
     }, [audioBlob]);
 
@@ -229,14 +251,6 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete, onResetRec
         const seconds = Math.floor(time % 60);
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     };
-
-    // const handleDrop = (e, dropIndex) => {
-    //     if (draggedIndex === null || draggedIndex === dropIndex) return;
-    //     dispatch(reorderPhotos({ fromIndex: draggedIndex, toIndex: dropIndex }));
-    //     setDraggedIndex(null);
-    //     document.body.classList.remove('dragging');
-    //     e.currentTarget.classList.remove('drag-over');
-    // };
 
     return (
         <div className="w-fullh-[220px] flex items-center justify-center relative mt-10 select-none">
