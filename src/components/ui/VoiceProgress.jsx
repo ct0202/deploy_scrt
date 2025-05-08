@@ -22,6 +22,9 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete, onResetRec
     const playbackSourceRef = useRef(null);
     const analyserRef = useRef(null);
 
+    const isTouchingRef = useRef(false);
+
+
     useEffect(() => {
         // Сразу при загрузке компонента просим разрешение на микрофон
         navigator.mediaDevices.getUserMedia({ audio: true })
@@ -158,9 +161,8 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete, onResetRec
     }, [audioBlob]);
 
     const handleTouchStart = async () => {
-        if (!isRecording) {
-            await startRecording();
-        }
+        isTouchingRef.current = true;
+        await startRecording();
     };
 
     const handleTouchEnd = () => {
@@ -173,25 +175,18 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete, onResetRec
 
     const togglePlay = () => {
         if (!audioRef.current) return;
-
         if (!playbackAudioContextRef.current) {
             const audioContext = new AudioContext();
             const source = audioContext.createMediaElementSource(audioRef.current);
             const analyser = audioContext.createAnalyser();
-
             analyser.fftSize = 256;
-
             source.connect(analyser);
             analyser.connect(audioContext.destination);
-
             playbackAudioContextRef.current = audioContext;
             playbackSourceRef.current = source;
             analyserRef.current = analyser;
         }
-
         const analyser = analyserRef.current;
-        if (!analyser) return;
-
         const bufferLength = analyser.frequencyBinCount;
         const dataArray = new Uint8Array(bufferLength);
 
@@ -199,20 +194,18 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete, onResetRec
             analyser.getByteFrequencyData(dataArray);
             const average = dataArray.reduce((a, b) => a + b, 0) / bufferLength;
             setVolumeLevel(Math.round(average));
-            requestAnimationFrame(draw);
+            if (!audioRef.current.paused) requestAnimationFrame(draw);
         };
 
         if (isPlaying) {
             audioRef.current.pause();
         } else {
             audioRef.current.play().then(() => {
-                setTimeout(() => requestAnimationFrame(draw), 100); // <-- небольшая задержка
+                requestAnimationFrame(draw);
             });
         }
-
         setIsPlaying(!isPlaying);
     };
-
 
     const handleAudioEnded = () => {
         setIsPlaying(false);
