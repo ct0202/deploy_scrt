@@ -128,7 +128,7 @@ function Menu() {
       </div>
       <Button
         className={"mt-[37px] mb-6"}
-        onclick={() => navigate("/calculatePage")}
+        onClick={() => navigate("/calculatePage")}
       >
         Далее
       </Button>

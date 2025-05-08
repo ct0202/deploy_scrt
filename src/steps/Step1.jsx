@@ -129,7 +129,7 @@ function Step1({ setStep }) {
 
       <Button
         className={"mt-[37px] mb-[20px]"}
-        onclick={() => setStep(2)}
+        onClick={() => setStep(2)}
         disabled={disabled}
       >
         Далее

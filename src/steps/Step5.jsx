@@ -145,7 +145,7 @@ function Step5({ setStep }) {
             </div>
             <div className="fixed bottom-[20px]">
                 <Button 
-                    onclick={saveDataAndNext} 
+                    onClick={saveDataAndNext} 
                     disabled={disabled || isSubmitting}
                 >
                     {isSubmitting ? 'Отправка...' : 'Начать знакомства'}

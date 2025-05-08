@@ -235,7 +235,7 @@ function Step2({ setStep }) {
         <h1 className="font-raleway font-light mt-[15px] text-white text-[16px]">Перетащите, чтобы изменить порядок</h1>
 
         <div className="fixed bottom-[20px]">
-          <Button onclick={() => setStep(3)} disabled={disabled}>
+          <Button onClick={() => setStep(3)} disabled={disabled}>
             Далее
           </Button>
         </div>
