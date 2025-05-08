@@ -180,7 +180,7 @@ function Step2({ setStep }) {
                       <img
                           src={registrationData.photos[index]}
                           alt={`Photo ${index + 1}`}
-                          className="w-full h-full object-cover rounded-[16px]"
+                          className="w-full h-full object-cover rounded-[16px] select-none"
                       />
                       <div className="absolute top-[8px] right-[8px] pointer-events-auto z-10" onClick={() => handleDeletePhoto(index)}>
                         <img src="/icons/delete_img.svg" className="w-[16px] h-[16px]" alt="Удалить" />
