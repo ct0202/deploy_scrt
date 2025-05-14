@@ -54,17 +54,21 @@ import StreamViewer from './pages/streaming/StreamViewer';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import InvitationHandler from './pages/InvitationHandler';
+
+import {store} from "./store/store";
+
 function App() {
     const dispatch = useDispatch();
     const authState = useSelector(state => state.auth);
     const { telegramId } = authState || {};
     console.log('authState', authState);
     const { initAuth } = useAuth();
-    const [showTelegramIdInput, setShowTelegramIdInput] = useState(false);
+    const [showTelegramIdInput, setShowTelegramIdInput] = useState(true);
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
-        if (isTelegram === 1) { 
+        if (isTelegram === 1) {
+            console.log('Telegram mode running');
             const tg = window.Telegram.WebApp;
             
             tg.requestFullscreen();
@@ -105,13 +109,15 @@ function App() {
     }, [initAuth, telegramId]);
 
     const handleTelegramIdSet = async (id) => {
-        dispatch(setAuthData({ 
-            auth_token: null,
-            userId: null,
+        dispatch(setAuthData({
+            // auth_token: null,
+            // userId: null,
             telegramId: id
         }));
         setShowTelegramIdInput(false);
         await initAuth();
+
+        console.log("Redux state after initAuth:", store.getState());
     };
 
     if (!isInitialized) {

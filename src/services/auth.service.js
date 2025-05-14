@@ -5,15 +5,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateRegistrationData, updatePhoto, setAudioMessage } from '../store/userSlice';
 import { setAuthData, clearAuthData } from '../store/authSlice';
 import { toast } from 'react-toastify';
+import {store} from "../store/store";
 
 export const useAuth = () => {
     const dispatch = useDispatch();
     const { telegramId, auth_token } = useSelector(state => state.auth);
 
     const initAuth = async () => {
-        if (auth_token) {
-            return;
-        }
+        // if (auth_token) {
+        //     return;
+        // }
 
         try {
             if (!telegramId) {
@@ -24,17 +25,17 @@ export const useAuth = () => {
             const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
                 telegramId: telegramId
             });
-            
+            console.log('login response: ', response);
             handleAuthResponse(response);
         } catch (error) {
-            if (error.response?.status === 404) {
-                dispatch(setAuthData({ 
-                    auth_token: null,
-                    userId: null,
-                    telegramId: telegramId
-                }));
-                return;
-            }
+            // if (error.response?.status === 404) {
+            //     dispatch(setAuthData({
+            //         auth_token: null,
+            //         userId: null,
+            //         telegramId: telegramId
+            //     }));
+            //     return;
+            // }
             console.error('Auth initialization error:', error);
             // toast.error('Authentication failed');
         }
@@ -44,13 +45,13 @@ export const useAuth = () => {
         if (response.data) {
             // Update auth data in Redux
             if (response.data.token) {
-                dispatch(setAuthData({ 
+                dispatch(setAuthData({
                     auth_token: response.data.token,
                     userId: response.data.user?._id,
                     telegramId: telegramId
                 }));
+                console.log("Redux state in handleAuthResponse:", store.getState());
             }
-            
             // Update user data in Redux
             if (response.data.user) {
                 const user = response.data.user;
