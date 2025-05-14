@@ -16,7 +16,7 @@ const axiosPrivate = axios.create({
 // Add auth interceptor to private instance
 axiosPrivate.interceptors.request.use((config) => {
     const state = store.getState();
-    const { auth_token } = state.auth;
+    const auth_token = state?.auth?.auth_token;
     
     if (auth_token) {
         config.headers.Authorization = `Bearer ${auth_token}`;
