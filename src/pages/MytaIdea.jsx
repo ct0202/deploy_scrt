@@ -1,6 +1,7 @@
 import React, {useRef, useState, useEffect} from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
+import { axiosPrivate } from '../axios';
 
 function MytaIdea() {
     const navigate = useNavigate();
@@ -31,6 +32,11 @@ function MytaIdea() {
         }
     }
 
+    const saveWalletAddress = async (address) => {
+        const res = await axiosPrivate.post('/wallet/ton', {wallet: address});
+        console.log(res);
+    }
+
     const connectTonWallet = async () => {
         try {
             setIsConnecting(true);
@@ -49,7 +55,7 @@ function MytaIdea() {
                 setTonInput(true);
                 
                 // You can also store the wallet address in your backend here
-                // await saveWalletAddress(result.address);
+                await saveWalletAddress(result.address);
             }
         } catch (error) {
             console.error('Error connecting TON wallet:', error);
