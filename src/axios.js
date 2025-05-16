@@ -17,6 +17,11 @@ const axiosPrivate = axios.create({
 axiosPrivate.interceptors.request.use((config) => {
     const state = store.getState();
     const auth_token = state?.auth?.auth_token;
+    console.log("AXIOS PRIVATE DEBUG");
+    console.log(state);
+    console.log(state?.auth);
+    console.log(state?.auth?.auth_token);
+    console.log("-------------------");
     
     if (auth_token) {
         config.headers.Authorization = `Bearer ${auth_token}`;

@@ -61,6 +61,8 @@ const config = {
             POTENTIAL: '/matches/potential',
             CREATE: '/matches/create',
             ID: (id) => `/matches/${id}`,
+            SUPERLIKE: (id) => `/matches/${id}/super-like`,
+            RETURN: (id) => `/matches/${id}/return`,
             LIST: '/matches/list',
             BY_ID: (id) => `/matches/${id}`
         },

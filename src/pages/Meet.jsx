@@ -48,8 +48,41 @@ function Meet() {
       console.log(currentMatchIndex, potentialMatches.length-1);
       if (currentMatchIndex < potentialMatches.length - 1) {
         console.log("increment index");
-        setCurrentMatch(potentialMatches[prevIndex => prevIndex + 1]);
+        setCurrentMatch(potentialMatches[currentMatchIndex + 1]);
         setCurrentMatchIndex(prevIndex => prevIndex + 1);
+      } else {
+        // If we've reached the end of potential matches, fetch more
+        fetchPotentialMatches();
+      }
+    } catch (error) {
+      console.error('Error rejecting match:', error);
+    }
+  };
+
+  const handleSuperLike = async (userId) => {
+    try {
+      await axiosPrivate.post(config.API.MATCHES.SUPERLIKE(userId));
+      console.log(currentMatchIndex, potentialMatches.length-1);
+      if (currentMatchIndex < potentialMatches.length - 1) {
+        console.log("increment index");
+        setCurrentMatch(potentialMatches[currentMatchIndex + 1]);
+        setCurrentMatchIndex(prevIndex => prevIndex + 1);
+      } else {
+        // If we've reached the end of potential matches, fetch more
+        fetchPotentialMatches();
+      }
+    } catch (error) {
+      console.error('Error rejecting match:', error);
+    }
+  };
+
+  const handleReturnCard = async (userId) => {
+    try {
+      await axiosPrivate.post(config.API.MATCHES.RETURN(userId));
+      console.log(currentMatchIndex, potentialMatches.length-1);
+      if (currentMatchIndex > 0) {
+        setCurrentMatch(potentialMatches[currentMatchIndex - 1]);
+        setCurrentMatchIndex(prevIndex => prevIndex - 1);
       } else {
         // If we've reached the end of potential matches, fetch more
         fetchPotentialMatches();
@@ -63,7 +96,7 @@ function Meet() {
     try {
       await axiosPrivate.post(config.API.MATCHES.ID(userId), {"like":false});
       if (currentMatchIndex < potentialMatches.length - 1) {
-        setCurrentMatch(potentialMatches[prevIndex => prevIndex + 1]);
+        setCurrentMatch(potentialMatches[currentMatchIndex + 1]);
         setCurrentMatchIndex(prevIndex => prevIndex + 1);
       } else {
         // If we've reached the end of potential matches, fetch more
@@ -278,9 +311,6 @@ function Meet() {
     };
   }, [isDragging]);
 
-  // const currentMatch = potentialMatches[currentMatchIndex];
-  console.log('Current match:', currentMatch);
-
   return (
     <div>
       {showInstruction && (
@@ -410,35 +440,36 @@ function Meet() {
                   <div className="w-[338px] h-[70px] mb-4 flex flex-row justify-evenly items-center">
                     <div 
                       className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
-                      onClick={() => handleDislike(currentMatch?._id)}
-                    >
+                      onClick={() => handleReturnCard(currentMatch?._id)}>
                       <img
                         src="/icons/photo_overlay_button_1.svg"
-                        alt="Dislike"
+                        alt="Вернуть карточку"
                         className="w-[48px] h-[48px]"
                       />
                     </div>
-                    <div className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}>
+                    <div className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
+                      onClick={() => handleDislike(currentMatch?._id)}>
                       <img
                         src="/icons/photo_overlay_button_2.svg"
-                        alt="Кнопка 2"
+                        alt="Дизлайк"
                         className="w-[58px] h-[58px]"
                       />
                     </div>
-                    <div className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}>
+                    <div className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
+                      onClick={() => handleSuperLike(currentMatch?._id)}>
                       <img
                         src="/icons/photo_overlay_button_3.svg"
-                        alt="Кнопка 3"
+                        alt="Супер лайк"
                         className="w-[64px] h-[64px]"
                       />
                     </div>
                     <div
                       className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
-                      onClick={() => {setDayLimit(true)}}
+                      onClick={() => handleLike(currentMatch?._id)}
                     >
                       <img
                         src="/icons/photo_overlay_button_4.svg"
-                        alt="Кнопка 4"
+                        alt="Лайк"
                         className="w-[58px] h-[58px]"
                       />
                     </div>
@@ -448,7 +479,7 @@ function Meet() {
                     >
                       <img 
                         src="/icons/photo_overlay_button_5.svg" 
-                        alt="Кнопка 5"
+                        alt="Чат"
                         className="w-[48px] h-[48px]" 
                       />
                     </div>

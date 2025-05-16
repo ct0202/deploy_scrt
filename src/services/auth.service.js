@@ -25,7 +25,7 @@ export const useAuth = () => {
             const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
                 telegramId: telegramId
             });
-            console.log('login response: ', response);
+            // console.log('login response: ', response);
             handleAuthResponse(response);
         } catch (error) {
             // if (error.response?.status === 404) {
@@ -50,7 +50,7 @@ export const useAuth = () => {
                     userId: response.data.user?._id,
                     telegramId: telegramId
                 }));
-                console.log("Redux state in handleAuthResponse:", store.getState());
+                // console.log("Redux state in handleAuthResponse:", store.getState());
             }
             // Update user data in Redux
             if (response.data.user) {
