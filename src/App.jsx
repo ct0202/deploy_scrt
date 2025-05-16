@@ -57,13 +57,14 @@ import InvitationHandler from './pages/InvitationHandler';
 
 import {store} from "./store/store";
 
+
 function App() {
     const dispatch = useDispatch();
     const authState = useSelector(state => state.auth);
     const { telegramId } = authState || {};
     console.log('authState', authState);
     const { initAuth } = useAuth();
-    const [showTelegramIdInput, setShowTelegramIdInput] = useState(true);
+    const [showTelegramIdInput, setShowTelegramIdInput] = useState(false);
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
