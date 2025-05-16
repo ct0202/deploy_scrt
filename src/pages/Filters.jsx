@@ -25,9 +25,10 @@ function Filters() {
             try {
                 const response = await axiosPrivate.get(config.API.USERS.PROFILE);
                 const userFilters = response.data.filters;
+                console.log(userFilters);
                 
                 if (userFilters) {
-                    setSelectedTargetGender(userFilters.targetGender || null);
+                    setSelectedTargetGender(userFilters.gender || null);
                     setSelectedOption(userFilters.purpose || null);
                     setSelectedInterests(userFilters.interests || []);
                     setRangeAge(userFilters.ageRange || { min: 18, max: 80 });
@@ -61,7 +62,7 @@ function Filters() {
             await axiosPrivate.put(config.API.USERS.UPDATE_FILTERS, {
                 telegramId,
                 filters: {
-                    targetGender: null,
+                    gender: null,
                     purpose: null,
                     interests: [],
                     ageRange: { min: 18, max: 80 },
@@ -125,7 +126,7 @@ function Filters() {
             await axiosPrivate.put(config.API.USERS.UPDATE_FILTERS, {
                 telegramId,
                 filters: {
-                    targetGender: selectedTargetGender,
+                    gender: selectedTargetGender,
                     purpose: selectedOption,
                     interests: selectedInterests,
                     ageRange: rangeAge,
@@ -175,7 +176,7 @@ function Filters() {
                         key={index}
                         onClick={() => setSelectedTargetGender(gender.id)}
                         className={`w-[145px] h-[48px] rounded-[400px] flex justify-center items-center text-[18px] text-white gap-[8px] cursor-pointer transition-all 
-            ${
+                        ${  
                             selectedTargetGender === gender.id
                                 ? "bg-[#043939] border-[1.5px] border-[#a1f69e]"
                                 : "bg-[#022424] border border-transparent"
