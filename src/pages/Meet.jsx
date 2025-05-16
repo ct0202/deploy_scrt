@@ -29,6 +29,7 @@ function Meet() {
   const [presentsShop, setPresentsShop] = useState(false);
   const [potentialMatches, setPotentialMatches] = useState([]);
   const [currentMatchIndex, setCurrentMatchIndex] = useState(0);
+  const [currentMatch, setCurrentMatch] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -44,7 +45,10 @@ function Meet() {
   const handleLike = async (userId) => {
     try {
       await axiosPrivate.post(config.API.MATCHES.ID(userId), {"like":true});
+      console.log(currentMatchIndex, potentialMatches.length-1);
       if (currentMatchIndex < potentialMatches.length - 1) {
+        console.log("increment index");
+        setCurrentMatch(potentialMatches[prevIndex => prevIndex + 1]);
         setCurrentMatchIndex(prevIndex => prevIndex + 1);
       } else {
         // If we've reached the end of potential matches, fetch more
@@ -59,6 +63,7 @@ function Meet() {
     try {
       await axiosPrivate.post(config.API.MATCHES.ID(userId), {"like":false});
       if (currentMatchIndex < potentialMatches.length - 1) {
+        setCurrentMatch(potentialMatches[prevIndex => prevIndex + 1]);
         setCurrentMatchIndex(prevIndex => prevIndex + 1);
       } else {
         // If we've reached the end of potential matches, fetch more
@@ -71,14 +76,12 @@ function Meet() {
 
   const fetchPotentialMatches = async () => {
     try {
-      console.log('Fetching potential matches...');
       const response = await axiosPrivate.get(config.API.MATCHES.POTENTIAL);
-      console.log('Potential matches response:', response.data);
       
       if (response.data && response.data.data && response.data.data.users) {
-        console.log('Setting potential matches:', response.data.data.users);
         setPotentialMatches(response.data.data.users);
         setCurrentMatchIndex(0); // Reset to first match when fetching new ones
+        setCurrentMatch(response.data.data.users[0]);
       } else {
         console.warn('Unexpected response structure:', response.data);
         setPotentialMatches([]);
@@ -129,14 +132,11 @@ function Meet() {
   const presentsRef = useRef(null);
 
   const handleTouchStart = (e) => {
-    console.log("1");
     setSwipeStart(e.touches[0].clientY);
     setSwipeDiff(0);
   };
 
   const handleTouchMove = (e) => {
-    console.log("2");
-
     const swipeEnd = e.touches[0].clientY;
     const diff = swipeEnd - swipeStart;
 
@@ -149,7 +149,6 @@ function Meet() {
   };
 
   const handleTouchEnd = () => {
-    console.log("swipe diff", swipeDiff);
     if (swipeDiff > 20) {
       setPresentsShop(false);
     } else {
@@ -169,7 +168,6 @@ function Meet() {
   };
 
   const handleCardTouchStart = (e) => {
-    console.log("start");
     setIsDragging(true);
     setStartPosition({
       x: e.touches[0].clientX,
@@ -178,7 +176,6 @@ function Meet() {
   };
 
   const handleCardTouchMove = (e) => {
-    console.log("3");
     if (!isDragging) return;
     
     const currentX = e.touches[0].clientX;
@@ -265,8 +262,6 @@ function Meet() {
     
     const deltaX = currentX - startPosition.x;
     const deltaY = currentY - startPosition.y;
-
-    console.log(deltaX, deltaY);
     
     handleCardTouchEnd(deltaX, deltaY);
   };
@@ -283,8 +278,8 @@ function Meet() {
     };
   }, [isDragging]);
 
-  const currentMatch = potentialMatches[currentMatchIndex];
-  // console.log('Current match:', currentMatch);
+  // const currentMatch = potentialMatches[currentMatchIndex];
+  console.log('Current match:', currentMatch);
 
   return (
     <div>
@@ -399,11 +394,11 @@ function Meet() {
                 </div>
                 <div className="h-[560px]">
                   <img
-                    src={currentMatch.photos && currentMatch.photos[0] 
-                      ? currentMatch.photos[0] 
+                    src={currentMatch?.photos && currentMatch?.photos[0] 
+                      ? currentMatch?.photos[0] 
                       : "/mock/user_1/mock_user_avatar_1_1.png"}
                     className="z-[1] w-[363px] h-[544px] rounded-[16px] object-cover"
-                    alt={`Profile of ${currentMatch.name}`}
+                    alt={`Profile of ${currentMatch?.name}`}
                     onError={(e) => {
                       console.error('Error loading image:', e.target.src);
                       e.target.src = "/mock/user_1/mock_user_avatar_1_1.png";
@@ -415,7 +410,7 @@ function Meet() {
                   <div className="w-[338px] h-[70px] mb-4 flex flex-row justify-evenly items-center">
                     <div 
                       className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
-                      onClick={() => handleDislike(currentMatch._id)}
+                      onClick={() => handleDislike(currentMatch?._id)}
                     >
                       <img
                         src="/icons/photo_overlay_button_1.svg"
@@ -462,39 +457,39 @@ function Meet() {
 
                 <div className="shadow-[0_-25px_30px_rgba(0,0,0,0.9)] rounded-[16px] rounded-t-none relative z-[5] flex flex-col pl-[24px] pr-[24px] bg-[#010D0D] translate-y-[-27px] drop-shadow-[0_0_30px_0_rgb(0,0,0)]">
                   <h1 className="font-raleway font-bold mt-6 text-white text-[26px]">
-                    {currentMatch.name}, {new Date().getFullYear() - new Date(currentMatch.birthDay).getFullYear()} лет
+                    {currentMatch?.name}, {new Date().getFullYear() - new Date(currentMatch?.birthDay).getFullYear()} лет
                   </h1>
                   <h1 className="font-raleway font-light mt-2 text-white text-[18px]">
-                    {currentMatch.city}, {currentMatch.country}
+                    {currentMatch?.city}, {currentMatch?.country}
                   </h1>
                   <div className="border-b-2 border-white/30 pt-5" />
                   <h1 className="font-raleway font-bold mt-6 text-white text-[18px]">
                     Цель знакомства
                   </h1>
                   <h1 className="font-raleway font-light mt-2 text-white text-[18px]">
-                    {currentMatch.purpose}
+                    {currentMatch?.purpose}
                   </h1>
                   <h1 className="font-raleway font-bold mt-6 text-white text-[18px]">
                     Аудио визитка
                   </h1>
                   <div className="mt-2">
-                    <ListenVoice preSignedAudio={currentMatch.audioMessage} />
+                    <ListenVoice preSignedAudio={currentMatch?.audioMessage} />
                   </div>
                   <h1 className="font-raleway font-bold mt-6 text-white text-[18px]">
                     Интересы
                   </h1>
                   <h1 className="font-raleway font-light mt-2 text-white text-[18px]">
-                    {Array.isArray(currentMatch.interests) 
-                      ? currentMatch.interests
+                    {Array.isArray(currentMatch?.interests) 
+                      ? currentMatch?.interests
                           .map(interest => interest.replace(/^"|"$/g, ''))
                           .join(", ")
-                      : typeof currentMatch.interests === 'string'
-                        ? currentMatch.interests
+                      : typeof currentMatch?.interests === 'string'
+                        ? currentMatch?.interests
                             .replace(/^\[|\]$/g, '')
                             .split(',')
                             .map(interest => interest.trim().replace(/^"|"$/g, ''))
                             .join(", ")
-                        : currentMatch.interests}
+                        : currentMatch?.interests}
                   </h1>
                 </div>
               </div>
