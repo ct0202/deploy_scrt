@@ -17,9 +17,9 @@ function Streams() {
   const fetchActiveStreams = async () => {
     try {
       setIsLoading(true);
-      const response = await axiosPrivate.get('/streams/active');
-      console.log('Active streams:', response.data);
-      setStreams(response.data);
+      const response = await axiosPrivate.get('/streams');
+      console.log('Active streams:', response.data.data);
+      setStreams(response.data.data);
     } catch (error) {
       console.error('Error fetching active streams:', error);
       toast.error('Failed to load streams. Please try again.');
@@ -45,16 +45,16 @@ function Streams() {
           <div className="w-full text-center text-white">
             Loading streams...
           </div>
-        ) : streams.length === 0 ? (
+        ) : streams?.length === 0 ? (
           <div className="w-full text-center text-white">
             No active streams at the moment
           </div>
         ) : (
-          streams.map((stream) => (
+          streams?.map((stream) => (
             <div 
               key={stream.id}
               className="relative cursor-pointer"
-              onClick={() => navigate(`${config.ROUTES.STREAMS.WATCH}/${stream.id}`)}
+              onClick={() => navigate(`${config.ROUTES.STREAMS.WATCH}/${stream}`)}
             >
               <img
                 src={stream.thumbnail || "/images/Card.svg"}
