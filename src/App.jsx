@@ -159,11 +159,11 @@ function App() {
 
                                     {/* Streaming Features */}
                                     <Route path={config.ROUTES.STREAMS.LIST} element={<Streams />} />
-                                    <Route path={`${config.ROUTES.STREAMS.WATCH}/:stream_id`} element={<WatchingStream />} />
+                                    {/* <Route path={`${config.ROUTES.STREAMS.WATCH}/:stream_id`} element={<WatchingStream />} /> */}
                                     <Route path={config.ROUTES.STREAMS.FILTERS} element={<StreamFilters />} />
                                     <Route path={`${config.ROUTES.STREAMS.STREAMER}/:id`} element={<Streamer />} />
                                     <Route path={`${config.ROUTES.STREAMS.BROADCASTER}`} element={<StreamBroadcaster />} />
-                                    <Route path={`${config.ROUTES.STREAMS.WATCH}/:stream_id`} element={<StreamViewer />} />
+                                    <Route path={`${config.ROUTES.STREAMS.WATCH}/:streamId`} element={<StreamViewer />} />
                                     <Route path="/roulette" element={<Roulette />} />
 
                                     {/* Chat Features */}
