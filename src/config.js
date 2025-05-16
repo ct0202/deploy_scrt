@@ -60,8 +60,7 @@ const config = {
             BASE: '/matches',
             POTENTIAL: '/matches/potential',
             CREATE: '/matches/create',
-            ACCEPT: (id) => `/matches/${id}/accept`,
-            REJECT: (id) => `/matches/${id}/reject`,
+            ID: (id) => `/matches/${id}`,
             LIST: '/matches/list',
             BY_ID: (id) => `/matches/${id}`
         },

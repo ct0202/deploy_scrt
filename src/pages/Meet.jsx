@@ -41,9 +41,23 @@ function Meet() {
 
   const navigate = useNavigate();
 
+  const handleLike = async (userId) => {
+    try {
+      await axiosPrivate.post(config.API.MATCHES.ID(userId), {"like":true});
+      if (currentMatchIndex < potentialMatches.length - 1) {
+        setCurrentMatchIndex(prevIndex => prevIndex + 1);
+      } else {
+        // If we've reached the end of potential matches, fetch more
+        fetchPotentialMatches();
+      }
+    } catch (error) {
+      console.error('Error rejecting match:', error);
+    }
+  };
+
   const handleDislike = async (userId) => {
     try {
-      await axiosPrivate.post(config.API.MATCHES.REJECT(userId));
+      await axiosPrivate.post(config.API.MATCHES.ID(userId), {"like":false});
       if (currentMatchIndex < potentialMatches.length - 1) {
         setCurrentMatchIndex(prevIndex => prevIndex + 1);
       } else {
@@ -115,11 +129,14 @@ function Meet() {
   const presentsRef = useRef(null);
 
   const handleTouchStart = (e) => {
+    console.log("1");
     setSwipeStart(e.touches[0].clientY);
     setSwipeDiff(0);
   };
 
   const handleTouchMove = (e) => {
+    console.log("2");
+
     const swipeEnd = e.touches[0].clientY;
     const diff = swipeEnd - swipeStart;
 
@@ -132,6 +149,7 @@ function Meet() {
   };
 
   const handleTouchEnd = () => {
+    console.log("swipe diff", swipeDiff);
     if (swipeDiff > 20) {
       setPresentsShop(false);
     } else {
@@ -151,6 +169,7 @@ function Meet() {
   };
 
   const handleCardTouchStart = (e) => {
+    console.log("start");
     setIsDragging(true);
     setStartPosition({
       x: e.touches[0].clientX,
@@ -159,6 +178,7 @@ function Meet() {
   };
 
   const handleCardTouchMove = (e) => {
+    console.log("3");
     if (!isDragging) return;
     
     const currentX = e.touches[0].clientX;
@@ -166,7 +186,7 @@ function Meet() {
     
     const deltaX = currentX - startPosition.x;
     const deltaY = currentY - startPosition.y;
-    
+
     setCardPosition({
       x: deltaX,
       y: deltaY
@@ -178,21 +198,24 @@ function Meet() {
     }
   };
 
-  const handleCardTouchEnd = () => {
+  const handleCardTouchEnd = (deltaX, deltaY) => {
     setIsDragging(false);
     
     if (cardRef.current) {
-      const threshold = 100; // Порог для свайпа
+      const threshold = 120; // Порог для 
       
-      if (Math.abs(cardPosition.x) > threshold) {
+      if (Math.abs(deltaX) > threshold) {
         // Свайп вправо - лайк
-        if (cardPosition.x > 0) {
-          cardRef.current.style.transform = `translate(${window.innerWidth}px, ${cardPosition.y}px) rotate(30deg)`;
+        if (deltaX > 0) {
+          console.log("Swiped right - max X deviation:", deltaX);
+          cardRef.current.style.transform = `translate(${window.innerWidth}px, ${deltaY}px) rotate(30deg)`;
           // Здесь можно добавить логику для лайка
+          handleLike(currentMatch._id);
         }
         // Свайп влево - дизлайк
         else {
-          cardRef.current.style.transform = `translate(-${window.innerWidth}px, ${cardPosition.y}px) rotate(-30deg)`;
+          console.log("Swiped left - max X deviation:", deltaX);
+          cardRef.current.style.transform = `translate(-${window.innerWidth}px, ${deltaY}px) rotate(-30deg)`;
           handleDislike(currentMatch._id);
         }
         
@@ -204,6 +227,7 @@ function Meet() {
           }
         }, 300);
       } else {
+        console.log("No significant horizontal swipe. Max X deviation:", deltaX);
         // Возврат карточки в исходное положение
         setCardPosition({ x: 0, y: 0 });
         cardRef.current.style.transform = 'translate(0px, 0px) rotate(0deg)';
@@ -222,17 +246,12 @@ function Meet() {
 
   const handleCardMouseMove = (e) => {
     if (!isDragging) return;
-    
+
     const currentX = e.clientX;
     const currentY = e.clientY;
     
     const deltaX = currentX - startPosition.x;
     const deltaY = currentY - startPosition.y;
-    
-    setCardPosition({
-      x: deltaX,
-      y: deltaY
-    });
 
     if (cardRef.current) {
       const rotation = deltaX * 0.1;
@@ -240,8 +259,16 @@ function Meet() {
     }
   };
 
-  const handleCardMouseUp = () => {
-    handleCardTouchEnd();
+  const handleCardMouseUp = (e) => {
+    const currentX = e.clientX;
+    const currentY = e.clientY;
+    
+    const deltaX = currentX - startPosition.x;
+    const deltaY = currentY - startPosition.y;
+
+    console.log(deltaX, deltaY);
+    
+    handleCardTouchEnd(deltaX, deltaY);
   };
 
   useEffect(() => {
@@ -257,7 +284,7 @@ function Meet() {
   }, [isDragging]);
 
   const currentMatch = potentialMatches[currentMatchIndex];
-  console.log('Current match:', currentMatch);
+  // console.log('Current match:', currentMatch);
 
   return (
     <div>
