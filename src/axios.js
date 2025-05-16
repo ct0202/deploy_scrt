@@ -57,7 +57,7 @@ axiosPrivate.interceptors.response.use(
                 return axiosPrivate(originalRequest);
             } catch (refreshError) {
                 // If refresh fails, clear auth data
-                store.dispatch(clearAuthData());
+                // store.dispatch(clearAuthData());
                 return Promise.reject(refreshError);
             }
         }

@@ -8,9 +8,9 @@ const loadInitialState = () => {
         return JSON.parse(storedState);
     }
     return {
-        auth_token: null,
-        userId: null,
-        telegramId: null
+        // auth_token: null,
+        // userId: null,
+        // telegramId: null
     };
 };
 
