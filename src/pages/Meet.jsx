@@ -32,7 +32,11 @@ function Meet() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [startPosition, setStartPosition] = useState({ x: 0, y: 0 });
   const audioRef = useRef(null);
+  const cardRef = useRef(null);
   const { userId } = useSelector(state => state.auth);
 
   const navigate = useNavigate();
@@ -146,7 +150,111 @@ function Meet() {
     }
   };
 
-  
+  const handleCardTouchStart = (e) => {
+    setIsDragging(true);
+    setStartPosition({
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY
+    });
+  };
+
+  const handleCardTouchMove = (e) => {
+    if (!isDragging) return;
+    
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    
+    const deltaX = currentX - startPosition.x;
+    const deltaY = currentY - startPosition.y;
+    
+    setCardPosition({
+      x: deltaX,
+      y: deltaY
+    });
+
+    if (cardRef.current) {
+      const rotation = deltaX * 0.1; // Коэффициент наклона
+      cardRef.current.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${rotation}deg)`;
+    }
+  };
+
+  const handleCardTouchEnd = () => {
+    setIsDragging(false);
+    
+    if (cardRef.current) {
+      const threshold = 100; // Порог для свайпа
+      
+      if (Math.abs(cardPosition.x) > threshold) {
+        // Свайп вправо - лайк
+        if (cardPosition.x > 0) {
+          cardRef.current.style.transform = `translate(${window.innerWidth}px, ${cardPosition.y}px) rotate(30deg)`;
+          // Здесь можно добавить логику для лайка
+        }
+        // Свайп влево - дизлайк
+        else {
+          cardRef.current.style.transform = `translate(-${window.innerWidth}px, ${cardPosition.y}px) rotate(-30deg)`;
+          handleDislike(currentMatch._id);
+        }
+        
+        setTimeout(() => {
+          setCardPosition({ x: 0, y: 0 });
+          if (cardRef.current) {
+            cardRef.current.style.transform = 'translate(0px, 0px) rotate(0deg)';
+            cardRef.current.style.transition = 'transform 0.3s ease-out';
+          }
+        }, 300);
+      } else {
+        // Возврат карточки в исходное положение
+        setCardPosition({ x: 0, y: 0 });
+        cardRef.current.style.transform = 'translate(0px, 0px) rotate(0deg)';
+        cardRef.current.style.transition = 'transform 0.3s ease-out';
+      }
+    }
+  };
+
+  const handleCardMouseDown = (e) => {
+    setIsDragging(true);
+    setStartPosition({
+      x: e.clientX,
+      y: e.clientY
+    });
+  };
+
+  const handleCardMouseMove = (e) => {
+    if (!isDragging) return;
+    
+    const currentX = e.clientX;
+    const currentY = e.clientY;
+    
+    const deltaX = currentX - startPosition.x;
+    const deltaY = currentY - startPosition.y;
+    
+    setCardPosition({
+      x: deltaX,
+      y: deltaY
+    });
+
+    if (cardRef.current) {
+      const rotation = deltaX * 0.1;
+      cardRef.current.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${rotation}deg)`;
+    }
+  };
+
+  const handleCardMouseUp = () => {
+    handleCardTouchEnd();
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleCardMouseMove);
+      document.addEventListener('mouseup', handleCardMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleCardMouseMove);
+      document.removeEventListener('mouseup', handleCardMouseUp);
+    };
+  }, [isDragging]);
 
   const currentMatch = potentialMatches[currentMatchIndex];
   console.log('Current match:', currentMatch);
@@ -237,7 +345,19 @@ function Meet() {
                       <div className="text-white">No potential matches found</div>
                     </div>
                   :
-              <div className="relative w-[343px] rounded-[16px]">
+              <div 
+                ref={cardRef}
+                className="relative w-[343px] rounded-[16px]"
+                onTouchStart={handleCardTouchStart}
+                onTouchMove={handleCardTouchMove}
+                onTouchEnd={handleCardTouchEnd}
+                onMouseDown={handleCardMouseDown}
+                style={{
+                  touchAction: 'none',
+                  transition: isDragging ? 'none' : 'transform 0.3s ease-out',
+                  cursor: isDragging ? 'grabbing' : 'grab'
+                }}
+              >
                 <div className="w-full relative">
                   <div
                     className="custom-pagination"
