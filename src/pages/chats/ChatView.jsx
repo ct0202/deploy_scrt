@@ -22,6 +22,7 @@ function ChatView () {
     const typingTimeoutRef = useRef(null);
     const messagesContainerRef = useRef(null);
 
+
     const calculateAge = (birthDay) => {
         if (!birthDay) return '';
         const birthDate = new Date(birthDay);
@@ -175,7 +176,7 @@ function ChatView () {
         if (!messageInput.trim()) return;
 
         try {
-            chatService.sendMessage(chat_id, messageInput);
+            chatService.sendMessage(chat_id, currentUserId,messageInput);
             setMessageInput('');
             // Stop typing status
             chatService.updateTypingStatus(chat_id, false);

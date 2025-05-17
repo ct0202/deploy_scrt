@@ -11,6 +11,8 @@ import DayLimit from "../../components/shared/DayLimit";
 import PresentsShop from "../../components/shared/PresentsShop";
 import ChatProgressBar from "../../components/ui/ChatProgressBar";
 import LocalVideoPreview from "../../components/ui/LocalVideoPreview";
+import rouletteService from '../../services/roulette.service';
+
 
 function Roulette() {
     const navigate = useNavigate();
@@ -19,7 +21,7 @@ function Roulette() {
     const [isSearching, setIsSearching] = useState(false);
     const [isMatched, setIsMatched] = useState(false);
     const [matchedUser, setMatchedUser] = useState(null);
-    const [roomId, setRoomId] = useState(null);
+    const [roomId, setRoomId] = useState("test");
     const [chatMessages, setChatMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
 
@@ -42,6 +44,92 @@ function Roulette() {
 
     const [swipeStart, setSwipeStart] = useState(0);
     const presentsRef = useRef(null);
+
+
+    useEffect(() => {
+        rouletteService.connect();
+    
+        const unsubscribeMatched = rouletteService.onMatched(data => {
+            setIsMatched(true);
+            console.log(data);
+            setMatchedUser(data.matchedUserId);
+            setRoomId(data.roomId);
+        });
+    
+        const unsubscribeMessage = rouletteService.onMessage(data => {
+            setChatMessages(prev => [...prev, {
+                id: Date.now(),
+                userId: data.userId,
+                message: data.message,
+                timestamp: new Date().toLocaleTimeString()
+            }]);
+        });
+    
+        const unsubscribeEnd = rouletteService.onEnd(() => {
+            handleEndChat();
+        });
+    
+        const unsubscribeError = rouletteService.onError(error => {
+            toast.error(error.message);
+        });
+    
+        return () => {
+            unsubscribeMatched();
+            unsubscribeMessage();
+            unsubscribeEnd();
+            unsubscribeError();
+            rouletteService.disconnect();
+        };
+    }, []);
+
+    const handleJoin = () => {
+        rouletteService.joinChat(userId);
+    };
+
+    const sendMessage = (e) => {
+        e.preventDefault();
+        if (!roomId || !messageInput.trim()) return;
+    
+        rouletteService.sendMessage(roomId, messageInput);
+    
+        setChatMessages(prev => [...prev, {
+            id: Date.now(),
+            userId,
+            message: messageInput,
+            timestamp: new Date().toLocaleTimeString()
+        }]);
+    
+        setMessageInput('');
+    };
+    
+    const handleEndChat = () => {
+        if (roomId) rouletteService.endChat(roomId);
+    
+        setIsMatched(false);
+        setMatchedUser(null);
+        setRoomId(null);
+        setChatMessages([]);
+        setIsPreviewVisible(false);
+    
+        localTracks.forEach(track => {
+            track.stop();
+            track.close();
+        });
+    
+        setLocalTracks([]);
+        client.leave();
+    };
+
+
+
+
+
+
+
+
+
+
+
 
     const handleTouchStart = (e) => {
         setSwipeStart(e.touches[0].clientY);
@@ -87,54 +175,69 @@ function Roulette() {
         }
     ];
 
-    // Initialize socket connection
-    useEffect(() => {
-        const newSocket = io(process.env.REACT_APP_API_URL);
-        setSocket(newSocket);
+    // // Initialize socket connection
+    // useEffect(() => {
+    //     const newSocket = io('/roulette', {
+    //         path: '/socket.io',
+    //         transports: ['websocket', 'polling']
+    //     });
 
-        return () => {
-            newSocket.disconnect();
-        };
-    }, []);
+        
+    //     newSocket.on('connect', () => {
+    //         console.log('Connected to roulette socket');
+    //     });
 
-    // Set up socket event listeners
-    useEffect(() => {
-        if (!socket) return;
+    //     newSocket.on('error', (error) => {
+    //         console.error('Socket error:', error);
+    //         toast.error('Connection error. Please try again.');
+    //     });
 
-        socket.on('roulette-chat-id-response', (data) => {
-            console.log('Matched with user:', data);
-            setIsMatched(true);
-            setMatchedUser(data.matchedUserId);
-            setRoomId(data.roomId);
-        });
+    //     console.log(newSocket);
+    //     setSocket(newSocket);
+    
+    //     return () => {
+    //         newSocket.disconnect();
+    //     };
+    // }, []);
 
-        socket.on('roulette-message', (data) => {
-            console.log('Received message:', data);
-            setChatMessages(prev => [...prev, {
-                id: Date.now(),
-                userId: data.userId,
-                message: data.message,
-                timestamp: new Date().toLocaleTimeString()
-            }]);
-        });
+    // // Set up socket event listeners
+    // useEffect(() => {
+    //     if (!socket) return;
 
-        socket.on('roulette-chat-ended', () => {
-            console.log('Chat ended by other user');
-            handleEndChat();
-        });
+    //     socket.on('roulette-chat-id-response', (data) => {
+    //         console.log('Matched with user:', data);
+    //         setIsMatched(true);
+    //         setMatchedUser(data.matchedUserId);
+    //         setRoomId(data.roomId);
+    //     });
 
-        socket.on('roulette-error', (error) => {
-            console.error('Roulette error:', error);
-            toast.error(error.message);
-        });
+    //     socket.on('roulette-message', (data) => {
+    //         console.log('Received message:', data);
+    //         setChatMessages(prev => [...prev, {
+    //             id: Date.now(),
+    //             userId: data.userId,
+    //             message: data.message,
+    //             timestamp: new Date().toLocaleTimeString()
+    //         }]);
+    //     });
 
-        return () => {
-            socket.off('roulette-chat-id-response');
-            socket.off('roulette-message');
-            socket.off('roulette-chat-ended');
-            socket.off('roulette-error');
-        };
-    }, [socket]);
+    //     socket.on('roulette-chat-ended', () => {
+    //         console.log('Chat ended by other user');
+    //         handleEndChat();
+    //     });
+
+    //     socket.on('roulette-error', (error) => {
+    //         console.error('Roulette error:', error);
+    //         toast.error(error.message);
+    //     });
+
+    //     return () => {
+    //         socket.off('roulette-chat-id-response');
+    //         socket.off('roulette-message');
+    //         socket.off('roulette-chat-ended');
+    //         socket.off('roulette-error');
+    //     };
+    // }, [socket]);
 
     // Initialize Agora
     useEffect(() => {
@@ -222,47 +325,45 @@ function Roulette() {
     }, [isPreviewVisible]);
 
     const startSearch = () => {
-        if (!socket) return;
-        setIsSearching(true);
-        setIsPreviewVisible(true);
-        socket.emit('join-chat-roulette-request', { userId });
+        console.log("START SEARCH");
+        handleJoin();
     };
 
-    const handleEndChat = () => {
-        if (socket && roomId) {
-            socket.emit('end-roulette-chat', { roomId });
-        }
-        setIsMatched(false);
-        setMatchedUser(null);
-        setRoomId(null);
-        setChatMessages([]);
-        setIsPreviewVisible(false);
-        localTracks.forEach(track => {
-            track.stop();
-            track.close();
-        });
-        setLocalTracks([]);
-        client.leave();
-    };
+    // const handleEndChat = () => {
+    //     if (socket && roomId) {
+    //         socket.emit('end-roulette-chat', { roomId });
+    //     }
+    //     setIsMatched(false);
+    //     setMatchedUser(null);
+    //     setRoomId(null);
+    //     setChatMessages([]);
+    //     setIsPreviewVisible(false);
+    //     localTracks.forEach(track => {
+    //         track.stop();
+    //         track.close();
+    //     });
+    //     setLocalTracks([]);
+    //     client.leave();
+    // };
 
-    const sendMessage = (e) => {
-        e.preventDefault();
-        if (!socket || !roomId || !messageInput.trim()) return;
+    // const sendMessage = (e) => {
+    //     e.preventDefault();
+    //     if (!socket || !roomId || !messageInput.trim()) return;
 
-        socket.emit('roulette-message', {
-            roomId,
-            message: messageInput
-        });
+    //     socket.emit('roulette-message', {
+    //         roomId,
+    //         message: messageInput
+    //     });
 
-        setChatMessages(prev => [...prev, {
-            id: Date.now(),
-            userId,
-            message: messageInput,
-            timestamp: new Date().toLocaleTimeString()
-        }]);
+    //     setChatMessages(prev => [...prev, {
+    //         id: Date.now(),
+    //         userId,
+    //         message: messageInput,
+    //         timestamp: new Date().toLocaleTimeString()
+    //     }]);
 
-        setMessageInput('');
-    };
+    //     setMessageInput('');
+    // };
 
     useEffect(() => {
         const isFirstVisitChat = localStorage.getItem("firstVisitChat2");

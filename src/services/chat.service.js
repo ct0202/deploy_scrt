@@ -65,12 +65,11 @@ const joinChat = (chatId) => {
     }
 };
 
-const sendMessage = (chatId, content) => {
+const sendMessage = (chatId, senderId, content) => {
     if (socket) {
-        const userId = localStorage.getItem('userId');
         socket.emit('send-message', {
             chatId,
-            senderId: userId,
+            senderId,
             content
         });
     }
