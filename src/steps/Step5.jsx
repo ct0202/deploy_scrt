@@ -19,6 +19,9 @@ function Step5({ setStep }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [location, setLocation] = useState(null);
 
+    const { initAuth } = useAuth();
+
+
     console.log("step4");
 
     useEffect(() => {
@@ -159,11 +162,13 @@ function Step5({ setStep }) {
                 console.log('Registration response:', response);
 
                 if (response.data) {
-                    // Store the token if returned
-                    if (response.data.token) {
-                        // localStorage.setItem('token', response.data.token);
-                    }
-                    navigate("/meet");
+                    await initAuth()
+                    .then(() => {
+                        navigate("/meet"); 
+                    })
+                    .catch((error) => {
+                        console.error('Error initializing auth:', error);
+                    });
                 }
             } catch (error) {
                 console.error('Registration error:', error);
