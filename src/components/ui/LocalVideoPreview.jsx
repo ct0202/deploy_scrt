@@ -34,7 +34,7 @@ function LocalVideoPreview({ screen }) {
             ref={videoRef}
             muted
             playsInline
-            className="absolute top-0 right-0 mt-8 mr-2 z-[2] w-full h-full rounded-[12px] object-cover"
+            className="absolute top-0 right-0z-[2] w-full h-full rounded-[12px] object-cover"
         />
     );
 }

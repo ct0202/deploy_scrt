@@ -10,6 +10,7 @@ import { Navigation } from "../../components/shared/Navigation";
 import DayLimit from "../../components/shared/DayLimit";
 import PresentsShop from "../../components/shared/PresentsShop";
 import ChatProgressBar from "../../components/ui/ChatProgressBar";
+import LocalVideoPreview from "../../components/ui/LocalVideoPreview";
 
 function Roulette() {
     const navigate = useNavigate();
@@ -438,20 +439,26 @@ function Roulette() {
                                     </div>
                                 </div>
                             ) : (
-                                <div className="text-white text-center px-4">
-                                    <div className="w-24 h-24 mx-auto mb-6 relative animate-float">
-                                        <div className="absolute inset-0 bg-[#0B6666] rounded-full opacity-20 animate-pulse"></div>
-                                        <div className="absolute inset-4 bg-[#a1f69e] rounded-full opacity-20 animate-pulse animate-delay-1"></div>
-                                        <div className="absolute inset-8 bg-white rounded-full opacity-20 animate-pulse animate-delay-2"></div>
-                                    </div>
-                                    
-                                    <p className="text-2xl font-bold mb-2 animate-float">Start Roulette</p>
-                                    <p className="text-sm mb-4 animate-float animate-delay-1">Click the button below to find a random match</p>
-                                    
-                                    <div className="space-y-2 text-sm text-gray-300">
-                                        <p className="animate-float">• Chat with random people</p>
-                                        <p className="animate-float animate-delay-1">• Make new friends</p>
-                                        <p className="animate-float animate-delay-2">• Find interesting conversations</p>
+                                <div className="w-[343px] 
+                                h-[527px]
+                                bg-[#043939] 
+                                rounded-[16px]
+                                flex 
+                                items-center 
+                                justify-center 
+                                flex-col 
+                                relative
+                                ">
+                                    <div className="w-[100%] h-[100%]">
+                                        <LocalVideoPreview screen={'start'} style={{
+                                         zIndex: 2,
+                                         width: "100%",
+                                         height: "100%",
+                                         borderRadius: "12px",
+                                         objectFit: "cover",
+                                         overflow: "hidden",
+                                     }}
+                                    />
                                     </div>
                                 </div>
                             )}

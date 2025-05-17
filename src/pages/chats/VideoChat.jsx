@@ -373,17 +373,12 @@ function VideoChat() {
                         flex-col 
                         relative
                         ">
-                            <div className="absolute bottom-[16px] w-[311px] h-[64px] flex items-center justify-center">
+                            <div className="absolute z-[10] bottom-[16px] w-[311px] h-[64px] flex items-center justify-center">
                                 <Button>Найти собеседника</Button>
                             </div>
-                            <div className="w-[100%] h-[100%] flex items-center justify-center">
+                            <div className="w-[100%] h-[100%]">
                             {/*<div id="local-video"*/}
                                 <LocalVideoPreview screen={screen} style={{
-                                 position: "absolute",
-                                 top: 0,
-                                 right: 0,
-                                 marginTop: "2rem",
-                                 marginRight: "0.5rem",
                                  zIndex: 2,
                                  width: "100%",
                                  height: "100%",
