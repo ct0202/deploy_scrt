@@ -32,7 +32,7 @@ const connect = () => {
     });
 
     socket.on('roulette-message', (data) => {
-        console.log("roulette-message")
+        console.log("roulette-message");
         messageCallbacks.forEach(cb => cb(data));
     });
 
@@ -83,6 +83,11 @@ const joinChat = (userId) => {
     socket.emit('join_chat_roulette', { userId });
 };
 
+const endSession = (userId) => {
+    if (!socket || !userId) return;
+    socket.emit('end_roulette_session', { userId });
+}
+
 const rouletteService = {
     connect,
     disconnect,
@@ -92,6 +97,7 @@ const rouletteService = {
     onMessage,
     onEnd,
     joinChat,
+    endSession,
     onError
 };
 
