@@ -66,7 +66,7 @@ function App() {
     const { initAuth } = useAuth();
 
 
-    const [showTelegramIdInput, setShowTelegramIdInput] = useState(true);
+    const [showTelegramIdInput, setShowTelegramIdInput] = useState(false);
 
 
     const [isInitialized, setIsInitialized] = useState(false);
