@@ -27,6 +27,7 @@ function Roulette() {
     const client = useMemo(() => AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' }), []);
     const [localTracks, setLocalTracks] = useState([]);
     const [remoteUsers, setRemoteUsers] = useState([]);
+    const [isPreviewVisible, setIsPreviewVisible] = useState(false);
     const localVideoRef = useRef(null);
     const remoteVideoRef = useRef(null);
 
@@ -139,11 +140,16 @@ function Roulette() {
     useEffect(() => {
         const initAgora = async () => {
             try {
+                if (!isPreviewVisible) {
+                    return;
+                }
+
                 // Подключение к каналу (uid = null означает, что Agora выдаст случайный uid)
                 const uid = await client.join(AGORA_APP_ID, roomId, null, null);
 
                 // Создание локального видеотрека
                 const [localAudioTrack, localVideoTrack] = await AgoraRTC.createMicrophoneAndCameraTracks();
+                setLocalTracks([localAudioTrack, localVideoTrack]);
 
                 // Вывод локального видео
                 localVideoTrack.play("local-video");
@@ -204,9 +210,21 @@ function Roulette() {
         };
     }, [roomId]);
 
+    useEffect(() => {
+        // Очистка треков при размонтировании или когда превью не видно
+        return () => {
+            localTracks.forEach(track => {
+                track.stop();
+                track.close();
+            });
+            setLocalTracks([]);
+        };
+    }, [isPreviewVisible]);
+
     const startSearch = () => {
         if (!socket) return;
         setIsSearching(true);
+        setIsPreviewVisible(true);
         socket.emit('join-chat-roulette-request', { userId });
     };
 
@@ -218,7 +236,12 @@ function Roulette() {
         setMatchedUser(null);
         setRoomId(null);
         setChatMessages([]);
-        localTracks.forEach(track => track.stop());
+        setIsPreviewVisible(false);
+        localTracks.forEach(track => {
+            track.stop();
+            track.close();
+        });
+        setLocalTracks([]);
         client.leave();
     };
 
@@ -406,36 +429,64 @@ function Roulette() {
                                     <p className="text-sm">You are now connected with a stranger</p>
                                 </div>
                             ) : isSearching ? (
-                                <div className="text-white text-center px-4">
-                                    <div className="relative w-24 h-24 mx-auto mb-6">
-                                        <div className="absolute inset-0 border-4 border-t-transparent border-[#0B6666] rounded-full animate-spin"></div>
-                                        <div className="absolute inset-2 border-4 border-t-transparent border-[#a1f69e] rounded-full animate-spin animate-delay-1"></div>
-                                        <div className="absolute inset-4 border-4 border-t-transparent border-white rounded-full animate-spin animate-delay-2"></div>
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <div className="w-8 h-8 bg-[#0B6666] rounded-full animate-pulse"></div>
-                                        </div>
-                                    </div>
-                                    
-                                    <p className="text-2xl font-bold mb-2 animate-float">Searching for a match...</p>
-                                    
-                                    <div className="w-full max-w-xs mx-auto mb-4">
-                                        <div className="h-2 bg-[#022424] rounded-full overflow-hidden">
-                                            <div 
-                                                className="h-full bg-gradient-to-r from-[#0B6666] to-[#a1f69e] animate-progress"
-                                                style={{ width: '100%' }}
-                                            ></div>
-                                        </div>
-                                    </div>
+                                <div className="w-[343px] h-[527px]
+                                bg-[#043939] rounded-[16px]
+                                flex items-center justify-center flex-col relative
+                                ">
+                                     <LocalVideoPreview
+                                        screen={'wait'}
+                                        style={{
+                                            position: "absolute",
+                                            top: 0,
+                                            right: 0,
+                                            marginTop: "2rem",
+                                            marginRight: "0.5rem",
+                                            zIndex: 30,
+                                            width: "80px",
+                                            height: "140px",
+                                            borderRadius: "12px",
+                                            objectFit: "cover",
+                                            overflow: "hidden",
+                                        }}
+                                    />
+                                    <object data="/icons/video_chat_wait.svg" type="image/svg+xml" className="w-[48px] h-[48px]"></object>
+                                    <p className="text-center text-white text-[20px] font-medium mt-[19px]">Ищем собеседника.</p>
+                                    <p className="text-center text-white text-[20px] font-medium">Пожалуйста подождите...</p>
+                                    <div className="w-[100%]"></div>
 
-                                    <div className="space-y-2 text-sm text-gray-300">
-                                        <p className="animate-float animate-delay-1">• Looking for compatible users...</p>
-                                        <p className="animate-float animate-delay-2">• Checking preferences...</p>
-                                        <p className="animate-float">• Finding the perfect match...</p>
-                                    </div>
-
-                                    <div className="mt-6 text-xs text-gray-400">
-                                        <p className="animate-pulse">You can cancel at any time</p>
-                                        <p className="mt-1 animate-pulse animate-delay-1">Estimated time: {Math.floor(Math.random() * 30) + 10} seconds</p>
+                                    <div className="z-[8] absolute bottom-[23px] w-[100%] flex items-center justify-center"> 
+                                        <div className="w-[338px] h-[70px] flex flex-row justify-center gap-[16px] items-center opacity-30">
+                                            <div
+                                                className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
+                                                // onClick={handleEndChat} кнопка дизейблд
+                                            >
+                                                <img
+                                                    src="/icons/photo_overlay_button_2.svg"
+                                                    alt="End Chat"
+                                                    className="w-[64px] h-[64px]"
+                                                />
+                                            </div>
+                                            <div
+                                                className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
+                                                // onClick={() => setPresentsShop(true)} кнопка дизейблд
+                                            >
+                                                <img
+                                                    src="/icons/photo_overlay_button_5.svg"
+                                                    alt="Presents"
+                                                    className="w-[64px] h-[64px]"
+                                                />
+                                            </div>
+                                            <div
+                                                className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
+                                                // onClick={startSearch} кнопка дизейблд
+                                            >
+                                                <img
+                                                    src="/icons/photo_overlay_button_4.svg"
+                                                    alt="Start Search"
+                                                    className="w-[64px] h-[64px]"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             ) : (
@@ -460,6 +511,9 @@ function Roulette() {
                                      }}
                                     />
                                     </div>
+                                    <div className="absolute z-[100] bottom-[16px] w-[311px] h-[64px] flex items-center justify-center">
+                                    <Button onClick={startSearch} >Найти собеседника</Button>
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -481,8 +535,8 @@ function Roulette() {
                                 overflow: "hidden",
                             }}
                         />
-
-                        <div className="z-[8] translate-y-[-90px] absolute w-[100%] flex items-center justify-center">
+                        
+                        {/* <div className="z-[8] translate-y-[-90px] absolute w-[100%] flex items-center justify-center">
                             <div className="w-[338px] h-[70px] mb-4 flex flex-row justify-evenly items-center">
                                 <div
                                     className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
@@ -515,7 +569,7 @@ function Roulette() {
                                     />
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                         {isMatched && (
                             <div className="absolute bottom-0 left-0 right-0 bg-[#043939] p-4 rounded-t-lg">

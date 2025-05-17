@@ -53,21 +53,26 @@ function Streams() {
           streams?.map((stream) => (
             <div 
               key={stream.id}
-              className="relative cursor-pointer"
+              className="relative cursor-pointer w-[163px] h-[220px]"
               onClick={() => navigate(`${config.ROUTES.STREAMS.WATCH}/${stream}`)}
             >
               <img
-                src={stream.thumbnail || "/images/Card.svg"}
+                src={stream.thumbnail || ""}
                 alt={stream.title}
-                className="w-[164px] h-[164px] object-cover rounded-[16px]"
+                className="w-[100%] h-[100%] object-cover rounded-[16px]"
               />
-              <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent rounded-b-[16px]">
-                <p className="text-white text-sm font-medium truncate">
+              {/* <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent rounded-b-[16px]"> */}
+              <div className="absolute top-[8px] left-[8px] flex flex-row items-center gap-[8px]">
+                {/* <p className="text-white text-sm font-medium truncate">
                   {stream.title}
-                </p>
+                </p> */}
+                <div className="bg-[#CE5D49] rounded-[46px] text-[12px] w-[59px] p-[8px] h-[33px] text-white">СТРИМ</div>
                 <p className="text-white/80 text-xs">
-                  {stream.viewerCount || 0} watching
+                  <img src="/icons/views.png" alt="eye" className="w-[20px] h-[20px] inline-block"/> {stream.viewerCount || 0}
                 </p>
+              </div>
+              <div className="mt-[12px] text-white text-[16px] font-medium truncate">
+                {stream.title}
               </div>
             </div>
           ))

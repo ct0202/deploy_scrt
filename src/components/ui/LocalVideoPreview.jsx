@@ -5,38 +5,54 @@ function LocalVideoPreview({ screen }) {
     const streamRef = useRef(null);
 
     useEffect(() => {
-        if (screen === "start") {
+        let stopped = false;
+
+        if ((screen === "start" || screen === "wait") && !streamRef.current) {
             navigator.mediaDevices.getUserMedia({ video: true, audio: false })
                 .then((stream) => {
+                    if (stopped) return;
+                    streamRef.current = stream;
                     if (videoRef.current) {
                         videoRef.current.srcObject = stream;
                         videoRef.current.play();
                     }
-                    streamRef.current = stream;
                 })
                 .catch((err) => {
                     console.error("Ошибка доступа к камере", err);
                 });
         }
 
+        if (screen !== "start" && screen !== "wait" && streamRef.current) {
+            streamRef.current.getTracks().forEach(track => track.stop());
+            streamRef.current = null;
+        }
+
         return () => {
-            if (streamRef.current) {
+            stopped = true;
+            // Очищаем только при размонтировании
+            if (screen !== "start" && screen !== "wait" && streamRef.current) {
                 streamRef.current.getTracks().forEach(track => track.stop());
                 streamRef.current = null;
             }
         };
     }, [screen]);
 
-    if (screen !== "start") return null;
+    if (screen === "wait" || screen === "start") {
+        return (
+            <video
+                ref={videoRef}
+                muted
+                playsInline
+                className={
+                    screen === "wait"
+                        ? "absolute top-[32px] right-[8px] z-[40] w-[80px] h-[140px] rounded-[12px] object-cover"
+                        : "absolute top-0 right-0 z-[2] w-full h-full rounded-[12px] object-cover"
+                }
+            />
+        );
+    }
 
-    return (
-        <video
-            ref={videoRef}
-            muted
-            playsInline
-            className="absolute top-0 right-0z-[2] w-full h-full rounded-[12px] object-cover"
-        />
-    );
+    return null;
 }
 
 export default LocalVideoPreview;
