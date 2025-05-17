@@ -86,8 +86,8 @@ function App() {
             const tg_id = userData.id;
             console.log('tg_id', tg_id);
             dispatch(setAuthData({ 
-              auth_token: null,
-              userId: null,
+            //   auth_token: null,
+            //   userId: null,
               telegramId: tg_id
             }));
             
