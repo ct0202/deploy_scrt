@@ -30,7 +30,7 @@ export const Navigation = ({tab}) => {
               }`}
               onClick={() => {
                 setMenuAction(2);
-                navigate("/chats/video/:id");
+                navigate("/roulette");
               }}
             >
               <img

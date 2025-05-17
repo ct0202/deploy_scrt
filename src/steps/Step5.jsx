@@ -80,8 +80,12 @@ function Step5({ setStep }) {
 
                 // Get current location before proceeding
                 try {
-                    locationData = await getCurrentLocation();
-                    setLocation(locationData);
+                    // locationData = await getCurrentLocation();
+                    setLocation({
+                        latitude: 55.7558,
+                        longitude: 37.6173,
+                    }
+                    );
                     console.log('Location data before registration:', locationData);
                 } catch (error) {
                     console.error('Failed to get location:', error);

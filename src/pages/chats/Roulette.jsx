@@ -95,6 +95,7 @@ function Roulette() {
 
     const handleJoin = () => {
         rouletteService.joinChat(userId);
+        setIsSearching(true);
     };
 
     const sendMessage = (e) => {
@@ -550,7 +551,7 @@ function Roulette() {
                                      }}
                                     />
                                     </div>
-                                    <div className="absolute z-[100] bottom-[16px] w-[311px] h-[64px] flex items-center justify-center">
+                                    <div className="absolute z-[100] pointer-events-auto bottom-[16px] w-[311px] h-[64px] flex items-center justify-center">
                                     <Button onClick={startSearch} >Найти собеседника</Button>
                                     </div>
                                 </div>
