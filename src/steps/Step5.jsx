@@ -163,12 +163,9 @@ function Step5({ setStep }) {
 
                 if (response.data) {
                     await initAuth()
-                    .then(() => {
+                    setTimeout(() => {
                         navigate("/meet"); 
-                    })
-                    .catch((error) => {
-                        console.error('Error initializing auth:', error);
-                    });
+                    }, 1000);
                 }
             } catch (error) {
                 console.error('Registration error:', error);
