@@ -250,7 +250,7 @@ const StreamViewer = () => {
                                             {/*<p className="text-sm text-gray-400">*/}
                                             {/*    {msg.timestamp}*/}
                                             {/*</p>*/}
-                                            <p className="text-sm font-raleway">
+                                            <p className="text-sm font-raleway text-white">
                                                 {msg.isSystem ? (
                                                     <span>{msg.message}</span>
                                                 ) : (
@@ -270,11 +270,13 @@ const StreamViewer = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <form onSubmit={sendMessage} className="flex gap-2">
+                                <form onSubmit={sendMessage} className="flex flex-row justify-between w-[100vw] pr-[25px]">
                                     <input
                                         type="text"
                                         value={messageInput}
                                         onChange={(e) => setMessageInput(e.target.value)}
+                                        onFocus={() => setInputFocused(true)}
+                                        onBlur={() => setInputFocused(false)}
                                         placeholder="Type a message..."
                                         className="w-[269px] bg-white opacity-20 py-[18px] pl-[16px] rounded-[400px] text-black"
                                     />

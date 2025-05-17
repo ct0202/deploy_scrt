@@ -19,7 +19,7 @@ function Roulette() {
     const [isSearching, setIsSearching] = useState(false);
     const [isMatched, setIsMatched] = useState(false);
     const [matchedUser, setMatchedUser] = useState(null);
-    const [roomId, setRoomId] = useState(null);
+    const [roomId, setRoomId] = useState('test');
     const [chatMessages, setChatMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
 
