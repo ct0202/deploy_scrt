@@ -527,41 +527,41 @@ function Meet() {
                       Подарки
                   </h1>
                   <div>
-                      <Swiper
-                          modules={[]}
-                          spaceBetween={10}
-                          slidesPerView={2}
-                          className="h-[170px]"
-                      >
-                          <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
-                              <img
-                                  src="/icons/present.svg"
-                                  alt="Подарок"
-                                  className="w-[80px] h-[80px]"
-                              />
-                          </SwiperSlide>
-                          <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
-                              <img
-                                  alt="Подарок"
-                                  src="/icons/present.svg"
-                                  className="w-[80px] h-[80px]"
-                              />
-                          </SwiperSlide>
-                          <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
-                              <img
-                                  alt="Подарок"
-                                  src="/icons/present.svg"
-                                  className="w-[80px] h-[80px]"
-                              />
-                          </SwiperSlide>
-                          <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">
-                              <img
-                                  alt="Подарок"
-                                  src="/icons/present.svg"
-                                  className="w-[80px] h-[80px]"
-                              />
-                          </SwiperSlide>
-                      </Swiper>
+                      {/*<Swiper*/}
+                      {/*    modules={[]}*/}
+                      {/*    spaceBetween={10}*/}
+                      {/*    slidesPerView={2}*/}
+                      {/*    className="h-[170px]"*/}
+                      {/*>*/}
+                      {/*    <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">*/}
+                      {/*        <img*/}
+                      {/*            src="/icons/present.svg"*/}
+                      {/*            alt="Подарок"*/}
+                      {/*            className="w-[80px] h-[80px]"*/}
+                      {/*        />*/}
+                      {/*    </SwiperSlide>*/}
+                      {/*    <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">*/}
+                      {/*        <img*/}
+                      {/*            alt="Подарок"*/}
+                      {/*            src="/icons/present.svg"*/}
+                      {/*            className="w-[80px] h-[80px]"*/}
+                      {/*        />*/}
+                      {/*    </SwiperSlide>*/}
+                      {/*    <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">*/}
+                      {/*        <img*/}
+                      {/*            alt="Подарок"*/}
+                      {/*            src="/icons/present.svg"*/}
+                      {/*            className="w-[80px] h-[80px]"*/}
+                      {/*        />*/}
+                      {/*    </SwiperSlide>*/}
+                      {/*    <SwiperSlide className="w-[130px] !h-[130px] rounded-[16px] mt-2 !flex justify-center items-center bg-[#FFFFFF1A]">*/}
+                      {/*        <img*/}
+                      {/*            alt="Подарок"*/}
+                      {/*            src="/icons/present.svg"*/}
+                      {/*            className="w-[80px] h-[80px]"*/}
+                      {/*        />*/}
+                      {/*    </SwiperSlide>*/}
+                      {/*</Swiper>*/}
                   </div>
                 </div>
               </div>

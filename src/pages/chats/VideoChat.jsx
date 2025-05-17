@@ -9,6 +9,8 @@ import "swiper/css/pagination";
 
 import { INSTRUCTIONS_VIDEOCHAT } from "../../constants/instructions";
 
+import LocalVideoPreview from "../../components/ui/LocalVideoPreview";
+
 import DayLimit from "../../components/shared/DayLimit";
 import PresentsShop from "../../components/shared/PresentsShop";
 import ChatProgressBar from "../../components/ui/ChatProgressBar";
@@ -222,7 +224,7 @@ function VideoChat() {
                 </div>
                 <div className="absolute bottom-[30px]">
                     <Button
-                        onclick={() => setShowInstruction(false)}
+                        onClick={() => setShowInstruction(false)}
                     >
                         Понятно
                     </Button>
@@ -375,8 +377,8 @@ function VideoChat() {
                                 <Button>Найти собеседника</Button>
                             </div>
                             <div className="w-[100%] h-[100%] flex items-center justify-center">
-                            <div id="local-video"
-                             style={{
+                            {/*<div id="local-video"*/}
+                                <LocalVideoPreview screen={screen} style={{
                                  position: "absolute",
                                  top: 0,
                                  right: 0,
@@ -390,7 +392,6 @@ function VideoChat() {
                                  overflow: "hidden",
                              }}
                             />
-                            
                             </div>
                         </div>
                     )}
