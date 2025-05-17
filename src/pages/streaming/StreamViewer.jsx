@@ -16,6 +16,9 @@ const StreamViewer = () => {
     const [chatMessages, setChatMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
 
+    const [inputFocused, setInputFocused] = useState(false);
+
+
     // Agora refs
     const client = useRef(null);
     const remoteVideoTrack = useRef(null);
@@ -210,11 +213,17 @@ const StreamViewer = () => {
     return (
         <div className="h-[100vh] w-[100vw] flex justify-center items-center text-white">
             <div className="w-full h-full relative">
-                <div className="flex justify-between items-center mb-4 absolute top-0 left-0 z-[1000]">
-                    <h1 className="text-2xl font-bold">Watching Stream</h1>
-                    <div className="flex items-center gap-2">
-                        <span className="text-sm">Viewers: {viewerCount}</span>
+                <div className="flex justify-between w-full pr-[16px] items-center absolute top-0 left-0 z-[1000]">
+                    <div className="w-[180px] h-[44px] mt-[21px] ml-[16px] rounded-[400px] bg-[#FFFFFF1A] flex items-center justify-start">
+                        <div className="w-[38px] h-[38px] rounded-[50%] bg-white m-[3px]">
+
+                        </div>
+                        <div className='ml-[6px] mt-[5px] mb-[10px] gap-0'>
+                            <span className='text-[14px] leading-[5px]'>name000000</span>
+                            <p className='leading-[15px]'><img src='/icons/views.png' className='w-[16px] h-[16px] inline-block'/>177</p>
+                        </div>
                     </div>
+                    <img src='/icons/Button-close.svg' className='w-[44px] h-[44px] mt-[21px]' />
                 </div>
 
                 <div className="relative h-full w-full">
@@ -234,20 +243,27 @@ const StreamViewer = () => {
 
                     <div className="">
                         <div className="bg-transparent p-4 rounded-lg absolute bottom-0 left-0">
-                            <h2 className="text-lg font-semibold mb-2">_____________</h2>
                             <div className="space-y-2">
-                                <div className="h-64 overflow-y-auto bg-[#022424] p-2 rounded">
+                                <div className="h-64 overflow-y-auto  p-2 rounded">
                                     {chatMessages.map((msg, index) => (
                                         <div key={index} className={`mb-2 ${msg.isSystem ? 'text-gray-400 italic' : ''}`}>
-                                            <p className="text-sm text-gray-400">
-                                                {msg.timestamp}
-                                            </p>
-                                            <p className="text-sm">
+                                            {/*<p className="text-sm text-gray-400">*/}
+                                            {/*    {msg.timestamp}*/}
+                                            {/*</p>*/}
+                                            <p className="text-sm font-raleway">
                                                 {msg.isSystem ? (
                                                     <span>{msg.message}</span>
                                                 ) : (
                                                     <>
-                                                        <span className="font-semibold">{msg.username}:</span> {msg.message}
+                                                        <div className='flex flex-row gap-[13px]'>
+                                                            <div className='bg-white w-[32px] h-[32px] rounded-[50%]'>
+
+                                                            </div>
+                                                            <div>
+                                                                <p>{msg.username}</p>
+                                                                <p className="font-semibold">{msg.message}</p>
+                                                            </div>
+                                                        </div>
                                                     </>
                                                 )}
                                             </p>
@@ -260,14 +276,20 @@ const StreamViewer = () => {
                                         value={messageInput}
                                         onChange={(e) => setMessageInput(e.target.value)}
                                         placeholder="Type a message..."
-                                        className="flex-1 bg-[#022424] p-2 rounded text-white"
+                                        className="w-[269px] bg-white opacity-20 py-[18px] pl-[16px] rounded-[400px] text-black"
                                     />
-                                    <button 
-                                        type="submit"
-                                        className="bg-[#022424] hover:bg-[#033333] px-4 py-2 rounded"
-                                    >
-                                        Send
-                                    </button>
+                                    { inputFocused ?
+                                        <button
+                                            type="submit"
+                                            className="bg-[#022424] hover:bg-[#033333] px-4 py-2 rounded"
+                                        >
+                                            Send
+                                        </button>
+                                        :
+                                        <button>
+                                           <img src='/icons/Button-present.png' className='w-[64] h-[64px]'/>
+                                        </button>
+                                    }
                                 </form>
                             </div>
                         </div>
