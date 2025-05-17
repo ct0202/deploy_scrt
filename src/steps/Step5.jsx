@@ -79,21 +79,29 @@ function Step5({ setStep }) {
                 let locationData = null;
 
                 // Get current location before proceeding
-                try {
-                    // locationData = await getCurrentLocation();
-                    setLocation({
-                        latitude: 55.7558,
-                        longitude: 37.6173,
-                    }
-                    );
-                    console.log('Location data before registration:', locationData);
-                } catch (error) {
-                    console.error('Failed to get location:', error);
-                    alert('Пожалуйста, разрешите доступ к геолокации для продолжения регистрации');
-                    setIsSubmitting(false);
-                    return;
-                }
+                // try {
+                //     // locationData = await getCurrentLocation();
+                //     setLocation({
+                //         latitude: 55.7558,
+                //         longitude: 37.6173,
+                //     }
+                //     );
+                //     console.log('Location data before registration:', locationData);
+                // } catch (error) {
+                //     console.error('Failed to get location:', error);
+                //     alert('Пожалуйста, разрешите доступ к геолокации для продолжения регистрации');
+                //     setIsSubmitting(false);
+                //     return;
+                // }
                 
+                setLocation({
+                    latitude: 55.7558,
+                    longitude: 37.6173,
+                }
+                );
+                locationData = location;
+                console.log('Location data before registration:', locationData);
+
                 // Create FormData object
                 const formData = new FormData();
                
