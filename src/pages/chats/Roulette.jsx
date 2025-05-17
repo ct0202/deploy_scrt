@@ -13,6 +13,15 @@ import ChatProgressBar from "../../components/ui/ChatProgressBar";
 import LocalVideoPreview from "../../components/ui/LocalVideoPreview";
 import rouletteService from '../../services/roulette.service';
 
+import { axiosPrivate } from '../../axios';
+import config from '../../config';
+
+
+const getThumbnail = async (id) => {
+    const user = await axiosPrivate.get(config.API.USERS.BY_ID(id));
+    return user?.data?.photos[0];
+}
+
 
 function Roulette() {
     const navigate = useNavigate();
@@ -21,7 +30,7 @@ function Roulette() {
     const [isSearching, setIsSearching] = useState(false);
     const [isMatched, setIsMatched] = useState(false);
     const [matchedUser, setMatchedUser] = useState(null);
-    const [roomId, setRoomId] = useState("test");
+    const [roomId, setRoomId] = useState();
     const [chatMessages, setChatMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
 
@@ -49,7 +58,9 @@ function Roulette() {
     useEffect(() => {
         rouletteService.connect();
     
-        const unsubscribeMatched = rouletteService.onMatched(data => {
+        const unsubscribeMatched = rouletteService.onMatched(async data => {
+            const otherThumbnail = await getThumbnail(data.matchedUserId);
+            const currentThumbnail = await getThumbnail(userId);
             setIsMatched(true);
             console.log(data);
             setMatchedUser(data.matchedUserId);
@@ -121,16 +132,6 @@ function Roulette() {
     };
 
 
-
-
-
-
-
-
-
-
-
-
     const handleTouchStart = (e) => {
         setSwipeStart(e.touches[0].clientY);
     };
@@ -175,77 +176,14 @@ function Roulette() {
         }
     ];
 
-    // // Initialize socket connection
-    // useEffect(() => {
-    //     const newSocket = io('/roulette', {
-    //         path: '/socket.io',
-    //         transports: ['websocket', 'polling']
-    //     });
-
-        
-    //     newSocket.on('connect', () => {
-    //         console.log('Connected to roulette socket');
-    //     });
-
-    //     newSocket.on('error', (error) => {
-    //         console.error('Socket error:', error);
-    //         toast.error('Connection error. Please try again.');
-    //     });
-
-    //     console.log(newSocket);
-    //     setSocket(newSocket);
-    
-    //     return () => {
-    //         newSocket.disconnect();
-    //     };
-    // }, []);
-
-    // // Set up socket event listeners
-    // useEffect(() => {
-    //     if (!socket) return;
-
-    //     socket.on('roulette-chat-id-response', (data) => {
-    //         console.log('Matched with user:', data);
-    //         setIsMatched(true);
-    //         setMatchedUser(data.matchedUserId);
-    //         setRoomId(data.roomId);
-    //     });
-
-    //     socket.on('roulette-message', (data) => {
-    //         console.log('Received message:', data);
-    //         setChatMessages(prev => [...prev, {
-    //             id: Date.now(),
-    //             userId: data.userId,
-    //             message: data.message,
-    //             timestamp: new Date().toLocaleTimeString()
-    //         }]);
-    //     });
-
-    //     socket.on('roulette-chat-ended', () => {
-    //         console.log('Chat ended by other user');
-    //         handleEndChat();
-    //     });
-
-    //     socket.on('roulette-error', (error) => {
-    //         console.error('Roulette error:', error);
-    //         toast.error(error.message);
-    //     });
-
-    //     return () => {
-    //         socket.off('roulette-chat-id-response');
-    //         socket.off('roulette-message');
-    //         socket.off('roulette-chat-ended');
-    //         socket.off('roulette-error');
-    //     };
-    // }, [socket]);
-
-    // Initialize Agora
     useEffect(() => {
         const initAgora = async () => {
             try {
                 if (!isPreviewVisible) {
                     return;
                 }
+
+                console.log("ROOM!", roomId);
 
                 // Подключение к каналу (uid = null означает, что Agora выдаст случайный uid)
                 const uid = await client.join(AGORA_APP_ID, roomId, null, null);
