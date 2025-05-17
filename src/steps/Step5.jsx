@@ -99,7 +99,10 @@ function Step5({ setStep }) {
                     longitude: 37.6173,
                 }
                 );
-                locationData = location;
+                locationData = {
+                    latitude: 55.7558,
+                    longitude: 37.6173,
+                };
                 console.log('Location data before registration:', locationData);
 
                 // Create FormData object
