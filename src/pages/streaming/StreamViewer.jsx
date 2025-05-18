@@ -4,10 +4,11 @@ import { useSelector } from 'react-redux';
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import { toast } from 'react-toastify';
 import { AGORA_APP_ID } from '../../config';
-import { axiosPrivate } from '../../axios';
 import streamChatService from '../../services/stream-chat.service';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const StreamViewer = () => {
+    const axiosPrivate = useAxiosPrivate();
     const { streamId } = useParams();
     const navigate = useNavigate();
     const userId = useSelector((state) => state.auth.userId);

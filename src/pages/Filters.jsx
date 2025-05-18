@@ -1,14 +1,15 @@
 import React, {useCallback, useState, useEffect} from "react";
 import {Button} from "../components/Button";
 import { useNavigate } from "react-router-dom";
-import { axiosPrivate } from '../axios';
 import config from '../config';
 import { useSelector } from "react-redux";
 
 import DoubleRangeSlider from "../components/ui/DoubleRangeSlider";
 import {INTEREST} from "../constants/interests";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function Filters() {
+    const axiosPrivate = useAxiosPrivate();
     const [selectedTargetGender, setSelectedTargetGender] = useState(null);
     const [selectedOption, setSelectedOption] = useState(null);
     const [selectedInterests, setSelectedInterests] = useState([]);

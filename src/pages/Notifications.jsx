@@ -5,11 +5,11 @@ import {NotificationCard} from "../components/notifications/notificationCard";
 import {SystemCard} from "../components/notifications/systemCard";
 import {useNavigate} from "react-router-dom";
 import {Button} from "../components/Button";
-import { axiosPrivate } from '../axios';
 import config from '../config';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 const Notifications = () => {
-
+    const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const [option, setOption] = useState(1);
 

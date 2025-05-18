@@ -1,11 +1,12 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import { axiosPrivate } from '../../axios';
 import config from '../../config';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 function Photo() {
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
     const { telegramId } = useSelector(state => state.auth);
     const userData = useSelector(state => state.user.userData);
     const [isSubmitting, setIsSubmitting] = useState(false);

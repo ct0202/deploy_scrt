@@ -6,11 +6,12 @@ import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "../styles/SwiperCustomPagination.css";
-import { axiosPrivate } from "../../axios";
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from '../../store/userSlice';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 function ProfileEdit() {
+    const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userData = useSelector((state) => state.user.userData);

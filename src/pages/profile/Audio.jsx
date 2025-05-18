@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
-import { axiosPrivate } from '../../axios';
+import { useDispatch, useSelector } from 'react-redux'
 import VoiceProgress from '../../components/ui/VoiceProgress';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 function Audio() {
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.user.userId);
     const [isRecording, setIsRecording] = useState(false);

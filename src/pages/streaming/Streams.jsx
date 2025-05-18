@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {Navigation} from "../../components/shared/Navigation";
 import config from "../../config";
-import { axiosPrivate } from "../../axios";
 import { toast } from "react-toastify";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 function Streams() {
   const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
   const [streams, setStreams] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { INTEREST } from "../../constants/interests";
-import { axiosPrivate } from '../../axios';
 import { updateRegistrationData } from '../../store/userSlice';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 function Interests() {
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
     const dispatch = useDispatch();
     const telegramId = useSelector((state) => state.auth.telegramId);
     const userData = useSelector((state) => state.user.userData);

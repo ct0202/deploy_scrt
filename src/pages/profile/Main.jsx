@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRegistrationData } from '../../store/userSlice';
-import { axiosPrivate } from '../../axios';
 
 import LocationSelect from '../../components/LocationSelect';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 function Main() {
+    const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.user.userId);

@@ -2,8 +2,8 @@ import {useNavigate} from "react-router-dom";
 import React, {useState, useEffect} from "react";
 import {Button} from "../components/Button";
 import {io} from "socket.io-client";
-import {axiosPrivate} from "../axios";
 import { toast } from 'react-toastify';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function Support() {
     const navigate = useNavigate();
@@ -11,6 +11,7 @@ function Support() {
     const [message, setMessage] = useState("");
     const [socket, setSocket] = useState(null);
     const [loading, setLoading] = useState(false);
+    const axiosPrivate = useAxiosPrivate();
 
     useEffect(() => {
         // Initialize socket connection

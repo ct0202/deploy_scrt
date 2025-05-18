@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
-import { axiosPrivate } from '../axios';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import config from '../config';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -39,6 +39,7 @@ function Meet() {
   const audioRef = useRef(null);
   const cardRef = useRef(null);
   const { userId } = useSelector(state => state.auth);
+  const axiosPrivate = useAxiosPrivate();
 
   const navigate = useNavigate();
 
