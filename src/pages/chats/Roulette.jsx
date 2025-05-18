@@ -13,11 +13,11 @@ import ChatProgressBar from "../../components/ui/ChatProgressBar";
 import LocalVideoPreview from "../../components/ui/LocalVideoPreview";
 import rouletteService from '../../services/roulette.service';
 
-import { axiosPrivate } from '../../axios';
 import config from '../../config';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 
-const getThumbnail = async (id) => {
+const getThumbnail = async (axiosPrivate, id) => {
     const user = await axiosPrivate.get(config.API.USERS.BY_ID(id));
     return user?.data?.photos[0];
 }
@@ -25,6 +25,7 @@ const getThumbnail = async (id) => {
 
 function Roulette() {
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
     const userId = useSelector((state) => state.auth.userId);
     const [socket, setSocket] = useState(null);
     const [isSearching, setIsSearching] = useState(false);
@@ -59,8 +60,8 @@ function Roulette() {
         rouletteService.connect();
     
         const unsubscribeMatched = rouletteService.onMatched(async data => {
-            const otherThumbnail = await getThumbnail(data.matchedUserId);
-            const currentThumbnail = await getThumbnail(userId);
+            const otherThumbnail = await getThumbnail(axiosPrivate, data.matchedUserId);
+            const currentThumbnail = await getThumbnail(axiosPrivate, userId);
             setIsMatched(true);
             console.log(data);
             setMatchedUser(data.matchedUserId);
@@ -95,7 +96,6 @@ function Roulette() {
 
     const handleJoin = () => {
         rouletteService.joinChat(userId);
-        setIsSearching(true);
     };
 
     const sendMessage = (e) => {
@@ -267,42 +267,6 @@ function Roulette() {
         console.log("START SEARCH");
         handleJoin();
     };
-
-    // const handleEndChat = () => {
-    //     if (socket && roomId) {
-    //         socket.emit('end-roulette-chat', { roomId });
-    //     }
-    //     setIsMatched(false);
-    //     setMatchedUser(null);
-    //     setRoomId(null);
-    //     setChatMessages([]);
-    //     setIsPreviewVisible(false);
-    //     localTracks.forEach(track => {
-    //         track.stop();
-    //         track.close();
-    //     });
-    //     setLocalTracks([]);
-    //     client.leave();
-    // };
-
-    // const sendMessage = (e) => {
-    //     e.preventDefault();
-    //     if (!socket || !roomId || !messageInput.trim()) return;
-
-    //     socket.emit('roulette-message', {
-    //         roomId,
-    //         message: messageInput
-    //     });
-
-    //     setChatMessages(prev => [...prev, {
-    //         id: Date.now(),
-    //         userId,
-    //         message: messageInput,
-    //         timestamp: new Date().toLocaleTimeString()
-    //     }]);
-
-    //     setMessageInput('');
-    // };
 
     useEffect(() => {
         const isFirstVisitChat = localStorage.getItem("firstVisitChat2");
@@ -551,7 +515,7 @@ function Roulette() {
                                      }}
                                     />
                                     </div>
-                                    <div className="absolute z-[100] pointer-events-auto bottom-[16px] w-[311px] h-[64px] flex items-center justify-center">
+                                    <div className="absolute z-[100] bottom-[16px] w-[311px] h-[64px] flex items-center justify-center">
                                     <Button onClick={startSearch} >Найти собеседника</Button>
                                     </div>
                                 </div>
