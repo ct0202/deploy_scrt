@@ -1,5 +1,4 @@
 import { io } from 'socket.io-client';
-import { axiosPrivate } from '../axios';
 import config from '../config';
 
 let socket = null;
@@ -95,7 +94,7 @@ const onTyping = (callback) => {
     // return () => typingCallbacks.delete(callback);
 };
 
-async function getUserChats(page = 1, limit = 20) {
+async function getUserChats(axiosPrivate, page = 1, limit = 20) {
     try {
         const response = await axiosPrivate.get(config.API.CHATS.BASE, {
             params: { page, limit },
@@ -121,7 +120,7 @@ async function getUserChats(page = 1, limit = 20) {
     }
 }
 
-async function getChatHistory(chatId, page = 1, limit = 50) {
+async function getChatHistory(axiosPrivate, chatId, page = 1, limit = 50) {
     try {
         console.log('[ChatService] Fetching chat history for chatId:', chatId);
         const response = await axiosPrivate.get(config.API.CHATS.HISTORY(chatId), {

@@ -83,7 +83,7 @@ export const useAuth = () => {
 
     const logout = async () => {
         try {
-            await axiosPrivate.post(config.API.AUTH.LOGOUT);
+            // await axiosPrivate.post(config.API.AUTH.LOGOUT);
         } catch (error) {
             console.error('Logout error:', error);
             toast.error('Logout failed');
