@@ -21,9 +21,6 @@ function Step5({ setStep }) {
 
     const { initAuth, handleAuthResponse } = useAuth();
 
-
-    console.log("step4");
-
     useEffect(() => {
         if (interests.length >= 5) {
             setDisabled(false);
