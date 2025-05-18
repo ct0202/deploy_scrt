@@ -19,7 +19,7 @@ function Step5({ setStep }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [location, setLocation] = useState(null);
 
-    const { initAuth } = useAuth();
+    const { initAuth, handleAuthResponse } = useAuth();
 
 
     console.log("step4");
@@ -163,6 +163,7 @@ function Step5({ setStep }) {
 
                 if (response.data) {
                     // await initAuth()
+                    handleAuthResponse(response);
                     setTimeout(() => {
                         navigate("/meet"); 
                     }, 1000);

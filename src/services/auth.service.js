@@ -111,6 +111,7 @@ export const useAuth = () => {
 
     return {
         initAuth,
+        handleAuthResponse,
         logout,
         refreshToken
     };
