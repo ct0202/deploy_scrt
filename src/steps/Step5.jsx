@@ -162,7 +162,7 @@ function Step5({ setStep }) {
                 console.log('Registration response:', response);
 
                 if (response.data) {
-                    await initAuth()
+                    // await initAuth()
                     setTimeout(() => {
                         navigate("/meet"); 
                     }, 1000);
