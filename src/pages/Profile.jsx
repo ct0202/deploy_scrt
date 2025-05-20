@@ -12,8 +12,8 @@ import { INSTRUCTIONS_MEET } from "../constants/instructions";
 import PresentsShop from "../components/shared/PresentsShop";
 import ReportMenu from "../components/shared/ReportMenu";
 import BlockUser from "../components/shared/BlockUser";
-import { axiosPrivate } from '../axios';
 import config from '../config';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function Profile() {
     const [showInstruction, setShowInstruction] = useState(false);
@@ -22,6 +22,7 @@ function Profile() {
     const [blockUser, setBlockUser] = useState(false);
     const [userData, setUserData] = useState();    
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
 
     const [openReport, setOpenReport] = useState(false);
 

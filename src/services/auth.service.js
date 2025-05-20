@@ -25,8 +25,8 @@ export const useAuth = () => {
             const response = await axiosPublic.post(config.API.AUTH.LOGIN, {
                 telegramId: telegramId
             });
-            // console.log('login response: ', response);
-            handleAuthResponse(response);
+            console.log('login response: ', response);
+            if (response) handleAuthResponse(response);
         } catch (error) {
             // if (error.response?.status === 404) {
             //     dispatch(setAuthData({
@@ -48,7 +48,7 @@ export const useAuth = () => {
                 dispatch(setAuthData({
                     auth_token: response.data.token,
                     userId: response.data.user?._id,
-                    telegramId: telegramId
+                    telegramId: response.data.user?.telegramId
                 }));
                 // console.log("Redux state in handleAuthResponse:", store.getState());
             }
@@ -83,7 +83,7 @@ export const useAuth = () => {
 
     const logout = async () => {
         try {
-            await axiosPrivate.post(config.API.AUTH.LOGOUT);
+            // await axiosPrivate.post(config.API.AUTH.LOGOUT);
         } catch (error) {
             console.error('Logout error:', error);
             toast.error('Logout failed');
@@ -111,6 +111,7 @@ export const useAuth = () => {
 
     return {
         initAuth,
+        handleAuthResponse,
         logout,
         refreshToken
     };

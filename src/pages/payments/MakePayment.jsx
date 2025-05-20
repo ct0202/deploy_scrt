@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { axiosPrivate } from "../../axios";
 import config from "../../config";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 function MakePayment() {
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
     const [payment, setPayment] = useState(1);
     const [loading, setLoading] = useState(false);
 

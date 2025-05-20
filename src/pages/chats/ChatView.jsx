@@ -3,9 +3,11 @@ import {useNavigate, useParams} from "react-router-dom";
 import chatService from "../../services/chat.service";
 import config from '../../config';
 import { useSelector } from 'react-redux';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 function ChatView () {
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
     const { chat_id } = useParams();
     const inputContainerRef = useRef(null);
     const [isInputFocused, setIsInputFocused] = useState(false);
@@ -85,7 +87,7 @@ function ChatView () {
         // Fetch initial chat data
         const fetchChatData = async () => {
             try {
-                const chatData = await chatService.getChatHistory(chat_id);
+                const chatData = await chatService.getChatHistory(axiosPrivate, chat_id);
                 console.log("chatData", chatData);
                 setChat(chatData.data.chats);
                 const other = chatData.data.chats.participants?.find(p => p._id !== currentUserId);

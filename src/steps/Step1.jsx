@@ -4,11 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateRegistrationData } from '../store/userSlice';
 import LocationSelect from '../components/LocationSelect';
 import DatePicker from '../components/DatePicker';
+import { clearAuthData } from '../store/authSlice';
 
 function Step1({ setStep }) {
   const dispatch = useDispatch();
   const registrationData = useSelector((state) => state.user.registrationData);
   const [disabled, setDisabled] = useState(true);
+
+  // Example in Step1.jsx
+  useEffect(() => {
+    dispatch(clearAuthData());
+  }, []);
 
   const genders = [
     { id: "male", label: "Мужчина", emoji: "👱🏻‍♂️" },

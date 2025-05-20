@@ -1,16 +1,17 @@
 import React from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
-import { axiosPrivate } from '../axios';
 import config from '../config';
 
 import "swiper/css";
 import "swiper/css/pagination";
 import "./styles/SwiperCustomPagination.css";
 import background from "../assets/background.svg";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 
 function Chat() {
+    const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
 
     // const fetchMatches = async () => {

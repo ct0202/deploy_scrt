@@ -19,10 +19,7 @@ function Step5({ setStep }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [location, setLocation] = useState(null);
 
-    const { initAuth } = useAuth();
-
-
-    console.log("step4");
+    const { initAuth, handleAuthResponse } = useAuth();
 
     useEffect(() => {
         if (interests.length >= 5) {
@@ -162,7 +159,8 @@ function Step5({ setStep }) {
                 console.log('Registration response:', response);
 
                 if (response.data) {
-                    await initAuth()
+                    // await initAuth()
+                    handleAuthResponse(response);
                     setTimeout(() => {
                         navigate("/meet"); 
                     }, 1000);

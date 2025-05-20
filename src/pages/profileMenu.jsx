@@ -2,9 +2,9 @@ import {useNavigate} from "react-router-dom";
 import PresentsShop from "../components/shared/PresentsShop";
 import React, {useRef, useState, useEffect} from "react";
 import Policy from "../components/shared/Policy";
-import { axiosPrivate } from "../axios";
 import config from "../config";
 import { useDispatch, useSelector } from 'react-redux';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function ProfileMenu() {
     const navigate = useNavigate();
@@ -12,6 +12,7 @@ function ProfileMenu() {
     const { userId } = useSelector(state => state.auth);
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const axiosPrivate = useAxiosPrivate();
 
     useEffect(() => {
         const fetchUserData = async () => {

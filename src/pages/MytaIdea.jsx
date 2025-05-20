@@ -1,9 +1,10 @@
 import React, {useRef, useState, useEffect} from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
-import { axiosPrivate } from '../axios';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function MytaIdea() {
+    const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const [tonInput, setTonInput] = useState(false);
     const [tonString, setTonString] = useState("");

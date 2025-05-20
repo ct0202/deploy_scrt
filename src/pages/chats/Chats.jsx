@@ -4,9 +4,11 @@ import { Navigation } from "../../components/shared/Navigation";
 import {ChatCard} from "../../components/chat/chatCard";
 import {useNavigate} from "react-router-dom";
 import chatService from '../../services/chat.service';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const Chats = () => {
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
     const [chats, setChats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -15,7 +17,7 @@ const Chats = () => {
     useEffect(() => {
         const fetchChats = async () => {
             try {
-                const response = await chatService.getUserChats();
+                const response = await chatService.getUserChats(axiosPrivate);
                 console.log('Chats response:', response);
                 
                 if (!response || !response.data || !response.data.chats) {

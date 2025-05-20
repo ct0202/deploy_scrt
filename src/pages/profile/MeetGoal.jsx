@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRegistrationData } from '../../store/userSlice';
-import { axiosPrivate } from '../../axios';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 function MeetGoal() {
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
     const dispatch = useDispatch();
     const { telegramId } = useSelector(state => state.auth);
     const userData = useSelector((state) => state.user.userData);
