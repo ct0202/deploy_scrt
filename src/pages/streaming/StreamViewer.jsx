@@ -58,6 +58,7 @@ const StreamViewer = () => {
                     const formattedMessage = {
                         id: data.data._id,
                         username: data.data.username,
+                        signed_thumbnail: data.data.signed_thumbnail,
                         message: data.data.message,
                         timestamp: new Date(data.data.timestamp).toLocaleTimeString(),
                         role: data.data.role
