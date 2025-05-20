@@ -127,9 +127,9 @@ function Step5({ setStep }) {
                 if (registrationData.photos && registrationData.photos.length > 0) {
                     for (const photo of registrationData.photos) {
                         if (photo) {
-                            // const photoBlob = await convertBase64ToBlob(photo);
-                            // formData.append('photos', photoBlob);
-                            formData.append('photos', photo);
+                            const photoBlob = await convertBase64ToBlob(photo);
+                            formData.append('photos', photoBlob);
+                            // formData.append('photos', photo);
                         }
                     }
                 }

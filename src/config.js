@@ -1,4 +1,4 @@
-const PRODUCTION = true;
+const PRODUCTION = true
 
 export const AUTH_TOKEN_KEY = "auth_token";
 export const AGORA_APP_ID = "12934dd56c904bada036f4e00867a7b3";
