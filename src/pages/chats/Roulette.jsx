@@ -96,6 +96,7 @@ function Roulette() {
 
     const handleJoin = () => {
         rouletteService.joinChat(userId);
+        setIsSearching(true);
     };
 
     const sendMessage = (e) => {
