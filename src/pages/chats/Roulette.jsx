@@ -115,7 +115,7 @@ function Roulette() {
     };
     
     const handleEndChat = () => {
-        if (roomId) rouletteService.endChat(roomId);
+        if (roomId) rouletteService.endChat(userId);
     
         setIsMatched(false);
         setMatchedUser(null);
