@@ -123,7 +123,7 @@ const config = {
         PREMIUM: '/premium'
     },
     // WS_URL: 'https://api.mytadating.site'
-    WS_URL: 'http://localhost:3001'
+    WS_URL: PRODUCTION ? 'https://api.mytadating.site' : 'http://localhost:3001'
 };
 
 export default config; 
