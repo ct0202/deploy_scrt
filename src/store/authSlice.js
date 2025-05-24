@@ -31,8 +31,6 @@ const authSlice = createSlice({
         },
         clearAuthData: (state) => {
             state.auth_token = null;
-            state.userId = null;
-            state.telegramId = null;
             localStorage.removeItem('authState');
         }
     }

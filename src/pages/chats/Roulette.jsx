@@ -63,6 +63,7 @@ function Roulette() {
             const otherThumbnail = await getThumbnail(axiosPrivate, data.matchedUserId);
             const currentThumbnail = await getThumbnail(axiosPrivate, userId);
             setIsMatched(true);
+            setIsPreviewVisible(true);
             console.log(data);
             setMatchedUser(data.matchedUserId);
             setRoomId(data.roomId);
@@ -96,6 +97,7 @@ function Roulette() {
 
     const handleJoin = () => {
         rouletteService.joinChat(userId);
+        setIsSearching(true);
     };
 
     const sendMessage = (e) => {
@@ -217,9 +219,10 @@ function Roulette() {
                     await client.subscribe(user, mediaType);
                     if (mediaType === "video") {
                         const remoteVideoTrack = user.videoTrack;
-                        const remotePlayerContainer = document.getElementById("remote-video");
+                        const remotePlayerContainer = document.getElementById("remote-video-container");
                         if (remotePlayerContainer) {
                             remoteVideoTrack.play(remotePlayerContainer);
+                            setIsPreviewVisible(true);
                         } else {
                             console.error("Remote video container not found");
                         }
@@ -232,9 +235,9 @@ function Roulette() {
 
                 // Удаление видео, если пользователь выходит
                 client.on("user-unpublished", (user) => {
-                    const remotePlayerContainer = document.getElementById('remote-video');
-                    if (remotePlayerContainer) {
-                        remotePlayerContainer.remove();
+                    const remotePlayerContainer = document.getElementById('remote-video-container');
+                    if (remotePlayerContainer && user.videoTrack) {
+                        user.videoTrack.stop();
                     }
                 });
             } catch (error) {
@@ -428,9 +431,69 @@ function Roulette() {
                             className="z-[1] w-[343px] h-[527px] rounded-[16px] object-cover overflow-hidden bg-[#043939] flex items-center justify-center"
                         >
                             {isMatched ? (
-                                <div className="text-white text-center">
-                                    <p className="text-2xl font-bold mb-2">Matched!</p>
-                                    <p className="text-sm">You are now connected with a stranger</p>
+                                <div className="w-[343px] h-[527px]
+                                bg-[#043939] rounded-[16px]
+                                flex items-center justify-center flex-col relative
+                                ">
+                                    <div className="absolute inset-0 w-full h-full z-[1]" id="remote-video-container" style={{
+                                        width: '100%',
+                                        height: '100%', 
+                                        objectFit: 'cover',
+                                        overflow: 'hidden',
+                                        borderRadius: '16px'
+                                    }}>
+                                        {/* Контейнер для удаленного видео, заполняет весь родительский элемент */}
+                                    </div>
+                                     <LocalVideoPreview
+                                        screen={'wait'}
+                                        style={{
+                                            position: "absolute",
+                                            top: 0,
+                                            right: 0,
+                                            marginTop: "2rem",
+                                            marginRight: "0.5rem",
+                                            zIndex: 30,
+                                            width: "80px",
+                                            height: "140px",
+                                            borderRadius: "12px",
+                                            objectFit: "cover",
+                                            overflow: "hidden",
+                                        }}
+                                    />
+                                    <div className="z-[8] absolute bottom-[23px] w-[100%] flex items-center justify-center"> 
+                                        <div className="w-[338px] h-[70px] flex flex-row justify-center gap-[16px] items-center opacity-30">
+                                            <div
+                                                className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
+                                                // onClick={handleEndChat} кнопка дизейблд
+                                            >
+                                                <img
+                                                    src="/icons/photo_overlay_button_2.svg"
+                                                    alt="End Chat"
+                                                    className="w-[64px] h-[64px]"
+                                                />
+                                            </div>
+                                            <div
+                                                className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
+                                                // onClick={() => setPresentsShop(true)} кнопка дизейблд
+                                            >
+                                                <img
+                                                    src="/icons/photo_overlay_button_5.svg"
+                                                    alt="Presents"
+                                                    className="w-[64px] h-[64px]"
+                                                />
+                                            </div>
+                                            <div
+                                                className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
+                                                // onClick={startSearch} кнопка дизейблд
+                                            >
+                                                <img
+                                                    src="/icons/photo_overlay_button_4.svg"
+                                                    alt="Start Search"
+                                                    className="w-[64px] h-[64px]"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             ) : isSearching ? (
                                 <div className="w-[343px] h-[527px]
