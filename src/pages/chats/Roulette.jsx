@@ -55,6 +55,10 @@ function Roulette() {
     const [swipeStart, setSwipeStart] = useState(0);
     const presentsRef = useRef(null);
 
+    
+    const [timeLeft, setTimeLeft] = useState(25); // Optional: for countdown UI
+    const timerRef = useRef(null);
+
 
     useEffect(() => {
         rouletteService.connect();
@@ -116,6 +120,7 @@ function Roulette() {
         setMessageInput('');
     };
     
+    
     const handleEndChat = () => {
         if (roomId) rouletteService.endChat(userId);
     
@@ -132,6 +137,7 @@ function Roulette() {
     
         setLocalTracks([]);
         client.leave();
+        clearTimer(); 
     };
 
 
@@ -148,6 +154,40 @@ function Roulette() {
             setPresentsShop(false);
         }
     };
+
+
+
+
+
+    const clearTimer = () => {
+        if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+            setTimeLeft(25); // Reset
+        }
+    };
+
+    useEffect(() => {
+        if (isMatched) {
+            // Start countdown
+            timerRef.current = setInterval(() => {
+            setTimeLeft(prev => {
+                if (prev <= 1) {
+                clearTimer();
+                handleEndChat(); // Auto end chat at 0
+                return 0;
+                }
+                return prev - 1;
+            });
+            }, 1000);
+        } else {
+            clearTimer(); // Clean up if unmatched
+        }
+
+        return () => clearTimer(); // Cleanup on unmount or isMatched change
+    }, [isMatched]);
+
+
 
     const instructions = [
         {
@@ -638,7 +678,35 @@ function Roulette() {
                             </div>
                         </div> */}
 
-                       
+                        {isMatched && (
+                            <div className="absolute bottom-0 left-0 right-0 bg-[#043939] p-4 rounded-t-lg">
+                                <div className="h-32 overflow-y-auto mb-2">
+                                    {chatMessages.map(msg => (
+                                        <div key={msg.id} className="mb-2">
+                                            <span className="text-sm text-gray-400">{msg.timestamp}</span>
+                                            <p className="text-white">
+                                                {msg.userId === userId ? 'You' : 'Stranger'}: {msg.message}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <form onSubmit={sendMessage} className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        value={messageInput}
+                                        onChange={(e) => setMessageInput(e.target.value)}
+                                        placeholder="Type a message..."
+                                        className="flex-1 bg-[#022424] p-2 rounded text-white"
+                                    />
+                                    <button
+                                        type="submit"
+                                        className="bg-[#022424] hover:bg-[#033333] px-4 py-2 rounded"
+                                    >
+                                        Send
+                                    </button>
+                                </form>
+                            </div>
+                        )}
                     </div>
                         :
                         <div className="w-[343px] h-[527px]
