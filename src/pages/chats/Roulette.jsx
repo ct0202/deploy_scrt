@@ -464,7 +464,7 @@ function Roulette() {
                                         <div className="w-[338px] h-[70px] flex flex-row justify-center gap-[16px] items-center opacity-30">
                                             <div
                                                 className={`w-[64px] h-[64px] rounded-[50%] flex justify-center items-center`}
-                                                // onClick={handleEndChat} кнопка дизейблд
+                                                onClick={handleEndChat}
                                             >
                                                 <img
                                                     src="/icons/photo_overlay_button_2.svg"
