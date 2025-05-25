@@ -174,7 +174,7 @@ function Roulette() {
             setTimeLeft(prev => {
                 if (prev <= 1) {
                 clearTimer();
-                // handleEndChat(); // Auto end chat at 0
+                handleEndChat(); // Auto end chat at 0
                 return 0;
                 }
                 return prev - 1;
@@ -432,7 +432,7 @@ function Roulette() {
                         Понятно
                     </Button>
                 </div>
-            </div>
+            </div> 
         )}
         <div className="w-[100%] h-[100%] pt-[100px] flex flex-col !items-center overflow-x-hidden">
             <div className="z-0 w-full flex justify-center items-center flex-col">
@@ -443,7 +443,7 @@ function Roulette() {
                         onClick={() => navigate("/profileMenu")}
                     />
                     <div className="flex flex-row justify-end flex-grow">
-                        <img
+                        <img 
                             src="/icons/Button-instruction.svg"
                             className="mt-3 ml-3 w-[44px] h-[44px]"
                             onClick={() => setShowInstruction(true)}
@@ -462,7 +462,7 @@ function Roulette() {
                     <div className="relative w-[343px] rounded-[16px]">
                         {isMatched && (
                         <div className="absolute top-0 mt-4 z-[3] w-[100%] flex items-center justify-center">
-                            <ChatProgressBar completed={(25-timeLeft)/25}/>
+                            <ChatProgressBar completed={25-timeLeft}/>
                         </div>
                         )}
 
@@ -678,36 +678,6 @@ function Roulette() {
                                 </div>
                             </div>
                         </div> */}
-
-                        {isMatched && (
-                            <div className="absolute bottom-0 left-0 right-0 bg-[#043939] p-4 rounded-t-lg">
-                                <div className="h-32 overflow-y-auto mb-2">
-                                    {chatMessages.map(msg => (
-                                        <div key={msg.id} className="mb-2">
-                                            <span className="text-sm text-gray-400">{msg.timestamp}</span>
-                                            <p className="text-white">
-                                                {msg.userId === userId ? 'You' : 'Stranger'}: {msg.message}
-                                            </p>
-                                        </div>
-                                    ))}
-                                </div>
-                                <form onSubmit={sendMessage} className="flex gap-2">
-                                    <input
-                                        type="text"
-                                        value={messageInput}
-                                        onChange={(e) => setMessageInput(e.target.value)}
-                                        placeholder="Type a message..."
-                                        className="flex-1 bg-[#022424] p-2 rounded text-white"
-                                    />
-                                    <button
-                                        type="submit"
-                                        className="bg-[#022424] hover:bg-[#033333] px-4 py-2 rounded"
-                                    >
-                                        Send
-                                    </button>
-                                </form>
-                            </div>
-                        )}
                     </div>
                         :
                         <div className="w-[343px] h-[527px]
