@@ -170,7 +170,7 @@ function App() {
                                     <Route path={`${config.ROUTES.STREAMS.BROADCASTER}`} element={<StreamBroadcaster />} />
                                     <Route path={`${config.ROUTES.STREAMS.WATCH}/:streamId`} element={<StreamViewer />} />
                                     <Route path="/roulette" element={<Roulette />} />
-                                    <Route path="/roulette-test" element={<RouletteTest />} />
+                                    {/* <Route path="/roulette-test" element={<RouletteTest />} /> */}
                                     {/* Chat Features */}
                                     <Route path={config.ROUTES.CHATS.LIST} element={<Chats />} />
                                     <Route path={config.ROUTES.CHATS.TEXT} element={<ChatView />} />
