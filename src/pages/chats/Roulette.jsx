@@ -427,7 +427,7 @@ function Roulette() {
                 </div>
                 <div className="absolute bottom-[30px]">
                     <Button
-                        onclick={() => setShowInstruction(false)}
+                        onClick={() => setShowInstruction(false)}
                     >
                         Понятно
                     </Button>
