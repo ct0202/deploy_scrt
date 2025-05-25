@@ -45,6 +45,7 @@ import MakePayment from './pages/payments/MakePayment';
 import Premium from './pages/payments/Premium';
 
 import Roulette from './pages/chats/Roulette';
+import RouletteTest from './pages/chats/RouletteTest';
 import Streams from './pages/streaming/Streams';
 import WatchingStream from './pages/streaming/WatchingStream';
 import StreamFilters from './pages/streaming/StreamFilters';
@@ -169,7 +170,7 @@ function App() {
                                     <Route path={`${config.ROUTES.STREAMS.BROADCASTER}`} element={<StreamBroadcaster />} />
                                     <Route path={`${config.ROUTES.STREAMS.WATCH}/:streamId`} element={<StreamViewer />} />
                                     <Route path="/roulette" element={<Roulette />} />
-
+                                    <Route path="/roulette-test" element={<RouletteTest />} />
                                     {/* Chat Features */}
                                     <Route path={config.ROUTES.CHATS.LIST} element={<Chats />} />
                                     <Route path={config.ROUTES.CHATS.TEXT} element={<ChatView />} />
