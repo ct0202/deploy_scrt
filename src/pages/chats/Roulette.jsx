@@ -174,7 +174,7 @@ function Roulette() {
             setTimeLeft(prev => {
                 if (prev <= 1) {
                 clearTimer();
-                handleEndChat(); // Auto end chat at 0
+                // handleEndChat(); // Auto end chat at 0
                 return 0;
                 }
                 return prev - 1;
@@ -462,7 +462,7 @@ function Roulette() {
                     <div className="relative w-[343px] rounded-[16px]">
                         {isMatched && (
                         <div className="absolute top-0 mt-4 z-[3] w-[100%] flex items-center justify-center">
-                            <ChatProgressBar completed={25-timeLeft}/>
+                            <ChatProgressBar completed={(25-timeLeft)/25}/>
                         </div>
                         )}
 
