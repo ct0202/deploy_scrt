@@ -21,6 +21,7 @@ const StreamBroadcaster = () => {
     const [viewerCount, setViewerCount] = useState(0);
     const [chatMessages, setChatMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
+    const [reloadAgora, setReloadAgora ] = useState(false);
 
     // Agora refs
     const client = useRef(null);
@@ -31,14 +32,71 @@ const StreamBroadcaster = () => {
     const statsInterval = useRef(null);
 
     useEffect(() => {
+        
+        const initializeAgora = async () => {
+            try {
+                // Initialize Agora client
+                client.current = AgoraRTC.createClient({ mode: 'live', codec: 'vp8' });
+                
+                // Set client role to host
+                await client.current.setClientRole('host');
+
+                // Join the channel
+                const token = null; // Using null token for testing
+                const channelName = `stream-${streamId}`;
+                await client.current.join(AGORA_APP_ID, channelName, token, userId);
+
+                // Create and publish local tracks
+                localAudioTrack.current = await AgoraRTC.createMicrophoneAudioTrack();
+                localVideoTrack.current = await AgoraRTC.createCameraVideoTrack();
+                
+                // Set video quality
+                localVideoTrack.current.setEncoderConfiguration({
+                    width: 1280,
+                    height: 720,
+                    frameRate: 30,
+                    bitrateMin: 1000,
+                    bitrateMax: 2000
+                });
+
+                // Play local video
+                if (localVideoContainer.current) {
+                    localVideoTrack.current.play(localVideoContainer.current);
+                } else {
+                    console.error("Remote video container not found");
+                }
+
+                // Publish tracks
+                await client.current.publish([localAudioTrack.current, localVideoTrack.current]);
+
+                // Set up periodic stats check for viewer count
+                statsInterval.current = setInterval(async () => {
+                    try {
+                        const stats = await client.current.getRTCStats();
+                        // Subtract 1 to exclude the broadcaster from the count
+                        setViewerCount(Math.max(0, stats.UserCount - 1));
+                    } catch (error) {
+                        console.error('Error getting stats:', error);
+                    }
+                }, 5000); // Check every 5 seconds
+
+                setIsStreaming(true);
+                setIsLoading(false);
+            } catch (error) {
+                console.error('Error initializing stream:', error);
+                toast.error('Failed to start stream');
+            }
+        };
         initializeAgora();
         initializeChat();
+
+        !reloadAgora && setInterval(()=>setReloadAgora(true),2500);
 
         return () => {
             stopStreaming();
             streamChatService.disconnect();
         };
-    }, []);
+    }, [reloadAgora]);
 
     const initializeChat = () => {
         try {
@@ -96,60 +154,6 @@ const StreamBroadcaster = () => {
         }
     };
 
-    const initializeAgora = async () => {
-        try {
-            // Initialize Agora client
-            client.current = AgoraRTC.createClient({ mode: 'live', codec: 'vp8' });
-            
-            // Set client role to host
-            await client.current.setClientRole('host');
-
-            // Join the channel
-            const token = null; // Using null token for testing
-            const channelName = `stream-${streamId}`;
-            await client.current.join(AGORA_APP_ID, channelName, token, userId);
-
-            // Create and publish local tracks
-            localAudioTrack.current = await AgoraRTC.createMicrophoneAudioTrack();
-            localVideoTrack.current = await AgoraRTC.createCameraVideoTrack();
-            
-            // Set video quality
-            localVideoTrack.current.setEncoderConfiguration({
-                width: 1280,
-                height: 720,
-                frameRate: 30,
-                bitrateMin: 1000,
-                bitrateMax: 2000
-            });
-
-            // Play local video
-            if (localVideoContainer.current) {
-                localVideoTrack.current.play(localVideoContainer.current);
-            } else {
-                console.error("Remote video container not found");
-            }
-
-            // Publish tracks
-            await client.current.publish([localAudioTrack.current, localVideoTrack.current]);
-
-            // Set up periodic stats check for viewer count
-            statsInterval.current = setInterval(async () => {
-                try {
-                    const stats = await client.current.getRTCStats();
-                    // Subtract 1 to exclude the broadcaster from the count
-                    setViewerCount(Math.max(0, stats.UserCount - 1));
-                } catch (error) {
-                    console.error('Error getting stats:', error);
-                }
-            }, 5000); // Check every 5 seconds
-
-            setIsStreaming(true);
-            setIsLoading(false);
-        } catch (error) {
-            console.error('Error initializing stream:', error);
-            toast.error('Failed to start stream');
-        }
-    };
 
     const sendMessage = async (e) => {
         e.preventDefault();
