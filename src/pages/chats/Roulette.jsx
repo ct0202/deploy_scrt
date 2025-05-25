@@ -460,10 +460,11 @@ function Roulette() {
                 <div className="w-[100%] flex justify-center align-center mt-4">
                     {!viewLimit ?
                     <div className="relative w-[343px] rounded-[16px]">
-
+                        {isMatched && (
                         <div className="absolute top-0 mt-4 z-[3] w-[100%] flex items-center justify-center">
-                            <ChatProgressBar completed={isSearching ? 50 : 0}/>
+                            <ChatProgressBar completed={25-timeLeft}/>
                         </div>
+                        )}
 
                         <div
                             id="remote-video"
