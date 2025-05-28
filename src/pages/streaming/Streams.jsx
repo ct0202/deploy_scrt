@@ -53,9 +53,9 @@ function Streams() {
         ) : (
           streams?.map((stream) => (
             <div 
-              key={stream.id}
+              key={stream._id}
               className="relative cursor-pointer w-[163px] h-[220px]"
-              onClick={() => navigate(`${config.ROUTES.STREAMS.WATCH}/${stream}`)}
+              onClick={() => navigate(`${config.ROUTES.STREAMS.WATCH}/${stream._id}`)}
             >
               <img
                 src={stream.thumbnail || ""}

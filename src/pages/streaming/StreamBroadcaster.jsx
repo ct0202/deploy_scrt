@@ -11,8 +11,7 @@ const StreamBroadcaster = () => {
     // console.log('[StreamBroadcaster] Stream ID:', streamId);
     const navigate = useNavigate();
     const userId = useSelector((state) => state.auth.userId);
-    const streamId = userId;
-    console.log('[StreamBroadcaster] User ID:', userId);
+    const [streamId, setStreamId] = useState("");
 
     const [isLoading, setIsLoading] = useState(true);
     const [isStreaming, setIsStreaming] = useState(false);
@@ -87,8 +86,9 @@ const StreamBroadcaster = () => {
                 toast.error('Failed to start stream');
             }
         };
-        initializeAgora();
-        initializeChat();
+
+        if(streamId) initializeAgora();
+        initializeStreamInstance();
 
         !reloadAgora && setInterval(()=>setReloadAgora(true),2500);
 
@@ -96,16 +96,20 @@ const StreamBroadcaster = () => {
             stopStreaming();
             streamChatService.disconnect();
         };
-    }, [reloadAgora]);
+    }, [reloadAgora, streamId]);
 
-    const initializeChat = () => {
+    const initializeStreamInstance = () => {
         try {
-            console.log('[StreamBroadcaster] Initializing chat...');
+            console.log('[StreamBroadcaster] Initializing stream...');
             // Connect to stream chat service
             const token = localStorage.getItem('token');
             streamChatService.connect(token);
             console.log('[StreamBroadcaster] Connected to chat service');
 
+            const streamInfoUnsubscribe = streamChatService.onStreamInfo((data) => {
+                console.log('[StreamBroadcaster] Received streamId:', data?.data?.streamId);
+                setStreamId(data?.data?.streamId);
+            });
             // Set up message listener
             const messageUnsubscribe = streamChatService.onMessage((data) => {
                 console.log('[StreamBroadcaster] Received message:', data);
@@ -126,9 +130,9 @@ const StreamBroadcaster = () => {
             // Set up history listener
             const historyUnsubscribe = streamChatService.onHistory((data) => {
                 console.log('[StreamBroadcaster] Received chat history:', data);
-                const formattedMessages = data.messages;
+                const formattedMessages = data?.data?.messages?.reverse();
                 console.log('[StreamBroadcaster] Formatted history:', formattedMessages);
-                setChatMessages(data?.data?.messages);
+                setChatMessages(formattedMessages);
             });
 
             // Set up error listener
@@ -139,14 +143,17 @@ const StreamBroadcaster = () => {
 
             // Create stream chat
             console.log('[StreamBroadcaster] Creating stream chat');
-            streamChatService.createStreamChat(streamId);
+            streamChatService.createStreamChat(userId);
+            console.log("-----------------------");
 
             // Cleanup on unmount
             return () => {
                 console.log('[StreamBroadcaster] Cleaning up chat listeners');
+                streamInfoUnsubscribe();
                 messageUnsubscribe();
                 historyUnsubscribe();
                 errorUnsubscribe();
+                
             };
         } catch (error) {
             console.error('[StreamBroadcaster] Error initializing chat:', error);

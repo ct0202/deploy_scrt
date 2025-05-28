@@ -2,6 +2,7 @@ import { io } from 'socket.io-client';
 import config from '../config';
 
 let socket = null;
+const streamCallback = new Set();
 const messageCallbacks = new Set();
 const historyCallbacks = new Set();
 const errorCallbacks = new Set();
@@ -50,11 +51,9 @@ const setupEventListeners = () => {
 
     socket.on('stream-chat-created', (data) => {
         console.log('[StreamChatService] Stream chat created:', data);
-        messageCallbacks.forEach(callback => callback({
-            type: 'system',
+        streamCallback.forEach(callback => callback({
             data: {
                 streamId: data.streamId,
-                message: data.welcomeMessage
             }
         }));
     });
@@ -117,6 +116,15 @@ const onError = (callback) => {
     return () => errorCallbacks.delete(callback);
 };
 
+const onStreamInfo = (callback) => {
+    streamCallback.add(callback);
+    return () => errorCallbacks.delete(callback);
+};
+
+const getActiveStreamsList = async () => {
+
+}
+
 const streamChatService = {
     connect,
     disconnect,
@@ -125,7 +133,8 @@ const streamChatService = {
     sendMessage,
     onMessage,
     onHistory,
-    onError
+    onError,
+    onStreamInfo
 };
 
 export default streamChatService;

@@ -71,9 +71,9 @@ const StreamViewer = () => {
             // Set up history listener
             const historyUnsubscribe = streamChatService.onHistory((data) => {
                 console.log('[StreamBroadcaster] Received chat history:', data);
-                const formattedMessages = data.messages;
+                const formattedMessages = data?.data?.messages?.reverse();
                 console.log('[StreamBroadcaster] Formatted history:', formattedMessages);
-                setChatMessages(data?.data?.messages);
+                setChatMessages(formattedMessages);
 
             });
 
@@ -258,9 +258,11 @@ const StreamViewer = () => {
                                                 ) : (
                                                     <>
                                                         <div className='flex flex-row gap-[13px]'>
-                                                            <div className='bg-white w-[32px] h-[32px] rounded-[50%]'>
-
-                                                            </div>
+                                                            <img 
+                                                            src={msg.signed_thumbnail}
+                                                            alt="profile" 
+                                                            className="w-[32px] h-[32px] rounded-full object-cover bg-white"
+                                                            />
                                                             <div>
                                                                 <p>{msg.username}</p>
                                                                 <p className="font-semibold">{msg.message}</p>
