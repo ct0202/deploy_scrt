@@ -626,23 +626,23 @@ function Roulette() {
                             )}
                         </div>
 
-                        <div
-                            id="local-video"
-                            ref={localVideoRef}
-                            style={{
-                                position: "absolute",
-                                top: 0,
-                                right: 0,
-                                marginTop: "2rem",
-                                marginRight: "0.5rem",
-                                zIndex: 2,
-                                width: "80px",
-                                height: "140px",
-                                borderRadius: "12px",
-                                objectFit: "cover",
-                                overflow: "hidden",
-                            }}
-                        />
+                        {/*<div*/}
+                        {/*    id="local-video"*/}
+                        {/*    ref={localVideoRef}*/}
+                        {/*    style={{*/}
+                        {/*        position: "absolute",*/}
+                        {/*        top: 0,*/}
+                        {/*        right: 0,*/}
+                        {/*        marginTop: "2rem",*/}
+                        {/*        marginRight: "0.5rem",*/}
+                        {/*        zIndex: 2,*/}
+                        {/*        width: "80px",*/}
+                        {/*        height: "140px",*/}
+                        {/*        borderRadius: "12px",*/}
+                        {/*        objectFit: "cover",*/}
+                        {/*        overflow: "hidden",*/}
+                        {/*    }}*/}
+                        {/*/>*/}
                         
                         {/* <div className="z-[8] translate-y-[-90px] absolute w-[100%] flex items-center justify-center">
                             <div className="w-[338px] h-[70px] mb-4 flex flex-row justify-evenly items-center">
