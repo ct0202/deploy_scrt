@@ -56,7 +56,7 @@ function Roulette() {
     const presentsRef = useRef(null);
 
     
-    const [timeLeft, setTimeLeft] = useState(25); // Optional: for countdown UI
+    const [timeLeft, setTimeLeft] = useState(120); // Optional: for countdown UI
     const timerRef = useRef(null);
 
 
@@ -163,7 +163,7 @@ function Roulette() {
         if (timerRef.current) {
             clearInterval(timerRef.current);
             timerRef.current = null;
-            setTimeLeft(25); // Reset
+            setTimeLeft(120); // Reset
         }
     };
 
