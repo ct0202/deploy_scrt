@@ -9,6 +9,7 @@ import "../styles/SwiperCustomPagination.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from '../../store/userSlice';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import ListenVoice from "../../components/ui/ListenVoice";
 
 function ProfileEdit() {
     const axiosPrivate = useAxiosPrivate();
