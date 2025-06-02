@@ -505,7 +505,7 @@ function Meet() {
                     Аудио визитка
                   </h1>
                   <div className="mt-2">
-                    <ListenVoice preSignedAudio={currentMatch?.audioMessage} />
+                    <ListenVoice preSignedAudio={currentMatch?.audioMessage?.file} bars={currentMatch?.audioMessage?.bars} />
                   </div>
                   <h1 className="font-raleway font-bold mt-6 text-white text-[18px]">
                     Интересы

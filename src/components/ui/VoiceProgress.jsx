@@ -129,7 +129,7 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete, onResetRec
                 const blob = new Blob(chunksRef.current, { type: mimeType });
                 setAudioBlob(blob);
                 console.log('Запись завершена, размер:', blob.size);
-                onRecordingComplete?.(blob);
+                onRecordingComplete?.(blob, barHeights);
             };
 
             mediaRecorderRef.current.start(100);

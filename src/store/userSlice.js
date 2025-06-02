@@ -64,8 +64,12 @@ const userSlice = createSlice({
     },
     // Step 3 actions
     setAudioMessage: (state, action) => {
-      state.registrationData.audioMessage = action.payload;
+      state.registrationData.audioMessage = {
+        file: action.payload.file,
+        bars: action.payload.bars,
+      };
     },
+
     // Step 4 actions
     setPurpose: (state, action) => {
       state.registrationData.purpose = action.payload;

@@ -162,13 +162,13 @@ const StreamBroadcaster = () => {
     };
 
 
-    const sendMessage = async (e) => {
+    const sendMessage = (e) => {
         e.preventDefault();
         if (!messageInput.trim()) return;
 
         try {
             console.log('[StreamBroadcaster] Sending message:', messageInput);
-            await streamChatService.sendMessage(streamId, userId, messageInput);
+            streamChatService.sendMessage(streamId, userId, messageInput);
             console.log('[StreamBroadcaster] Message sent successfully');
             setMessageInput('');
         } catch (error) {
@@ -237,6 +237,7 @@ const StreamBroadcaster = () => {
                 // Leave the channel
                 await client.current.leave();
             }
+            streamChatService.endStream(streamId);
         } catch (error) {
             console.error('Error stopping stream:', error);
         } finally {

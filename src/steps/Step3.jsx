@@ -14,11 +14,14 @@ function Step3({ setStep }) {
         setIsRecording(false);
     };
 
-  const handleRecordingComplete = (audioBlob) => {
+  const handleRecordingComplete = (audioBlob, bars) => {
     if (audioBlob) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        dispatch(setAudioMessage(reader.result));
+        dispatch(setAudioMessage({
+          file: reader.result,
+          bars: bars
+        }));
         setRecordingComplete(true);
       };
       reader.readAsDataURL(audioBlob);

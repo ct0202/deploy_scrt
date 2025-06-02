@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 
-const ListenVoice = ({ preSignedAudio }) => {
+const ListenVoice = ({ preSignedAudio, bars }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const audioRef = useRef(null);
@@ -53,12 +53,12 @@ const ListenVoice = ({ preSignedAudio }) => {
             </button>
             <div className="flex-1 h-[30px] w-[206px] overflow-hidden">
                 <div className="flex items-center gap-[2px]">
-                    {Array.from({ length: 50 }).map((_, index) => (
+                    {Array.from({ length: 46 }).map((_, index) => (
                         <div
                             key={index}
                             className="w-[2px] h-[40px] rounded-[13px]"
                             style={{
-                                height: `20px`,
+                                height:  `${bars? bars[index] : "20"}px`,
                                 backgroundColor: getBarColor(index, currentTime, audioRef.current?.duration)
                             }}
                         />

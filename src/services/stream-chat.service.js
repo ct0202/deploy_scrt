@@ -58,6 +58,14 @@ const setupEventListeners = () => {
         }));
     });
 
+    
+
+    socket.on('stream-ended', (data) => {
+        console.log('[StreamChatService] Stream ENDED:', data);
+        // streamCallback.forEach(callback => callback({
+        // }));
+    });
+
     socket.on('error', (error) => {
         console.error('[StreamChatService] Socket error:', error);
         errorCallbacks.forEach(callback => callback(error));
@@ -76,9 +84,15 @@ const createStreamChat = (streamerId) => {
     if (!socket) {
         throw new Error('Socket not connected');
     }
-    const result = socket.emit('create-stream-chat', { streamerId });
-    console.log('[StreamChatService] Stream chat created:', result);
-    return result;
+    socket.emit('create-stream-chat', { streamerId });
+}
+
+const endStream = (streamId) => {
+    console.log('[StreamChatService] ending stream:', streamId);
+    if (!socket) {
+        throw new Error('Socket not connected');
+    }
+    socket.emit('end-stream', { streamId });
 };
 
 const joinStreamChat = (streamId) => {
@@ -134,7 +148,10 @@ const streamChatService = {
     onMessage,
     onHistory,
     onError,
+    endStream,
     onStreamInfo
 };
+
+
 
 export default streamChatService;

@@ -23,6 +23,7 @@ function ProfileEdit() {
             if (!userId) return;
             try {
                 const response = await axiosPrivate.get(`/users/${userId}`);
+                console.log(response.data);
                 dispatch(setUserData(response.data));
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -143,11 +144,8 @@ function ProfileEdit() {
                                         Аудио визитка
                                     </h1>
                                     {userData.audioMessage ? (
-                                        <img
-                                            src="/icons/user_voice_message.svg"
-                                            alt="Аудио визитка"
-                                            className="w-[295px] h-[64px] mt-2"
-                                        />
+                                        
+                                        <ListenVoice preSignedAudio={userData?.audioMessage?.file} bars={userData?.audioMessage?.bars} />
                                     ) : (
                                         <div className="w-[295px] h-[64px] mt-2 bg-[#FFFFFF1A] rounded-[8px] flex items-center justify-center">
                                             <span className="text-white opacity-50">Нет аудио визитки</span>
