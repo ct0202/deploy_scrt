@@ -233,7 +233,7 @@ function Meet() {
     setIsDragging(false);
     
     if (cardRef.current) {
-      const threshold = 120; // Порог для 
+      const threshold = 60; // Порог для 
       
       if (Math.abs(deltaX) > threshold) {
         // Свайп вправо - лайк
