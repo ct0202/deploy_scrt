@@ -339,6 +339,7 @@ function Meet() {
   // }, [isDragging]);
   useEffect(() => {
     if (isDragging) {
+      alert("isDragging true");
       document.addEventListener('touchmove', handleCardTouchMove, { passive: false });
       document.addEventListener('touchend', onTouchEndInternal);
     }
