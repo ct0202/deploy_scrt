@@ -345,7 +345,7 @@ function Meet() {
     };
   }, [isDragging]);
   
-  const onTouchEndInternal = (e) => {g
+  const onTouchEndInternal = (e) => {
     handleCardTouchEnd(lastTouchPosition.x, lastTouchPosition.y);
   };
 
