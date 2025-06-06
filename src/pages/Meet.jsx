@@ -169,15 +169,12 @@ function Meet() {
   const presentsRef = useRef(null);
 
   const handleTouchStart = (e) => {
-    alert("handleTouchStart");
     setSwipeStart(e.touches[0].clientY);
     setSwipeDiff(0);
   };
 
   const handleTouchMove = (e) => {
-    alert("TOUCH MOVE верхний");
     const swipeEnd = e.touches[0].clientY;
-    alert(swipeEnd);
     const diff = swipeEnd - swipeStart;
 
     if (diff > 0) {
@@ -208,7 +205,6 @@ function Meet() {
   };
 
   const handleCardTouchStart = (e) => {
-    alert("handleCardTouchStart");
     setIsDragging(true);
     setStartPosition({
       x: e.touches[0].clientX,
@@ -237,7 +233,6 @@ function Meet() {
   // };
   const handleCardTouchMove = (e) => {
     if (!isDragging) return;
-    alert("TOUCH MOVE");
   
     const currentX = e.touches[0].clientX;
     const currentY = e.touches[0].clientY;
@@ -256,8 +251,6 @@ function Meet() {
 
 
   const handleCardTouchEnd = (deltaX, deltaY) => {
-    // alert("TOUCH END");
-    alert("TOUCH END");
     setIsDragging(false);
     
     if (cardRef.current) {
@@ -341,7 +334,6 @@ function Meet() {
   // }, [isDragging]);
   useEffect(() => {
     if (isDragging) {
-      alert("isDragging true");
       document.addEventListener('touchmove', handleCardTouchMove, { passive: false });
       document.addEventListener('touchend', onTouchEndInternal);
     }
@@ -446,7 +438,7 @@ function Meet() {
               <div 
                 ref={cardRef}
                 className="relative w-[343px] rounded-[16px]"
-                onTouchStart={(e) => alert('touch started')}
+                onTouchStart={handleCardTouchStart}
                 onTouchMove={handleCardTouchMove}
                 // onTouchEnd={handleCardTouchEnd}
                 onTouchEnd={() => handleCardTouchEnd(lastTouchPosition.x, lastTouchPosition.y)}
