@@ -207,6 +207,7 @@ function Meet() {
   };
 
   const handleCardTouchStart = (e) => {
+    alert("handleCardTouchStart");
     setIsDragging(true);
     setStartPosition({
       x: e.touches[0].clientX,
