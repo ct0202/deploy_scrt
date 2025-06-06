@@ -446,7 +446,7 @@ function Meet() {
               <div 
                 ref={cardRef}
                 className="relative w-[343px] rounded-[16px]"
-                onTouchStart={handleCardTouchStart}
+                onTouchStart={(e) => console.log('touch started')}
                 onTouchMove={handleCardTouchMove}
                 // onTouchEnd={handleCardTouchEnd}
                 onTouchEnd={() => handleCardTouchEnd(lastTouchPosition.x, lastTouchPosition.y)}
