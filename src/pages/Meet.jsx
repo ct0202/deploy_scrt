@@ -322,18 +322,34 @@ function Meet() {
     handleCardTouchEnd(deltaX, deltaY);
   };
 
+  // useEffect(() => {
+  //   if (isDragging) {
+  //     document.addEventListener('mousemove', handleCardMouseMove);
+  //     document.addEventListener('mouseup', handleCardMouseUp);
+  //   }
+
+  //   return () => {
+  //     document.removeEventListener('mousemove', handleCardMouseMove);
+  //     document.removeEventListener('mouseup', handleCardMouseUp);
+  //   };
+  // }, [isDragging]);
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener('mousemove', handleCardMouseMove);
-      document.addEventListener('mouseup', handleCardMouseUp);
+      document.addEventListener('touchmove', handleCardTouchMove, { passive: false });
+      document.addEventListener('touchend', onTouchEndInternal);
     }
-
+  
     return () => {
-      document.removeEventListener('mousemove', handleCardMouseMove);
-      document.removeEventListener('mouseup', handleCardMouseUp);
+      document.removeEventListener('touchmove', handleCardTouchMove);
+      document.removeEventListener('touchend', onTouchEndInternal);
     };
   }, [isDragging]);
+  
+  const onTouchEndInternal = (e) => {
+    handleCardTouchEnd(lastTouchPosition.x, lastTouchPosition.y);
+  };
 
+  
   return (
     <div>
       {showInstruction && (
