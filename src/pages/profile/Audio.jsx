@@ -8,10 +8,12 @@ function Audio() {
     const navigate = useNavigate();
     const axiosPrivate = useAxiosPrivate();
     const dispatch = useDispatch();
-    const userId = useSelector((state) => state.user.userId);
+    const telegramId = useSelector((state) => state.auth.telegramId);
     const [isRecording, setIsRecording] = useState(false);
     const [audioBlob, setAudioBlob] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    
 
     const handleSave = async () => {
         if (!audioBlob) return;
@@ -19,14 +21,42 @@ function Audio() {
         try {
             setIsSubmitting(true);
             const formData = new FormData();
-            formData.append('telegramId', userId);
-            formData.append('audioMessage', audioBlob);
+
+            formData.append('telegramId', telegramId);
+            formData.append('audioMessageFile', audioBlob);
+
+            const bars = Array(46).fill(7); // fallback
+
+            try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const arrayBuffer = await audioBlob.arrayBuffer(); // use async/await instead of FileReader
+
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            const rawData = audioBuffer.getChannelData(0);
+            const samples = 46;
+            const blockSize = Math.floor(rawData.length / samples);
+            const heights = [];
+
+            for (let i = 0; i < samples; i++) {
+                let sum = 0;
+                for (let j = 0; j < blockSize; j++) {
+                sum += Math.abs(rawData[i * blockSize + j]);
+                }
+                const average = sum / blockSize;
+                heights.push(Math.max(7, average * 300));
+            }
+
+            formData.append('audioMessageBars', JSON.stringify(heights));
+            } catch (audioError) {
+            console.error("Error processing audio, using fallback bars:", audioError);
+            formData.append('audioMessageBars', JSON.stringify(bars));
+            }
 
             console.log('Sending audio update request...');
             const response = await axiosPrivate.put('/users/updateAudio', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
             });
 
             console.log('Audio update response:', response.data);
@@ -58,12 +88,6 @@ function Audio() {
                     Расскажите немного о себе другим пользователям. При необходимости аудио
                     визитку можно будет перезаписать или удалить
                 </h1>
-
-                <img
-                    src="/icons/Recorder.svg"
-                    className="w-[220px] h-[220px] mt-10"
-                    alt="recorder icon"
-                />
                 <VoiceProgress 
                     onRecordingComplete={(blob) => setAudioBlob(blob)}
                     isRecording={isRecording}

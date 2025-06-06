@@ -5,6 +5,8 @@ const ListenVoice = ({ preSignedAudio, bars }) => {
     const [currentTime, setCurrentTime] = useState(0);
     const audioRef = useRef(null);
 
+    console.log("BARS MOTHERFUCKER", bars);
+
     const togglePlay = () => {
         if (audioRef.current) {
             if (isPlaying) {

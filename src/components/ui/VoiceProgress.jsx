@@ -78,7 +78,6 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete, onResetRec
                         const average = sum / blockSize;
                         heights.push(Math.max(7, average * 300)); // масштабируем и ставим минимальную высоту
                     }
-
                     setBarHeights(heights);
                 });
             };
@@ -129,7 +128,7 @@ const VoiceProgress = ({ onRecordingStateChange, onRecordingComplete, onResetRec
                 const blob = new Blob(chunksRef.current, { type: mimeType });
                 setAudioBlob(blob);
                 console.log('Запись завершена, размер:', blob.size);
-                onRecordingComplete?.(blob, barHeights);
+                onRecordingComplete?.(blob);
             };
 
             mediaRecorderRef.current.start(100);

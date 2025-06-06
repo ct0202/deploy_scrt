@@ -14,21 +14,56 @@ function Step3({ setStep }) {
         setIsRecording(false);
     };
 
-  const handleRecordingComplete = (audioBlob, bars) => {
-    if (audioBlob) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        dispatch(setAudioMessage({
-          file: reader.result,
-          bars: bars
-        }));
-        setRecordingComplete(true);
-      };
-      reader.readAsDataURL(audioBlob);
-    } else {
+  const handleRecordingComplete = (audioBlob) => {
+    if (!audioBlob) {
       setRecordingComplete(true);
+      return;
     }
+
+    const bars = Array(46).fill(7); // fallback in case processing fails
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    // First read ArrayBuffer for processing
+    const arrayBufferReader = new FileReader();
+    arrayBufferReader.onloadend = () => {
+      const arrayBuffer = arrayBufferReader.result;
+
+      audioContext.decodeAudioData(arrayBuffer)
+        .then(audioBuffer => {
+          const rawData = audioBuffer.getChannelData(0);
+          const samples = 46;
+          const blockSize = Math.floor(rawData.length / samples);
+          const heights = [];
+
+          for (let i = 0; i < samples; i++) {
+            let sum = 0;
+            for (let j = 0; j < blockSize; j++) {
+              sum += Math.abs(rawData[i * blockSize + j]);
+            }
+            const average = sum / blockSize;
+            heights.push(Math.max(7, average * 300));
+          }
+
+          // Now read base64
+          const dataUrlReader = new FileReader();
+          dataUrlReader.onloadend = () => {
+            dispatch(setAudioMessage({
+              file: dataUrlReader.result, // base64
+              bars: heights
+            }));
+            setRecordingComplete(true);
+          };
+          dataUrlReader.readAsDataURL(audioBlob);
+        })
+        .catch((err) => {
+          console.error("Error decoding audio:", err);
+          setRecordingComplete(true);
+        });
+    };
+
+    arrayBufferReader.readAsArrayBuffer(audioBlob);
   };
+
 
   return (
     <div className="flex flex-col items-center w-[343px] h-[750px] overflow-y-auto overflow-x-hidden ">

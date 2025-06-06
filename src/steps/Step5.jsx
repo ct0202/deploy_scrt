@@ -135,9 +135,10 @@ function Step5({ setStep }) {
                 }
 
                 // Add audio message if exists
-                if (registrationData.audioMessage) {
-                    const audioBlob = await convertBase64ToBlob(registrationData.audioMessage);
-                    formData.append('audioMessage', audioBlob);
+                if (registrationData.audioMessage.file) {
+                    const audioBlob = await convertBase64ToBlob(registrationData.audioMessage.file);
+                    formData.append('audioMessageFile', audioBlob);
+                    formData.append('audioMessageBars', registrationData.audioMessage.bars);
                 }
 
                 // Debug: Log FormData contents
