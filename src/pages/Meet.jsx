@@ -174,7 +174,9 @@ function Meet() {
   };
 
   const handleTouchMove = (e) => {
+    alert("TOUCH MOVE верхний");
     const swipeEnd = e.touches[0].clientY;
+    alert(swipeEnd);
     const diff = swipeEnd - swipeStart;
 
     if (diff > 0) {
@@ -233,6 +235,7 @@ function Meet() {
   // };
   const handleCardTouchMove = (e) => {
     if (!isDragging) return;
+    alert("TOUCH MOVE");
   
     const currentX = e.touches[0].clientX;
     const currentY = e.touches[0].clientY;
@@ -252,6 +255,7 @@ function Meet() {
 
   const handleCardTouchEnd = (deltaX, deltaY) => {
     // alert("TOUCH END");
+    alert("TOUCH END");
     setIsDragging(false);
     
     if (cardRef.current) {
