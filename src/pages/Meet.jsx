@@ -452,7 +452,7 @@ function Meet() {
                 onTouchEnd={() => handleCardTouchEnd(lastTouchPosition.x, lastTouchPosition.y)}
                 onMouseDown={handleCardMouseDown}
                 style={{
-                  touchAction: 'none',
+                  
                   transition: isDragging ? 'none' : 'transform 0.3s ease-out',
                   cursor: isDragging ? 'grabbing' : 'grab'
                 }}
