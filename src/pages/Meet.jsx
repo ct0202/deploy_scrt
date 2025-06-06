@@ -345,11 +345,11 @@ function Meet() {
     };
   }, [isDragging]);
   
-  const onTouchEndInternal = (e) => {
+  const onTouchEndInternal = (e) => {g
     handleCardTouchEnd(lastTouchPosition.x, lastTouchPosition.y);
   };
 
-  
+
   return (
     <div>
       {showInstruction && (
