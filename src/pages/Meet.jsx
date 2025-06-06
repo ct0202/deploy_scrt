@@ -38,6 +38,9 @@ function Meet() {
   const [startPosition, setStartPosition] = useState({ x: 0, y: 0 });
   const audioRef = useRef(null);
   const cardRef = useRef(null);
+
+  const [lastTouchPosition, setLastTouchPosition] = useState({ x: 0, y: 0 });
+
   const { userId } = useSelector(state => state.auth);
   const axiosPrivate = useAxiosPrivate();
 
@@ -209,25 +212,43 @@ function Meet() {
     });
   };
 
+  // const handleCardTouchMove = (e) => {
+  //   if (!isDragging) return;
+    
+  //   const currentX = e.touches[0].clientX;
+  //   const currentY = e.touches[0].clientY;
+    
+  //   const deltaX = currentX - startPosition.x;
+  //   const deltaY = currentY - startPosition.y;
+
+  //   setCardPosition({
+  //     x: deltaX,
+  //     y: deltaY
+  //   });
+
+  //   if (cardRef.current) {
+  //     const rotation = deltaX * 0.1; // Коэффициент наклона
+  //     cardRef.current.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${rotation}deg)`;
+  //   }
+  // };
   const handleCardTouchMove = (e) => {
     if (!isDragging) return;
-    
+  
     const currentX = e.touches[0].clientX;
     const currentY = e.touches[0].clientY;
-    
+  
     const deltaX = currentX - startPosition.x;
     const deltaY = currentY - startPosition.y;
-
-    setCardPosition({
-      x: deltaX,
-      y: deltaY
-    });
-
+  
+    setCardPosition({ x: deltaX, y: deltaY });
+    setLastTouchPosition({ x: deltaX, y: deltaY }); // ← добавили эту строку
+  
     if (cardRef.current) {
-      const rotation = deltaX * 0.1; // Коэффициент наклона
+      const rotation = deltaX * 0.1;
       cardRef.current.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${rotation}deg)`;
     }
   };
+
 
   const handleCardTouchEnd = (deltaX, deltaY) => {
     setIsDragging(false);
@@ -403,7 +424,8 @@ function Meet() {
                 className="relative w-[343px] rounded-[16px]"
                 onTouchStart={handleCardTouchStart}
                 onTouchMove={handleCardTouchMove}
-                onTouchEnd={handleCardTouchEnd}
+                // onTouchEnd={handleCardTouchEnd}
+                onTouchEnd={() => handleCardTouchEnd(lastTouchPosition.x, lastTouchPosition.y)}
                 onMouseDown={handleCardMouseDown}
                 style={{
                   touchAction: 'none',
