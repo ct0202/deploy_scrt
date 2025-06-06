@@ -251,6 +251,7 @@ function Meet() {
 
 
   const handleCardTouchEnd = (deltaX, deltaY) => {
+    alert("TOUCH END");
     setIsDragging(false);
     
     if (cardRef.current) {
