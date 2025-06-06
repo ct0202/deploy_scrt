@@ -169,6 +169,7 @@ function Meet() {
   const presentsRef = useRef(null);
 
   const handleTouchStart = (e) => {
+    alert("handleTouchStart");
     setSwipeStart(e.touches[0].clientY);
     setSwipeDiff(0);
   };
