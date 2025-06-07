@@ -42,7 +42,7 @@ const ListenVoice = ({ preSignedAudio, bars }) => {
     };
 
     return (
-        <div className="w-[343px] h-[64px] border border-[#233636] bg-[#022424] gap-[17px] rounded-[8px] flex items-center justify-center">
+        <div className="w-[300px] h-[64px] border border-[#233636] bg-[#022424] gap-[17px] rounded-[8px] flex items-center justify-center">
             <button 
                 onClick={togglePlay}
                 className="ml-[10px] w-8 h-8 flex items-center justify-center bg-[#A1F69E] rounded-full"
